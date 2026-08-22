@@ -91,7 +91,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               error: (message) {
                 PRFSnackbar.error(
                   context,
-                  'Failed to upload receipt: $message',
+                  context.l10n.failedUploadReceipt(message),
                 );
               },
             );
@@ -131,7 +131,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                       ),
                       child: PRFEmptyView(
                         label: context.l10n.noExpensesYet,
-                        description: 'Start by adding your first expense',
+                        description: context.l10n.startAddingExpense,
                         icon: Icons.receipt_long_outlined,
                       ),
                     );
@@ -157,7 +157,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     label: context.l10n.error,
                     description: message,
                     icon: Icons.error_outline,
-                    actionLabel: 'Retry',
+                    actionLabel: context.l10n.retry,
                     onActionPressed: _loadData,
                   ),
                 ),
@@ -169,7 +169,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     label: context.l10n.error,
                     description: message,
                     icon: Icons.error_outline,
-                    actionLabel: 'Retry',
+                    actionLabel: context.l10n.retry,
                     onActionPressed: _loadData,
                   ),
                 ),
@@ -266,7 +266,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           SliverToBoxAdapter(
             child: PRFEmptyView(
               label: context.l10n.noExpensesYet,
-              description: 'Start by adding your first expense',
+              description: context.l10n.startAddingExpense,
               icon: Icons.receipt_long_outlined,
             ).animate().fadeIn(duration: PRFMotionTokens.enterShort),
           ),
@@ -557,15 +557,15 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Transaction Breakdown',
+                        context.l10n.transactionBreakdown,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
                         _showBreakdown
-                            ? 'Tap to hide details'
-                            : 'Tap to view ${entries.length} transactions',
+                            ? context.l10n.tapToHideDetails
+                            : context.l10n.tapToViewTransactions(entries.length),
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurface.withValues(
                             alpha: 0.6,
@@ -857,8 +857,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 ),
                 const SizedBox(width: PRFSpacingTokens.sm),
                 Text(
-                  '${receipts.length} '
-                  'Attachment${receipts.length == 1 ? '' : 's'}',
+                  context.l10n.attachmentsCount(receipts.length),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurface,
                     fontWeight: FontWeight.w600,
@@ -1137,10 +1136,8 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     PRFConfirmationDialog.show(
       context,
       title: context.l10n.deleteReceipt,
-      message:
-          'Are you sure you want to delete this receipt? This action cannot '
-          'be undone.',
-      confirmLabel: 'Delete',
+      message: context.l10n.deleteReceiptConfirm,
+      confirmLabel: context.l10n.delete,
       isDestructive: true,
       onConfirm: () {
         context.read<DeleteReceiptCubit>().deleteReceipt(
@@ -1196,7 +1193,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Receipt Missing',
+                      context.l10n.receiptMissing,
                       style: theme.textTheme.titleSmall?.copyWith(
                         color: theme.colorScheme.onSurface,
                         fontWeight: FontWeight.w600,
@@ -1204,7 +1201,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     ),
                     const SizedBox(height: PRFSpacingTokens.xs),
                     Text(
-                      'Attach receipt or documentation',
+                      context.l10n.attachReceiptOrDocumentation,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurface.withValues(
                           alpha: 0.7,
@@ -1307,7 +1304,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             if (context.mounted) {
               PRFSnackbar.error(
                 context,
-                'Failed to select image: $e',
+                context.l10n.failedSelectImage(e.toString()),
               );
             }
           }
@@ -1328,7 +1325,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               ),
               const SizedBox(width: PRFSpacingTokens.xs),
               Text(
-                'Image',
+                context.l10n.imageLabel,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onError,
                   fontWeight: FontWeight.w600,
@@ -1371,7 +1368,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             if (context.mounted) {
               PRFSnackbar.error(
                 context,
-                'Failed to select PDF: $e',
+                context.l10n.failedSelectPdf(e.toString()),
               );
             }
           }
@@ -1458,8 +1455,8 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     final confirmed = await PRFConfirmationDialog.show(
       context,
       title: context.l10n.deleteExpense,
-      message: 'Are you sure you want to delete this expense?',
-      confirmLabel: 'Delete',
+      message: context.l10n.deleteExpenseConfirm,
+      confirmLabel: context.l10n.delete,
       isDestructive: true,
     );
     if (confirmed != true) return;
@@ -1727,7 +1724,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               ),
               const SizedBox(width: PRFSpacingTokens.sm),
               Text(
-                'Refund Entries',
+                context.l10n.refundEntries,
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -1805,7 +1802,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Amount',
+                    context.l10n.amount,
                     style: theme.textTheme.labelSmall?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -1829,7 +1826,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         _buildRefundDetailValue(
           context,
           theme,
-          'Deficit Amount',
+          context.l10n.deficitAmount,
           NumberFormat.currency(locale: 'en_KE', symbol: 'KES ').format(
             refund.deficitAmount,
           ),
@@ -1838,7 +1835,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         _buildRefundDetailValue(
           context,
           theme,
-          'Confirmation',
+          context.l10n.confirmationLabel,
           refund.confirmationMessage,
           isCopyable: true,
         ),
@@ -1846,7 +1843,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         _buildRefundDetailValue(
           context,
           theme,
-          'Date',
+          context.l10n.date,
           DateFormatter.formatDateTime(refund.createdAt, timezone),
         ),
       ],

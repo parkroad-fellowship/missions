@@ -59,10 +59,10 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
     _clearErrors();
 
     if (_amountController.text.trim().isEmpty) {
-      _amountError = 'Amount is required';
+      _amountError = context.l10n.fieldRequired(context.l10n.amount);
     }
     if (_confirmationController.text.trim().isEmpty) {
-      _confirmationError = 'Confirmation message is required';
+      _confirmationError = context.l10n.confirmationMessageRequired;
     }
 
     setState(() => _showValidation = true);
@@ -122,7 +122,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.sm),
                         Text(
-                          'Add Refund Entry',
+                          context.l10n.addRefundEntryTitle,
                           style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.onTertiary,
@@ -131,7 +131,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.xs),
                         Text(
-                          'Record a new refund entry for this accounting event',
+                          context.l10n.addRefundEntryDesc,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: Theme.of(
@@ -179,7 +179,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                           child: _buildNumberField(
                             controller: _amountController,
                             label: context.l10n.amount,
-                            hint: 'Enter refund amount',
+                            hint: context.l10n.enterRefundAmount,
                             prefix: 'KES ',
                           ),
                         )
@@ -196,8 +196,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                               PRFTextField(
                                 type: PRFTextFieldType.textArea,
                                 hintText:
-                                    'Enter confirmation message or '
-                                    'reference number',
+                                    context.l10n.enterConfirmationHint,
                                 controller: _confirmationController,
                                 maxLines: 3,
                                 textInputAction: TextInputAction.done,
@@ -237,7 +236,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                           Navigator.of(context).pop();
                           PRFSnackbar.success(
                             context,
-                            'Refund entry added successfully',
+                            context.l10n.refundAddedSuccessfully,
                           );
                         },
                         error: (error) {

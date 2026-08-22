@@ -39,6 +39,12 @@ class _AddEventSubscriptionViewHandsetState
     _ticketController.addListener(_onFormChanged);
   }
 
+  @override
+  void dispose() {
+    _ticketController.dispose();
+    super.dispose();
+  }
+
   void _onFormChanged() {
     if (_showValidation) {
       _validateForm();
@@ -54,7 +60,7 @@ class _AddEventSubscriptionViewHandsetState
     _clearErrors();
 
     if (_ticketController.text.trim().isEmpty) {
-      _ticketError = 'Number of tickets is required';
+      _ticketError = context.l10n.ticketsRequired;
     }
 
     setState(() => _showValidation = true);
@@ -247,7 +253,7 @@ class _AddEventSubscriptionViewHandsetState
       Gaimon.warning();
       PRFSnackbar.error(
         context,
-        'Please fix the highlighted fields and try again.',
+        context.l10n.fixHighlightedFields,
       );
       return;
     }

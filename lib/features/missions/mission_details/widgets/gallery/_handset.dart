@@ -65,7 +65,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
     final confirmed = await PRFConfirmationDialog.show(
       context,
       title: l10n.delete,
-      message: 'Are you sure you want to delete this media?',
+      message: context.l10n.deleteMediaConfirm,
       confirmLabel: l10n.delete,
       isDestructive: true,
     );
@@ -88,7 +88,9 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
   Future<void> _saveMedia(PRFCarouselItem item) async {
     try {
       final response = await http.get(Uri.parse(item.url));
-      if (response.statusCode != 200) throw Exception('Download failed');
+      if (response.statusCode != 200) {
+        throw Exception(context.l10n.downloadFailed);
+      }
 
       final tempDir = await getTemporaryDirectory();
       final ext = item.isVideo ? 'mp4' : 'jpg';
@@ -263,7 +265,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.lg),
                         Text(
-                          'Error loading media',
+                          l10n.errorLoadingMedia,
                           style: theme.textTheme.titleLarge?.copyWith(
                             color: theme.colorScheme.error,
                           ),

@@ -131,16 +131,16 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                         ),
                         child: PRFEmptyView(
                           label: _form.isAudioMode
-                              ? 'Add recordings'
+                              ? l10n.addRecordings
                               : l10n.addPhotos,
                           description: _form.isAudioMode
-                              ? 'Record audio to capture event highlights.'
+                              ? l10n.recordingsCaptureBody
                               : l10n.addEventPhotos,
                           icon: _form.isAudioMode
                               ? Icons.mic_none_outlined
                               : Icons.photo_camera_outlined,
                           actionLabel: _form.isAudioMode
-                              ? 'Record audio'
+                              ? l10n.recordAudio
                               : l10n.addPhotos,
                           onActionPressed: () => triggerAddMediaModal(
                             context,

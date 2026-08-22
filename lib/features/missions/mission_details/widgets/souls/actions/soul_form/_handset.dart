@@ -69,6 +69,14 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
     context.read<ClassGroupResourceCubit>().loadAll();
   }
 
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _admissionNumberController.dispose();
+    _notesController.dispose();
+    super.dispose();
+  }
+
   void _onFormChanged() {
     if (_showValidation) {
       _validateForm();
@@ -86,13 +94,13 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
     _clearErrors();
 
     if (_fullNameController.text.trim().isEmpty) {
-      _fullNameError = 'Full name is required';
+      _fullNameError = context.l10n.fieldRequired(context.l10n.fullName);
     }
     if (selectedClassGroup == null) {
-      _classGroupError = 'Class group is required';
+      _classGroupError = context.l10n.fieldRequired(context.l10n.classGroup);
     }
     if (selectedDecisionType == null) {
-      _decisionTypeError = 'Decision type is required';
+      _decisionTypeError = context.l10n.fieldRequired(context.l10n.decisionType);
     }
 
     setState(() => _showValidation = true);
@@ -114,7 +122,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _isEditing ? 'Update Soul' : l10n.recordSoul,
+              _isEditing ? l10n.updateSoulTitle : l10n.recordSoul,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -178,7 +186,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
                             }),
                             selection: selectedClassGroup,
                             hintText: l10n.selectClass,
-                            emptyText: 'No class groups found',
+                            emptyText: l10n.noClassGroupsFound,
                           );
                         },
                       );
@@ -255,7 +263,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
               builder: (context, state) {
                 return PRFButton(
                   onPressed: _submitForm,
-                  title: _isEditing ? 'Update' : l10n.record,
+                  title: _isEditing ? l10n.update : l10n.record,
                   disabled: !_isFormValid,
                   isLoading: _isLoading,
                 );
@@ -312,7 +320,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
       Gaimon.warning();
       PRFSnackbar.error(
         context,
-        'Please fix the highlighted fields and try again.',
+        context.l10n.fixHighlightedFields,
       );
       return;
     }

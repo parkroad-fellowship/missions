@@ -53,10 +53,11 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
         orElse: () => true,
       ),
       builder: (context, state) {
-        final lessonModule = state.maybeWhen(
-          listLoaded: (items, _, _) => items.isNotEmpty ? items.first : null,
-          orElse: () => null,
-        );
+        // Same source as the list: pull-to-refresh keeps content visible
+        // instead of flashing a full-screen spinner.
+        final lessonItems = context.read<LessonResourceCubit>().currentItems;
+        final lessonModule =
+            lessonItems.isNotEmpty ? lessonItems.first : null;
         final lesson = lessonModule?.lesson;
         final mediaCount = [
           lesson?.videoUrl,
@@ -107,12 +108,17 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: (_) => const SliverFillRemaining(
-                            hasScrollBody: false,
-                            child: Center(
-                              child: PRFCircularProgressIndicator(),
-                            ),
-                          ),
+                          listLoading: (_) =>
+                              lessonItems.isEmpty
+                              ? const SliverFillRemaining(
+                                  hasScrollBody: false,
+                                  child: Center(
+                                    child: PRFCircularProgressIndicator(),
+                                  ),
+                                )
+                              : const SliverToBoxAdapter(
+                                  child: SizedBox.shrink(),
+                                ),
                           error: (message, _) => SliverFillRemaining(
                             hasScrollBody: false,
                             child: Align(
@@ -131,7 +137,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                                   alignment: Alignment.topCenter,
                                   child: PRFEmptyView(
                                     label: l10n.lessonDetails,
-                                    description: l10n.pleaseWait,
+                                    description: l10n.noLessonsDesc,
                                   ),
                                 ),
                               );
@@ -239,7 +245,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                       if (courseUlid == null ||
                           moduleUlid == null ||
                           lessonUlid == null) {
-                        PRFSnackbar.error(context, l10n.pleaseWait);
+                        PRFSnackbar.error(context, l10n.pleaseWaitBrief);
                         return;
                       }
 

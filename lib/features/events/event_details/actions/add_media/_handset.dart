@@ -249,7 +249,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
         Row(
           children: [
             Text(
-              'Selected Photos',
+              context.l10n.selectedPhotos,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: theme.colorScheme.onSurface,
@@ -323,7 +323,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
             ),
             const SizedBox(height: PRFSpacingTokens.sm),
             Text(
-              'Add More',
+              context.l10n.addMore,
               style: theme.textTheme.labelMedium?.copyWith(
                 color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w600,
@@ -384,7 +384,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                   // For now, we'll just show a snackbar
                   PRFSnackbar.info(
                     context,
-                    'Remove functionality not implemented',
+                    context.l10n.removeNotImplemented,
                   );
                 },
                 child: Container(

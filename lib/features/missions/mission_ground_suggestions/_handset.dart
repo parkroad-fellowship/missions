@@ -47,10 +47,10 @@ class _MissionGroundSuggestionsPageHandsetState
       ResourceState<PRFMissionGroundSuggestion>
     >(
       builder: (context, state) {
-        final missionGroundSuggestions = state.maybeWhen(
-          listLoaded: (suggestions, _, _) => suggestions,
-          orElse: List<PRFMissionGroundSuggestion>.empty,
-        );
+        // Same source as the list: pull-to-refresh keeps cards visible
+        // instead of flashing a full-screen spinner.
+        final missionGroundSuggestions =
+            context.read<GroundSuggestionResourceCubit>().currentItems;
         final pendingCount = missionGroundSuggestions
             .where(
               (suggestion) =>
@@ -100,12 +100,17 @@ class _MissionGroundSuggestionsPageHandsetState
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: (_) => const SliverFillRemaining(
-                            hasScrollBody: false,
-                            child: Center(
-                              child: PRFCircularProgressIndicator(),
-                            ),
-                          ),
+                          listLoading: (_) =>
+                              missionGroundSuggestions.isEmpty
+                              ? const SliverFillRemaining(
+                                  hasScrollBody: false,
+                                  child: Center(
+                                    child: PRFCircularProgressIndicator(),
+                                  ),
+                                )
+                              : const SliverToBoxAdapter(
+                                  child: SizedBox.shrink(),
+                                ),
                           error: (message, _) => SliverFillRemaining(
                             hasScrollBody: false,
                             child: Align(

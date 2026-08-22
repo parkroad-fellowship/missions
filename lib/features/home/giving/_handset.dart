@@ -1,6 +1,7 @@
 import 'package:app/enums/payment/prf_payment_status.dart';
 import 'package:app/features/home/giving/_shared.dart';
 import 'package:app/features/home/giving/cubit/payment_resource_cubit.dart';
+import 'package:app/features/missions/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/payment/prf_payment.dart';
 import 'package:app/utils/crud/resource_state.dart';
@@ -21,6 +22,9 @@ class GivingPageHandset extends StatefulWidget {
 class _GivingPageHandsetState extends State<GivingPageHandset> {
   final _form = GivingFormState();
 
+  // The entrance cascade plays exactly once per screen instance.
+  bool _entrancePlayed = false;
+
   @override
   void initState() {
     super.initState();
@@ -39,13 +43,14 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
+    final animateEntrance = !_entrancePlayed;
+    _entrancePlayed = true;
 
     return BlocBuilder<PaymentResourceCubit, ResourceState<PRFPayment>>(
       builder: (context, state) {
-        final payments = state.maybeWhen(
-          listLoaded: (values, _, _) => values,
-          orElse: List<PRFPayment>.empty,
-        );
+        // Same source as the list: pull-to-refresh keeps cards visible
+        // instead of flashing a full-screen spinner.
+        final payments = context.read<PaymentResourceCubit>().currentItems;
         final successfulCount = payments
             .where(
               (payment) => payment.paymentStatus == PRFPaymentStatus.success,
@@ -97,12 +102,17 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: (_) => const SliverFillRemaining(
-                            hasScrollBody: false,
-                            child: Center(
-                              child: PRFCircularProgressIndicator(),
-                            ),
-                          ),
+                          listLoading: (_) =>
+                              payments.isEmpty
+                              ? const SliverFillRemaining(
+                                  hasScrollBody: false,
+                                  child: Center(
+                                    child: PRFCircularProgressIndicator(),
+                                  ),
+                                )
+                              : const SliverToBoxAdapter(
+                                  child: SizedBox.shrink(),
+                                ),
                           error: (message, _) => SliverFillRemaining(
                             hasScrollBody: false,
                             child: Align(
@@ -172,50 +182,41 @@ class _GivingPageHandsetState extends State<GivingPageHandset> {
 
                                 final paymentIndex = index - 1;
                                 final payment = values[paymentIndex];
-                                return Padding(
-                                      padding: EdgeInsets.only(
-                                        bottom:
-                                            paymentIndex == values.length - 1
-                                            ? 0
-                                            : PRFSpacingTokens.lg,
+                                return buildAnimatedTimelineEntry(
+                                  context: context,
+                                  index: paymentIndex,
+                                  animate: animateEntrance,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom:
+                                          paymentIndex == values.length - 1
+                                          ? 0
+                                          : PRFSpacingTokens.lg,
+                                    ),
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(
+                                        PRFRadiusTokens.xl,
                                       ),
-                                      child: Material(
-                                        color: Colors.transparent,
+                                      child: InkWell(
+                                        onTap: () => showPaymentActions(
+                                          context,
+                                          payment,
+                                        ),
                                         borderRadius: BorderRadius.circular(
                                           PRFRadiusTokens.xl,
                                         ),
-                                        child: InkWell(
-                                          onTap: () => showPaymentActions(
-                                            context,
-                                            payment,
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                            PRFRadiusTokens.xl,
-                                          ),
-                                          splashColor: theme.colorScheme.primary
-                                              .withValues(alpha: 0.1),
-                                          highlightColor: theme
-                                              .colorScheme
-                                              .primary
-                                              .withValues(alpha: 0.05),
-                                          child: PaymentCard(payment: payment),
-                                        ),
+                                        splashColor: theme.colorScheme.primary
+                                            .withValues(alpha: 0.1),
+                                        highlightColor: theme
+                                            .colorScheme
+                                            .primary
+                                            .withValues(alpha: 0.05),
+                                        child: PaymentCard(payment: payment),
                                       ),
-                                    )
-                                    .animate(
-                                      delay: Duration(
-                                        milliseconds: 70 * paymentIndex,
-                                      ),
-                                    )
-                                    .fadeIn(
-                                      duration: PRFMotionTokens.enterShort,
-                                    )
-                                    .slideY(
-                                      begin: 0.22,
-                                      end: 0,
-                                      duration: PRFMotionTokens.enterMedium,
-                                      curve: Curves.easeOutCubic,
-                                    );
+                                    ),
+                                  ),
+                                );
                               },
                             );
                           },

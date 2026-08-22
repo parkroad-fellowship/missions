@@ -140,7 +140,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
                     if (subscriptions.isEmpty)
                       PRFEmptyView(
                         label: l10n.noSubscribers,
-                        description: l10n.pleaseWait,
+                        description: l10n.noSubscribersDesc,
                       )
                     else
                       ...subscriptions.map(
@@ -226,7 +226,7 @@ class _SubscriptionCard extends StatelessWidget {
             ),
             if (member != null)
               IconButton(
-                tooltip: 'View subscriber',
+                tooltip: context.l10n.viewSubscriberTooltip,
                 onPressed: () => _viewSubscriber(context, member),
                 icon: Icon(
                   Icons.visibility_outlined,
@@ -234,7 +234,7 @@ class _SubscriptionCard extends StatelessWidget {
                 ),
               ),
             IconButton(
-              tooltip: 'Call subscriber',
+              tooltip: context.l10n.callSubscriberTooltip,
               onPressed: () => _makeCall(member),
               icon: Icon(
                 Icons.phone_outlined,

@@ -9,7 +9,6 @@ import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
@@ -25,6 +24,11 @@ class SchoolMissionsHandset extends StatefulWidget {
 class _SchoolMissionsHandsetState extends State<SchoolMissionsHandset>
     with TimezoneMixin {
   late final _form = SchoolMissionsFormState(schoolUlid: widget.schoolUlid);
+
+  // The entrance cascade plays exactly once per screen instance; stored on
+  // the state so helper build methods can gate their timelines too.
+  bool _entrancePlayed = false;
+  late bool _animateEntrance;
 
   @override
   void initState() {
@@ -43,6 +47,8 @@ class _SchoolMissionsHandsetState extends State<SchoolMissionsHandset>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    _animateEntrance = !_entrancePlayed;
+    _entrancePlayed = true;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -115,23 +121,18 @@ class _SchoolMissionsHandsetState extends State<SchoolMissionsHandset>
                         final mission = entry.value;
                         final isLast = index == missions.length - 1;
 
-                        return TimelineMissionCard(
-                              mission: mission,
-                              isLast: isLast,
-                              onTap: () => context.router.push(
-                                MissionsDetailsRoute(missionUlid: mission.ulid),
-                              ),
-                            )
-                            .animate()
-                            .fadeIn(
-                              delay: Duration(milliseconds: index * 100),
-                              duration: PRFMotionTokens.enterShort,
-                            )
-                            .slideX(
-                              begin: 0.3,
-                              end: 0,
-                              curve: Curves.easeOutCubic,
-                            );
+                        return buildAnimatedTimelineEntry(
+                          context: context,
+                          index: index,
+                          animate: _animateEntrance,
+                          child: TimelineMissionCard(
+                            mission: mission,
+                            isLast: isLast,
+                            onTap: () => context.router.push(
+                              MissionsDetailsRoute(missionUlid: mission.ulid),
+                            ),
+                          ),
+                        );
                       }),
                     ],
                   ),
@@ -146,7 +147,7 @@ class _SchoolMissionsHandsetState extends State<SchoolMissionsHandset>
     return Center(
       child: PRFEmptyView(
         label: l10n.noMissions,
-        description: 'No past missions for this school.',
+        description: l10n.noPastMissionsForSchool,
       ),
     );
   }

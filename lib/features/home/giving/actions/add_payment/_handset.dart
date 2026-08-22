@@ -57,10 +57,10 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
     _clearErrors();
 
     if (_amountController.text.trim().isEmpty) {
-      _amountError = 'Amount is required';
+      _amountError = context.l10n.fieldRequired(context.l10n.amount);
     }
     if (selectedPaymentType == null) {
-      _paymentTypeError = 'Please select a reason for giving';
+      _paymentTypeError = context.l10n.selectReasonForGiving;
     }
 
     setState(() => _showValidation = true);
@@ -110,7 +110,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                               }),
                               selection: selectedPaymentType,
                               hintText: l10n.reasonForGiving,
-                              emptyText: 'No payment types found',
+                              emptyText: l10n.noPaymentTypesFound,
                             ),
                       );
                     },
@@ -177,7 +177,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                       Gaimon.warning();
                       PRFSnackbar.error(
                         context,
-                        'Please fix the highlighted fields and try again.',
+                        l10n.fixHighlightedFields,
                       );
                       return;
                     }

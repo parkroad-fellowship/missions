@@ -1,11 +1,11 @@
 import 'package:app/features/lms/_shared.dart';
 import 'package:app/features/lms/cubit/course_resource_cubit.dart';
 import 'package:app/features/lms/widgets/course_action_card.dart';
+import 'package:app/features/missions/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/course/prf_course.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
@@ -18,6 +18,9 @@ class LMSPageHandset extends StatefulWidget {
 
 class _LMSPageHandsetState extends State<LMSPageHandset> {
   final _form = LMSFormState();
+
+  // The entrance cascade plays exactly once per screen instance.
+  bool _entrancePlayed = false;
 
   @override
   void initState() {
@@ -37,13 +40,14 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
+    final animateEntrance = !_entrancePlayed;
+    _entrancePlayed = true;
 
     return BlocBuilder<CourseResourceCubit, ResourceState<PRFCourse>>(
       builder: (context, state) {
-        final courses = state.maybeWhen(
-          listLoaded: (values, _, _) => values,
-          orElse: List<PRFCourse>.empty,
-        );
+        // Same source as the list: pull-to-refresh keeps cards visible
+        // instead of flashing a full-screen spinner.
+        final courses = context.read<CourseResourceCubit>().currentItems;
         final completedCount = courses
             .where(
               (course) => (course.courseMember?.percentComplete ?? 0) >= 100,
@@ -77,12 +81,17 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: (_) => const SliverFillRemaining(
-                            hasScrollBody: false,
-                            child: Center(
-                              child: PRFCircularProgressIndicator(),
-                            ),
-                          ),
+                          listLoading: (_) =>
+                              courses.isEmpty
+                              ? const SliverFillRemaining(
+                                  hasScrollBody: false,
+                                  child: Center(
+                                    child: PRFCircularProgressIndicator(),
+                                  ),
+                                )
+                              : const SliverToBoxAdapter(
+                                  child: SizedBox.shrink(),
+                                ),
                           error: (message, _) => SliverFillRemaining(
                             hasScrollBody: false,
                             child: Align(
@@ -101,7 +110,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                                   alignment: Alignment.topCenter,
                                   child: PRFEmptyView(
                                     label: l10n.noCourses,
-                                    description: l10n.pleaseWait,
+                                    description: l10n.noCoursesDesc,
                                   ),
                                 ),
                               );
@@ -145,30 +154,21 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                                 }
 
                                 final courseIndex = index - 1;
-                                return Padding(
-                                      padding: EdgeInsets.only(
-                                        bottom: courseIndex == values.length - 1
-                                            ? 0
-                                            : PRFSpacingTokens.lg,
-                                      ),
-                                      child: CourseActionCard(
-                                        course: values[courseIndex],
-                                      ),
-                                    )
-                                    .animate(
-                                      delay: Duration(
-                                        milliseconds: 70 * courseIndex,
-                                      ),
-                                    )
-                                    .fadeIn(
-                                      duration: PRFMotionTokens.enterShort,
-                                    )
-                                    .slideY(
-                                      begin: 0.22,
-                                      end: 0,
-                                      duration: PRFMotionTokens.enterMedium,
-                                      curve: Curves.easeOutCubic,
-                                    );
+                                return buildAnimatedTimelineEntry(
+                                  context: context,
+                                  index: courseIndex,
+                                  animate: animateEntrance,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: courseIndex == values.length - 1
+                                          ? 0
+                                          : PRFSpacingTokens.lg,
+                                    ),
+                                    child: CourseActionCard(
+                                      course: values[courseIndex],
+                                    ),
+                                  ),
+                                );
                               },
                             );
                           },

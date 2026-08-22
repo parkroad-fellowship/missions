@@ -135,7 +135,10 @@ class _StudentEnquiriesPageHandsetState
                                     alignment: Alignment.topCenter,
                                     child: PRFEmptyView(
                                       label: l10n.noQuestions,
-                                      description: l10n.pleaseWait,
+                                      description:
+                                          _form.selectedReplyStatus
+                                          ? l10n.noRepliedQuestionsDesc
+                                          : l10n.noUnreadQuestionsDesc,
                                     ),
                                   ),
                                 );

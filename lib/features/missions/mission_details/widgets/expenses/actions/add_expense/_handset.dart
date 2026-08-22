@@ -127,7 +127,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.sm),
                         Text(
-                          'Add New Expense',
+                          l10n.addNewExpenseTitle,
                           style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.onPrimary,
@@ -136,7 +136,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.xs),
                         Text(
-                          'Fill in the details below to record a new expense',
+                          l10n.addNewExpenseDesc,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: Theme.of(

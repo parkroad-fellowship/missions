@@ -99,7 +99,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                       const SizedBox(width: PRFSpacingTokens.sm),
                       Expanded(
                         child: Text(
-                          'Queued recordings',
+                          l10n.queuedRecordings,
                           style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(fontWeight: FontWeight.w600),
                         ),
@@ -190,9 +190,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
               error: (message) {
                 PRFSnackbar.info(
                   context,
-                  'You are offline. '
-                  'The app will retry when you are back online. '
-                  'You can continue using the app.',
+                  l10n.offlineRecordingNotice,
                 );
               },
             );
@@ -246,7 +244,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                       Navigator.of(context).pop();
                       PRFSnackbar.info(
                         context,
-                        'Recording continues in the background.',
+                        l10n.backgroundRecording,
                       );
                     },
                     onRecordingCompleted: (_, _) {},

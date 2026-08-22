@@ -49,7 +49,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
     final shouldDelete = await PRFConfirmationDialog.show(
       context,
       title: '${context.l10n.delete} ${context.l10n.sessions}',
-      message: 'Are you sure you want to continue?',
+      message: context.l10n.continueConfirm,
       confirmLabel: context.l10n.delete,
       isDestructive: true,
     );

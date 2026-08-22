@@ -1,6 +1,7 @@
 import 'package:app/features/home/prayer_requests/_shared.dart';
 import 'package:app/features/home/prayer_requests/cubit/prayer_request_resource_cubit.dart';
 import 'package:app/features/home/prayer_requests/widgets/prayer_request_card.dart';
+import 'package:app/features/missions/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prayer/prf_prayer_request.dart';
 import 'package:app/utils/crud/resource_state.dart';
@@ -20,6 +21,9 @@ class PrayerRequestHandset extends StatefulWidget {
 class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
   final _form = PrayerRequestsFormState();
 
+  // The entrance cascade plays exactly once per screen instance.
+  bool _entrancePlayed = false;
+
   @override
   void initState() {
     super.initState();
@@ -38,16 +42,18 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
+    final animateEntrance = !_entrancePlayed;
+    _entrancePlayed = true;
 
     return BlocBuilder<
       PrayerRequestResourceCubit,
       ResourceState<PRFPrayerRequest>
     >(
       builder: (context, state) {
-        final prayerRequests = state.maybeWhen(
-          listLoaded: (requests, _, _) => requests,
-          orElse: List<PRFPrayerRequest>.empty,
-        );
+        // Same source as the list: pull-to-refresh keeps cards visible
+        // instead of flashing a full-screen spinner.
+        final prayerRequests =
+            context.read<PrayerRequestResourceCubit>().currentItems;
 
         return Scaffold(
           backgroundColor: theme.colorScheme.surface,
@@ -82,12 +88,17 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: (_) => const SliverFillRemaining(
-                            hasScrollBody: false,
-                            child: Center(
-                              child: PRFCircularProgressIndicator(),
-                            ),
-                          ),
+                          listLoading: (_) =>
+                              prayerRequests.isEmpty
+                              ? const SliverFillRemaining(
+                                  hasScrollBody: false,
+                                  child: Center(
+                                    child: PRFCircularProgressIndicator(),
+                                  ),
+                                )
+                              : const SliverToBoxAdapter(
+                                  child: SizedBox.shrink(),
+                                ),
                           error: (message, _) => SliverFillRemaining(
                             hasScrollBody: false,
                             child: Align(
@@ -157,7 +168,11 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
 
                                 final requestIndex = index - 1;
                                 final prayerRequest = requests[requestIndex];
-                                return Padding(
+                                return buildAnimatedTimelineEntry(
+                                  context: context,
+                                  index: requestIndex,
+                                  animate: animateEntrance,
+                                  child: Padding(
                                       padding: EdgeInsets.only(
                                         bottom:
                                             requestIndex == requests.length - 1
@@ -167,16 +182,8 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                                       child: PrayerRequestCard(
                                         prayerRequest: prayerRequest,
                                       ),
-                                    )
-                                    .animate(
-                                      delay: Duration(
-                                        milliseconds: 70 * requestIndex,
-                                      ),
-                                    )
-                                    .fadeIn(
-                                      duration: PRFMotionTokens.enterShort,
-                                    )
-                                    .slideY(begin: 0.15, end: 0);
+                                    ),
+                                );
                               },
                             );
                           },

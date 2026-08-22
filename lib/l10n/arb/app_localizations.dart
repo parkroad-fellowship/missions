@@ -3693,6 +3693,528 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No learning resources are attached to this lesson yet.'**
   String get noLessonResources;
+
+  /// No description provided for @noMissionsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming missions will appear here once the missions desk announces them.'**
+  String get noMissionsDesc;
+
+  /// No description provided for @noRepliesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No replies yet. Responses from the desk will appear here.'**
+  String get noRepliesYet;
+
+  /// No description provided for @noSubscribersDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions will appear here as members join this mission.'**
+  String get noSubscribersDesc;
+
+  /// No description provided for @question.
+  ///
+  /// In en, this message translates to:
+  /// **'Question'**
+  String get question;
+
+  /// No description provided for @fieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'{field} is required'**
+  String fieldRequired(Object field);
+
+  /// No description provided for @fixHighlightedFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fix the highlighted fields and try again.'**
+  String get fixHighlightedFields;
+
+  /// No description provided for @ticketsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of tickets is required'**
+  String get ticketsRequired;
+
+  /// No description provided for @noPaymentTypesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No payment types found'**
+  String get noPaymentTypesFound;
+
+  /// No description provided for @noSubscribersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No subscribers found'**
+  String get noSubscribersFound;
+
+  /// No description provided for @noClassGroupsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No class groups found'**
+  String get noClassGroupsFound;
+
+  /// No description provided for @updateSessionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Session'**
+  String get updateSessionTitle;
+
+  /// No description provided for @updateQuestionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Question'**
+  String get updateQuestionTitle;
+
+  /// No description provided for @updateNoteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Note'**
+  String get updateNoteTitle;
+
+  /// No description provided for @updateSoulTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Soul'**
+  String get updateSoulTitle;
+
+  /// No description provided for @failedUploadReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to upload receipt: {message}'**
+  String failedUploadReceipt(Object message);
+
+  /// No description provided for @failedSelectImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to select image: {error}'**
+  String failedSelectImage(Object error);
+
+  /// No description provided for @failedSelectPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to select PDF: {error}'**
+  String failedSelectPdf(Object error);
+
+  /// No description provided for @startAddingExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Start by adding your first expense'**
+  String get startAddingExpense;
+
+  /// No description provided for @tapToHideDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to hide details'**
+  String get tapToHideDetails;
+
+  /// No description provided for @tapToViewTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to view {count} transactions'**
+  String tapToViewTransactions(int count);
+
+  /// No description provided for @deleteReceiptConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this receipt? This action cannot be undone.'**
+  String get deleteReceiptConfirm;
+
+  /// No description provided for @deleteExpenseConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this expense?'**
+  String get deleteExpenseConfirm;
+
+  /// No description provided for @attachReceiptOrDocumentation.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach receipt or documentation'**
+  String get attachReceiptOrDocumentation;
+
+  /// No description provided for @receiptMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt Missing'**
+  String get receiptMissing;
+
+  /// No description provided for @transactionBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Breakdown'**
+  String get transactionBreakdown;
+
+  /// No description provided for @refundEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund Entries'**
+  String get refundEntries;
+
+  /// No description provided for @deficitAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Deficit Amount'**
+  String get deficitAmount;
+
+  /// No description provided for @confirmationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmation'**
+  String get confirmationLabel;
+
+  /// No description provided for @imageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Image'**
+  String get imageLabel;
+
+  /// No description provided for @attachmentsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} Attachment} other{{count} Attachments}}'**
+  String attachmentsCount(int count);
+
+  /// No description provided for @continueConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to continue?'**
+  String get continueConfirm;
+
+  /// No description provided for @editDebriefTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit debrief note'**
+  String get editDebriefTooltip;
+
+  /// No description provided for @deleteDebriefTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete debrief note'**
+  String get deleteDebriefTooltip;
+
+  /// No description provided for @removeNotImplemented.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove functionality not implemented'**
+  String get removeNotImplemented;
+
+  /// No description provided for @debriefNoteRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Note is required'**
+  String get debriefNoteRequired;
+
+  /// No description provided for @sessionNotesRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparation notes are required'**
+  String get sessionNotesRequired;
+
+  /// No description provided for @prayerRequestRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer request is required'**
+  String get prayerRequestRequired;
+
+  /// No description provided for @viewSubscriberTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'View subscriber'**
+  String get viewSubscriberTooltip;
+
+  /// No description provided for @callSubscriberTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Call subscriber'**
+  String get callSubscriberTooltip;
+
+  /// No description provided for @selectedPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Photos'**
+  String get selectedPhotos;
+
+  /// No description provided for @debriefNotesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Debrief Notes'**
+  String get debriefNotesTitle;
+
+  /// No description provided for @untitledNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Untitled note'**
+  String get untitledNote;
+
+  /// No description provided for @travelTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel Time'**
+  String get travelTime;
+
+  /// No description provided for @deleteMediaConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this media?'**
+  String get deleteMediaConfirm;
+
+  /// No description provided for @errorLoadingMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading media'**
+  String get errorLoadingMedia;
+
+  /// No description provided for @tapToSelectMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to select {mediaType}'**
+  String tapToSelectMedia(Object mediaType);
+
+  /// No description provided for @chooseMultipleToShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose multiple {mediaType} to share'**
+  String chooseMultipleToShare(Object mediaType);
+
+  /// No description provided for @groundNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission ground name is required'**
+  String get groundNameRequired;
+
+  /// No description provided for @contactPersonRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact person is required'**
+  String get contactPersonRequired;
+
+  /// No description provided for @contactNumberRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact number is required'**
+  String get contactNumberRequired;
+
+  /// No description provided for @statusRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Status is required'**
+  String get statusRequired;
+
+  /// No description provided for @noStatusesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No statuses found'**
+  String get noStatusesFound;
+
+  /// No description provided for @editSoulTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit soul'**
+  String get editSoulTooltip;
+
+  /// No description provided for @deleteSoulTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete soul'**
+  String get deleteSoulTooltip;
+
+  /// No description provided for @recordingSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording saved ({duration})'**
+  String recordingSaved(Object duration);
+
+  /// No description provided for @queuedRecordingsForSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Queued recordings for this session'**
+  String get queuedRecordingsForSession;
+
+  /// No description provided for @syncingRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing recording...'**
+  String get syncingRecording;
+
+  /// No description provided for @recorderIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorder idle'**
+  String get recorderIdle;
+
+  /// No description provided for @recorderReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorder ready'**
+  String get recorderReady;
+
+  /// No description provided for @recordingInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording in progress'**
+  String get recordingInProgress;
+
+  /// No description provided for @savedLocally.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved locally'**
+  String get savedLocally;
+
+  /// No description provided for @recorderNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorder needs attention'**
+  String get recorderNeedsAttention;
+
+  /// No description provided for @noNotesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No notes available'**
+  String get noNotesAvailable;
+
+  /// No description provided for @missionQuestionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Questions'**
+  String get missionQuestionsTitle;
+
+  /// No description provided for @untitledQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Untitled question'**
+  String get untitledQuestion;
+
+  /// No description provided for @editQuestionTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit question'**
+  String get editQuestionTooltip;
+
+  /// No description provided for @deleteQuestionTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete question'**
+  String get deleteQuestionTooltip;
+
+  /// No description provided for @queuedRecordings.
+  ///
+  /// In en, this message translates to:
+  /// **'Queued recordings'**
+  String get queuedRecordings;
+
+  /// No description provided for @offlineRecordingNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'You are offline. The app will retry when you are back online. You can continue using the app.'**
+  String get offlineRecordingNotice;
+
+  /// No description provided for @backgroundRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording continues in the background.'**
+  String get backgroundRecording;
+
+  /// No description provided for @confirmationMessageRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmation message is required'**
+  String get confirmationMessageRequired;
+
+  /// No description provided for @enterConfirmationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter confirmation message or reference number'**
+  String get enterConfirmationHint;
+
+  /// No description provided for @addTokenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Token'**
+  String get addTokenTitle;
+
+  /// No description provided for @addTokenDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Add funds as a credit entry to the allocation'**
+  String get addTokenDesc;
+
+  /// No description provided for @enterTokenAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter token amount'**
+  String get enterTokenAmount;
+
+  /// No description provided for @editExpenseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Expense'**
+  String get editExpenseTitle;
+
+  /// No description provided for @editExpenseDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Update expense details and receipts'**
+  String get editExpenseDesc;
+
+  /// No description provided for @addNewExpenseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Expense'**
+  String get addNewExpenseTitle;
+
+  /// No description provided for @addNewExpenseDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in the details below to record a new expense'**
+  String get addNewExpenseDesc;
+
+  /// No description provided for @addRefundEntryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Refund Entry'**
+  String get addRefundEntryTitle;
+
+  /// No description provided for @addRefundEntryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Record a new refund entry for this accounting event'**
+  String get addRefundEntryDesc;
+
+  /// No description provided for @enterRefundAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter refund amount'**
+  String get enterRefundAmount;
+
+  /// No description provided for @refundAddedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund entry added successfully'**
+  String get refundAddedSuccessfully;
+
+  /// No description provided for @downloadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Download failed'**
+  String get downloadFailed;
+
+  /// No description provided for @capturedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Captured {date}'**
+  String capturedAt(Object date);
+
+  /// No description provided for @soulsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Souls'**
+  String get soulsTitle;
+
+  /// No description provided for @dayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {day}'**
+  String dayLabel(int day);
 }
 
 class _AppLocalizationsDelegate

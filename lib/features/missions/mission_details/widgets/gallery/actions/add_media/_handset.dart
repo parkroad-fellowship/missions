@@ -209,7 +209,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
               ),
               const SizedBox(height: PRFSpacingTokens.xl),
               Text(
-                'Tap to select $mediaTypeText',
+                context.l10n.tapToSelectMedia(mediaTypeText),
                 style: theme.textTheme.titleLarge?.copyWith(
                   color: theme.colorScheme.primary,
                   fontWeight: FontWeight.w600,
@@ -217,8 +217,9 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
               ),
               const SizedBox(height: PRFSpacingTokens.sm),
               Text(
-                'Choose multiple ${mediaTypeText == 'media' ? 'fi'
-                          'les' : mediaTypeText} to share',
+                context.l10n.chooseMultipleToShare(
+                  mediaTypeText == 'media' ? 'files' : mediaTypeText,
+                ),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
@@ -321,7 +322,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
             ),
             const SizedBox(height: PRFSpacingTokens.sm),
             Text(
-              'Add More',
+              context.l10n.addMore,
               style: theme.textTheme.labelMedium?.copyWith(
                 color: theme.colorScheme.primary,
                 fontWeight: FontWeight.w600,
@@ -433,7 +434,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                   // For now, we'll just show a snackbar
                   PRFSnackbar.info(
                     context,
-                    'Remove functionality not implemented',
+                    context.l10n.removeNotImplemented,
                   );
                 },
                 child: Container(

@@ -548,7 +548,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                     const SizedBox(width: PRFSpacingTokens.md),
                     Expanded(
                       child: Text(
-                        event.venue ?? 'Venue not specified',
+                        event.venue ?? l10n.venueNotSpecified,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w500,
                         ),

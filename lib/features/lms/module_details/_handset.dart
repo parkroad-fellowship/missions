@@ -3,6 +3,7 @@ import 'package:app/features/lms/cubit/lesson_resource_cubit.dart';
 import 'package:app/features/lms/cubit/module_resource_cubit.dart';
 import 'package:app/features/lms/module_details/_shared.dart';
 import 'package:app/features/lms/widgets/module_details_action_card.dart';
+import 'package:app/features/missions/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/course/prf_course_module.dart';
 import 'package:app/models/remote/course/prf_lesson_module.dart';
@@ -11,7 +12,6 @@ import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
@@ -33,6 +33,9 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
     courseModuleUlid: widget.courseModuleUlid,
   );
 
+  // The entrance cascade plays exactly once per screen instance.
+  bool _entrancePlayed = false;
+
   @override
   void initState() {
     super.initState();
@@ -51,6 +54,8 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
+    final animateEntrance = !_entrancePlayed;
+    _entrancePlayed = true;
 
     return BlocBuilder<ModuleResourceCubit, ResourceState<PRFCourseModule>>(
       builder: (context, moduleState) {
@@ -61,10 +66,10 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                   items.isNotEmpty ? items.first : null,
               orElse: () => null,
             );
-            final lessonModules = lessonState.maybeWhen(
-              listLoaded: (values, _, _) => values,
-              orElse: List<PRFLessonModule>.empty,
-            );
+            // Same source as the list: pull-to-refresh keeps cards visible
+            // instead of flashing a full-screen spinner.
+            final lessonModules =
+                context.read<LessonResourceCubit>().currentItems;
             final completedCount = lessonModules
                 .where(
                   (lessonModule) =>
@@ -151,12 +156,17 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                                   child: PRFCircularProgressIndicator(),
                                 ),
                               ),
-                              listLoading: (_) => const SliverFillRemaining(
-                                hasScrollBody: false,
-                                child: Center(
-                                  child: PRFCircularProgressIndicator(),
-                                ),
-                              ),
+                              listLoading: (_) =>
+                                  lessonModules.isEmpty
+                                  ? const SliverFillRemaining(
+                                      hasScrollBody: false,
+                                      child: Center(
+                                        child: PRFCircularProgressIndicator(),
+                                      ),
+                                    )
+                                  : const SliverToBoxAdapter(
+                                      child: SizedBox.shrink(),
+                                    ),
                               error: (message, _) => SliverFillRemaining(
                                 hasScrollBody: false,
                                 child: Align(
@@ -175,7 +185,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                                       alignment: Alignment.topCenter,
                                       child: PRFEmptyView(
                                         label: l10n.noLessons,
-                                        description: l10n.pleaseWait,
+                                        description: l10n.noModulesDesc,
                                       ),
                                     ),
                                   );
@@ -225,28 +235,24 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                                     }
 
                                     final lessonIndex = index - 1;
-                                    return Padding(
-                                          padding: EdgeInsets.only(
-                                            bottom:
-                                                lessonIndex == values.length - 1
-                                                ? 0
-                                                : PRFSpacingTokens.lg,
-                                          ),
-                                          child: ModuleDetailsActionCard(
-                                            lessonModule: values[lessonIndex],
-                                            courseModuleUlid:
-                                                widget.courseModuleUlid,
-                                          ),
-                                        )
-                                        .animate(
-                                          delay: Duration(
-                                            milliseconds: 70 * lessonIndex,
-                                          ),
-                                        )
-                                        .fadeIn(
-                                          duration: PRFMotionTokens.enterShort,
-                                        )
-                                        .slideY(begin: 0.22, end: 0);
+                                    return buildAnimatedTimelineEntry(
+                                      context: context,
+                                      index: lessonIndex,
+                                      animate: animateEntrance,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                          bottom:
+                                              lessonIndex == values.length - 1
+                                              ? 0
+                                              : PRFSpacingTokens.lg,
+                                        ),
+                                        child: ModuleDetailsActionCard(
+                                          lessonModule: values[lessonIndex],
+                                          courseModuleUlid:
+                                              widget.courseModuleUlid,
+                                        ),
+                                      ),
+                                    );
                                   },
                                 );
                               },

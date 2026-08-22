@@ -204,7 +204,7 @@ class _StudentEnquiryRepliesPageHandsetState
                     body: Center(
                       child: PRFEmptyView(
                         label: l10n.noQuestions,
-                        description: l10n.pleaseWait,
+                        description: l10n.noRepliesYet,
                       ),
                     ),
                   ),
@@ -249,7 +249,7 @@ class _StudentEnquiryRepliesPageHandsetState
                     scrollController: _scrollController,
                     loading: replies == null,
                     emptyLabel: l10n.noQuestions,
-                    emptyDescription: l10n.pleaseWait,
+                    emptyDescription: l10n.noRepliesYet,
                     messages: enquiryReplies,
                     messageBuilder: (context, message, index) =>
                         buildMessageBubble(context, l10n, message, index),

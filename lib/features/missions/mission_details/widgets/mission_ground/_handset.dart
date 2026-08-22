@@ -712,7 +712,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                     child: _buildTravelInfo(
                       context,
                       Icons.schedule_rounded,
-                      'Travel Time',
+                      l10n.travelTime,
                       mission.school?.staticDuration ?? 'N/A',
                       theme,
                     ),
@@ -893,7 +893,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
                 ),
                 child: Text(
-                  'Day $day',
+                  l10n.dayLabel(day),
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: theme.colorScheme.secondary,
                     fontWeight: FontWeight.w700,

@@ -35,6 +35,12 @@ class _AddMissionQuestionViewHandsetState
     _questionController.addListener(_onFormChanged);
   }
 
+  @override
+  void dispose() {
+    _questionController.dispose();
+    super.dispose();
+  }
+
   void _onFormChanged() {
     if (_showValidation) {
       _validateForm();
@@ -50,7 +56,7 @@ class _AddMissionQuestionViewHandsetState
     _clearErrors();
 
     if (_questionController.text.trim().isEmpty) {
-      _questionError = 'Question is required';
+      _questionError = context.l10n.fieldRequired(context.l10n.question);
     }
 
     setState(() => _showValidation = true);
@@ -237,7 +243,7 @@ class _AddMissionQuestionViewHandsetState
       Gaimon.warning();
       PRFSnackbar.error(
         context,
-        'Please fix the highlighted fields and try again.',
+        context.l10n.fixHighlightedFields,
       );
       return;
     }

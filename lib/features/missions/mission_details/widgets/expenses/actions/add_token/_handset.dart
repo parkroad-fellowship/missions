@@ -60,10 +60,10 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
     _clearErrors();
 
     if (_amountController.text.trim().isEmpty) {
-      _amountError = 'Amount is required';
+      _amountError = context.l10n.fieldRequired(context.l10n.amount);
     }
     if (_confirmationController.text.trim().isEmpty) {
-      _confirmationError = 'Confirmation message is required';
+      _confirmationError = context.l10n.confirmationMessageRequired;
     }
 
     setState(() => _showValidation = true);
@@ -125,7 +125,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.sm),
                         Text(
-                          'Add Token',
+                          l10n.addTokenTitle,
                           style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.onTertiary,
@@ -134,7 +134,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.xs),
                         Text(
-                          'Add funds as a credit entry to the allocation',
+                          l10n.addTokenDesc,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: Theme.of(
@@ -182,7 +182,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                           child: _buildNumberField(
                             controller: _amountController,
                             label: context.l10n.tokenAmount_2,
-                            hint: 'Enter token amount',
+                            hint: l10n.enterTokenAmount,
                             prefix: 'KES ',
                           ),
                         )

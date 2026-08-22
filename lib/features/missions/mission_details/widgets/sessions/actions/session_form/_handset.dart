@@ -85,6 +85,14 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
     }
   }
 
+  @override
+  void dispose() {
+    _notesController.dispose();
+    _startDateController.dispose();
+    _endDateController.dispose();
+    super.dispose();
+  }
+
   void _onFormChanged() {
     if (_showValidation) {
       _validateForm();
@@ -103,16 +111,16 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
     _clearErrors();
 
     if (selectedFacilitatorUlid == null) {
-      _facilitatorError = 'Facilitator is required';
+      _facilitatorError = context.l10n.fieldRequired(context.l10n.facilitator);
     }
     if (_notesController.text.trim().isEmpty) {
-      _notesError = 'Notes are required';
+      _notesError = context.l10n.sessionNotesRequired;
     }
     if (startsAt == null) {
-      _startTimeError = 'Start time is required';
+      _startTimeError = context.l10n.fieldRequired(context.l10n.startTime);
     }
     if (endsAt == null) {
-      _endTimeError = 'End time is required';
+      _endTimeError = context.l10n.fieldRequired(context.l10n.endTime);
     }
 
     setState(() => _showValidation = true);
@@ -135,7 +143,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _isEditing ? 'Update Session' : l10n.addSession,
+              _isEditing ? l10n.updateSessionTitle : l10n.addSession,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -174,7 +182,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                               }),
                               selection: selectedFacilitatorUlid,
                               hintText: l10n.facilitator,
-                              emptyText: 'No subscribers found',
+                              emptyText: l10n.noSubscribersFound,
                             ),
                       );
                     },
@@ -211,7 +219,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                               }),
                               selection: selectedSpeakerUlid,
                               hintText: l10n.speaker,
-                              emptyText: 'No subscribers found',
+                              emptyText: l10n.noSubscribersFound,
                             ),
                       );
                     },
@@ -249,7 +257,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                               }),
                               selection: selectedClassGroupUlid,
                               hintText: l10n.classGroup,
-                              emptyText: 'No class groups found',
+                              emptyText: l10n.noClassGroupsFound,
                             ),
                       );
                     },
@@ -343,7 +351,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
               builder: (context, state) {
                 return PRFButton(
                   onPressed: _submitForm,
-                  title: _isEditing ? 'Update' : l10n.record,
+                  title: _isEditing ? l10n.update : l10n.record,
                   disabled: !_isFormValid,
                   isLoading: _isLoading,
                 );
@@ -360,7 +368,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
       Gaimon.warning();
       PRFSnackbar.error(
         context,
-        'Please fix the highlighted fields and try again.',
+        context.l10n.fixHighlightedFields,
       );
       return;
     }

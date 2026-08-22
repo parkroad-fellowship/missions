@@ -160,10 +160,10 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                         labelPadding: const EdgeInsets.symmetric(
                           horizontal: PRFSpacingTokens.sm,
                         ),
-                        tabs: const [
-                          Tab(text: 'Overview'),
-                          Tab(text: 'Feedback Data'),
-                          Tab(text: 'Finance'),
+                        tabs: [
+                          Tab(text: l10n.overviewTab),
+                          Tab(text: l10n.feedbackDataTab),
+                          Tab(text: l10n.financeTab),
                         ],
                       ),
                     ),

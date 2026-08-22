@@ -1453,5 +1453,229 @@
     "noLessonsDesc": "Lessons will appear here once the module content is published.",
     "@noLessonsDesc": {},
     "noLessonResources": "No learning resources are attached to this lesson yet.",
-    "@noLessonResources": {}
+    "@noLessonResources": {},
+    "noMissionsDesc": "Upcoming missions will appear here once the missions desk announces them.",
+    "@noMissionsDesc": {},
+    "noRepliesYet": "No replies yet. Responses from the desk will appear here.",
+    "@noRepliesYet": {},
+    "noSubscribersDesc": "Subscriptions will appear here as members join this mission.",
+    "@noSubscribersDesc": {},
+    "question": "Question",
+    "@question": {},
+    "fieldRequired": "{field} is required",
+    "@fieldRequired": {
+        "placeholders": {
+            "field": {}
+        }
+    },
+    "fixHighlightedFields": "Please fix the highlighted fields and try again.",
+    "@fixHighlightedFields": {},
+    "ticketsRequired": "Number of tickets is required",
+    "@ticketsRequired": {},
+    "noPaymentTypesFound": "No payment types found",
+    "@noPaymentTypesFound": {},
+    "noSubscribersFound": "No subscribers found",
+    "@noSubscribersFound": {},
+    "noClassGroupsFound": "No class groups found",
+    "@noClassGroupsFound": {},
+    "updateSessionTitle": "Update Session",
+    "@updateSessionTitle": {},
+    "updateQuestionTitle": "Update Question",
+    "@updateQuestionTitle": {},
+    "updateNoteTitle": "Update Note",
+    "@updateNoteTitle": {},
+    "updateSoulTitle": "Update Soul",
+    "@updateSoulTitle": {},
+    "failedUploadReceipt": "Failed to upload receipt: {message}",
+    "@failedUploadReceipt": {
+        "placeholders": {
+            "message": {}
+        }
+    },
+    "failedSelectImage": "Failed to select image: {error}",
+    "@failedSelectImage": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "failedSelectPdf": "Failed to select PDF: {error}",
+    "@failedSelectPdf": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "startAddingExpense": "Start by adding your first expense",
+    "@startAddingExpense": {},
+    "tapToHideDetails": "Tap to hide details",
+    "@tapToHideDetails": {},
+    "tapToViewTransactions": "Tap to view {count} transactions",
+    "@tapToViewTransactions": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deleteReceiptConfirm": "Are you sure you want to delete this receipt? This action cannot be undone.",
+    "@deleteReceiptConfirm": {},
+    "deleteExpenseConfirm": "Are you sure you want to delete this expense?",
+    "@deleteExpenseConfirm": {},
+    "attachReceiptOrDocumentation": "Attach receipt or documentation",
+    "@attachReceiptOrDocumentation": {},
+    "receiptMissing": "Receipt Missing",
+    "@receiptMissing": {},
+    "transactionBreakdown": "Transaction Breakdown",
+    "@transactionBreakdown": {},
+    "refundEntries": "Refund Entries",
+    "@refundEntries": {},
+    "deficitAmount": "Deficit Amount",
+    "@deficitAmount": {},
+    "confirmationLabel": "Confirmation",
+    "@confirmationLabel": {},
+    "imageLabel": "Image",
+    "@imageLabel": {},
+    "attachmentsCount": "{count, plural, one{{count} Attachment} other{{count} Attachments}}",
+    "@attachmentsCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "continueConfirm": "Are you sure you want to continue?",
+    "@continueConfirm": {},
+    "editDebriefTooltip": "Edit debrief note",
+    "@editDebriefTooltip": {},
+    "deleteDebriefTooltip": "Delete debrief note",
+    "@deleteDebriefTooltip": {},
+    "removeNotImplemented": "Remove functionality not implemented",
+    "@removeNotImplemented": {},
+    "debriefNoteRequired": "Note is required",
+    "@debriefNoteRequired": {},
+    "sessionNotesRequired": "Preparation notes are required",
+    "@sessionNotesRequired": {},
+    "prayerRequestRequired": "Prayer request is required",
+    "@prayerRequestRequired": {},
+    "viewSubscriberTooltip": "View subscriber",
+    "@viewSubscriberTooltip": {},
+    "callSubscriberTooltip": "Call subscriber",
+    "@callSubscriberTooltip": {},
+    "selectedPhotos": "Selected Photos",
+    "@selectedPhotos": {},
+    "debriefNotesTitle": "Debrief Notes",
+    "@debriefNotesTitle": {},
+    "untitledNote": "Untitled note",
+    "@untitledNote": {},
+    "travelTime": "Travel Time",
+    "@travelTime": {},
+    "deleteMediaConfirm": "Are you sure you want to delete this media?",
+    "@deleteMediaConfirm": {},
+    "errorLoadingMedia": "Error loading media",
+    "@errorLoadingMedia": {},
+    "tapToSelectMedia": "Tap to select {mediaType}",
+    "@tapToSelectMedia": {
+        "placeholders": {
+            "mediaType": {}
+        }
+    },
+    "chooseMultipleToShare": "Choose multiple {mediaType} to share",
+    "@chooseMultipleToShare": {
+        "placeholders": {
+            "mediaType": {}
+        }
+    },
+    "groundNameRequired": "Mission ground name is required",
+    "@groundNameRequired": {},
+    "contactPersonRequired": "Contact person is required",
+    "@contactPersonRequired": {},
+    "contactNumberRequired": "Contact number is required",
+    "@contactNumberRequired": {},
+    "statusRequired": "Status is required",
+    "@statusRequired": {},
+    "noStatusesFound": "No statuses found",
+    "@noStatusesFound": {},
+    "editSoulTooltip": "Edit soul",
+    "@editSoulTooltip": {},
+    "deleteSoulTooltip": "Delete soul",
+    "@deleteSoulTooltip": {},
+    "recordingSaved": "Recording saved ({duration})",
+    "@recordingSaved": {
+        "placeholders": {
+            "duration": {}
+        }
+    },
+    "queuedRecordingsForSession": "Queued recordings for this session",
+    "@queuedRecordingsForSession": {},
+    "syncingRecording": "Syncing recording...",
+    "@syncingRecording": {},
+    "recorderIdle": "Recorder idle",
+    "@recorderIdle": {},
+    "recorderReady": "Recorder ready",
+    "@recorderReady": {},
+    "recordingInProgress": "Recording in progress",
+    "@recordingInProgress": {},
+    "savedLocally": "Saved locally",
+    "@savedLocally": {},
+    "recorderNeedsAttention": "Recorder needs attention",
+    "@recorderNeedsAttention": {},
+    "noNotesAvailable": "No notes available",
+    "@noNotesAvailable": {},
+    "missionQuestionsTitle": "Mission Questions",
+    "@missionQuestionsTitle": {},
+    "untitledQuestion": "Untitled question",
+    "@untitledQuestion": {},
+    "editQuestionTooltip": "Edit question",
+    "@editQuestionTooltip": {},
+    "deleteQuestionTooltip": "Delete question",
+    "@deleteQuestionTooltip": {},
+    "queuedRecordings": "Queued recordings",
+    "@queuedRecordings": {},
+    "offlineRecordingNotice": "You are offline. The app will retry when you are back online. You can continue using the app.",
+    "@offlineRecordingNotice": {},
+    "backgroundRecording": "Recording continues in the background.",
+    "@backgroundRecording": {},
+    "confirmationMessageRequired": "Confirmation message is required",
+    "@confirmationMessageRequired": {},
+    "enterConfirmationHint": "Enter confirmation message or reference number",
+    "@enterConfirmationHint": {},
+    "addTokenTitle": "Add Token",
+    "@addTokenTitle": {},
+    "addTokenDesc": "Add funds as a credit entry to the allocation",
+    "@addTokenDesc": {},
+    "enterTokenAmount": "Enter token amount",
+    "@enterTokenAmount": {},
+    "editExpenseTitle": "Edit Expense",
+    "@editExpenseTitle": {},
+    "editExpenseDesc": "Update expense details and receipts",
+    "@editExpenseDesc": {},
+    "addNewExpenseTitle": "Add New Expense",
+    "@addNewExpenseTitle": {},
+    "addNewExpenseDesc": "Fill in the details below to record a new expense",
+    "@addNewExpenseDesc": {},
+    "addRefundEntryTitle": "Add Refund Entry",
+    "@addRefundEntryTitle": {},
+    "addRefundEntryDesc": "Record a new refund entry for this accounting event",
+    "@addRefundEntryDesc": {},
+    "enterRefundAmount": "Enter refund amount",
+    "@enterRefundAmount": {},
+    "refundAddedSuccessfully": "Refund entry added successfully",
+    "@refundAddedSuccessfully": {},
+    "downloadFailed": "Download failed",
+    "@downloadFailed": {},
+    "capturedAt": "Captured {date}",
+    "@capturedAt": {
+        "placeholders": {
+            "date": {}
+        }
+    },
+    "soulsTitle": "Souls",
+    "@soulsTitle": {},
+    "dayLabel": "Day {day}",
+    "@dayLabel": {
+        "placeholders": {
+            "day": {
+                "type": "int"
+            }
+        }
+    }
 }

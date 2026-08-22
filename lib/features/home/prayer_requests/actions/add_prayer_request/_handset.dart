@@ -62,10 +62,10 @@ class _AddPrayerRequestViewHandsetState
     _clearErrors();
 
     if (_titleController.text.trim().isEmpty) {
-      _titleError = 'Title is required';
+      _titleError = context.l10n.fieldRequired(context.l10n.title);
     }
     if (_requestController.text.trim().isEmpty) {
-      _requestError = 'Prayer request is required';
+      _requestError = context.l10n.prayerRequestRequired;
     }
 
     setState(() => _showValidation = true);
@@ -269,7 +269,7 @@ class _AddPrayerRequestViewHandsetState
       Gaimon.warning();
       PRFSnackbar.error(
         context,
-        'Please fix the highlighted fields and try again.',
+        context.l10n.fixHighlightedFields,
       );
       return;
     }

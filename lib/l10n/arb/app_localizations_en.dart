@@ -1965,4 +1965,304 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get noLessonResources =>
       'No learning resources are attached to this lesson yet.';
+
+  @override
+  String get noMissionsDesc =>
+      'Upcoming missions will appear here once the missions desk announces them.';
+
+  @override
+  String get noRepliesYet =>
+      'No replies yet. Responses from the desk will appear here.';
+
+  @override
+  String get noSubscribersDesc =>
+      'Subscriptions will appear here as members join this mission.';
+
+  @override
+  String get question => 'Question';
+
+  @override
+  String fieldRequired(Object field) {
+    return '$field is required';
+  }
+
+  @override
+  String get fixHighlightedFields =>
+      'Please fix the highlighted fields and try again.';
+
+  @override
+  String get ticketsRequired => 'Number of tickets is required';
+
+  @override
+  String get noPaymentTypesFound => 'No payment types found';
+
+  @override
+  String get noSubscribersFound => 'No subscribers found';
+
+  @override
+  String get noClassGroupsFound => 'No class groups found';
+
+  @override
+  String get updateSessionTitle => 'Update Session';
+
+  @override
+  String get updateQuestionTitle => 'Update Question';
+
+  @override
+  String get updateNoteTitle => 'Update Note';
+
+  @override
+  String get updateSoulTitle => 'Update Soul';
+
+  @override
+  String failedUploadReceipt(Object message) {
+    return 'Failed to upload receipt: $message';
+  }
+
+  @override
+  String failedSelectImage(Object error) {
+    return 'Failed to select image: $error';
+  }
+
+  @override
+  String failedSelectPdf(Object error) {
+    return 'Failed to select PDF: $error';
+  }
+
+  @override
+  String get startAddingExpense => 'Start by adding your first expense';
+
+  @override
+  String get tapToHideDetails => 'Tap to hide details';
+
+  @override
+  String tapToViewTransactions(int count) {
+    return 'Tap to view $count transactions';
+  }
+
+  @override
+  String get deleteReceiptConfirm =>
+      'Are you sure you want to delete this receipt? This action cannot be undone.';
+
+  @override
+  String get deleteExpenseConfirm =>
+      'Are you sure you want to delete this expense?';
+
+  @override
+  String get attachReceiptOrDocumentation => 'Attach receipt or documentation';
+
+  @override
+  String get receiptMissing => 'Receipt Missing';
+
+  @override
+  String get transactionBreakdown => 'Transaction Breakdown';
+
+  @override
+  String get refundEntries => 'Refund Entries';
+
+  @override
+  String get deficitAmount => 'Deficit Amount';
+
+  @override
+  String get confirmationLabel => 'Confirmation';
+
+  @override
+  String get imageLabel => 'Image';
+
+  @override
+  String attachmentsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Attachments',
+      one: '$count Attachment',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get continueConfirm => 'Are you sure you want to continue?';
+
+  @override
+  String get editDebriefTooltip => 'Edit debrief note';
+
+  @override
+  String get deleteDebriefTooltip => 'Delete debrief note';
+
+  @override
+  String get removeNotImplemented => 'Remove functionality not implemented';
+
+  @override
+  String get debriefNoteRequired => 'Note is required';
+
+  @override
+  String get sessionNotesRequired => 'Preparation notes are required';
+
+  @override
+  String get prayerRequestRequired => 'Prayer request is required';
+
+  @override
+  String get viewSubscriberTooltip => 'View subscriber';
+
+  @override
+  String get callSubscriberTooltip => 'Call subscriber';
+
+  @override
+  String get selectedPhotos => 'Selected Photos';
+
+  @override
+  String get debriefNotesTitle => 'Debrief Notes';
+
+  @override
+  String get untitledNote => 'Untitled note';
+
+  @override
+  String get travelTime => 'Travel Time';
+
+  @override
+  String get deleteMediaConfirm =>
+      'Are you sure you want to delete this media?';
+
+  @override
+  String get errorLoadingMedia => 'Error loading media';
+
+  @override
+  String tapToSelectMedia(Object mediaType) {
+    return 'Tap to select $mediaType';
+  }
+
+  @override
+  String chooseMultipleToShare(Object mediaType) {
+    return 'Choose multiple $mediaType to share';
+  }
+
+  @override
+  String get groundNameRequired => 'Mission ground name is required';
+
+  @override
+  String get contactPersonRequired => 'Contact person is required';
+
+  @override
+  String get contactNumberRequired => 'Contact number is required';
+
+  @override
+  String get statusRequired => 'Status is required';
+
+  @override
+  String get noStatusesFound => 'No statuses found';
+
+  @override
+  String get editSoulTooltip => 'Edit soul';
+
+  @override
+  String get deleteSoulTooltip => 'Delete soul';
+
+  @override
+  String recordingSaved(Object duration) {
+    return 'Recording saved ($duration)';
+  }
+
+  @override
+  String get queuedRecordingsForSession => 'Queued recordings for this session';
+
+  @override
+  String get syncingRecording => 'Syncing recording...';
+
+  @override
+  String get recorderIdle => 'Recorder idle';
+
+  @override
+  String get recorderReady => 'Recorder ready';
+
+  @override
+  String get recordingInProgress => 'Recording in progress';
+
+  @override
+  String get savedLocally => 'Saved locally';
+
+  @override
+  String get recorderNeedsAttention => 'Recorder needs attention';
+
+  @override
+  String get noNotesAvailable => 'No notes available';
+
+  @override
+  String get missionQuestionsTitle => 'Mission Questions';
+
+  @override
+  String get untitledQuestion => 'Untitled question';
+
+  @override
+  String get editQuestionTooltip => 'Edit question';
+
+  @override
+  String get deleteQuestionTooltip => 'Delete question';
+
+  @override
+  String get queuedRecordings => 'Queued recordings';
+
+  @override
+  String get offlineRecordingNotice =>
+      'You are offline. The app will retry when you are back online. You can continue using the app.';
+
+  @override
+  String get backgroundRecording => 'Recording continues in the background.';
+
+  @override
+  String get confirmationMessageRequired => 'Confirmation message is required';
+
+  @override
+  String get enterConfirmationHint =>
+      'Enter confirmation message or reference number';
+
+  @override
+  String get addTokenTitle => 'Add Token';
+
+  @override
+  String get addTokenDesc => 'Add funds as a credit entry to the allocation';
+
+  @override
+  String get enterTokenAmount => 'Enter token amount';
+
+  @override
+  String get editExpenseTitle => 'Edit Expense';
+
+  @override
+  String get editExpenseDesc => 'Update expense details and receipts';
+
+  @override
+  String get addNewExpenseTitle => 'Add New Expense';
+
+  @override
+  String get addNewExpenseDesc =>
+      'Fill in the details below to record a new expense';
+
+  @override
+  String get addRefundEntryTitle => 'Add Refund Entry';
+
+  @override
+  String get addRefundEntryDesc =>
+      'Record a new refund entry for this accounting event';
+
+  @override
+  String get enterRefundAmount => 'Enter refund amount';
+
+  @override
+  String get refundAddedSuccessfully => 'Refund entry added successfully';
+
+  @override
+  String get downloadFailed => 'Download failed';
+
+  @override
+  String capturedAt(Object date) {
+    return 'Captured $date';
+  }
+
+  @override
+  String get soulsTitle => 'Souls';
+
+  @override
+  String dayLabel(int day) {
+    return 'Day $day';
+  }
 }

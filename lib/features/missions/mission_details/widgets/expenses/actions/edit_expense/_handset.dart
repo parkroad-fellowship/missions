@@ -137,7 +137,7 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.sm),
                         Text(
-                          'Edit Expense',
+                          l10n.editExpenseTitle,
                           style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.onPrimary,
@@ -146,7 +146,7 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.xs),
                         Text(
-                          'Update expense details and receipts',
+                          l10n.editExpenseDesc,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: Theme.of(

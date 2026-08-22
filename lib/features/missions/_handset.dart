@@ -207,7 +207,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               description: state.maybeWhen(
                 error: (message, _) => message,
                 itemError: (message, _, _) => message,
-                orElse: () => l10n.pleaseWait,
+                orElse: () => l10n.noMissionsDesc,
               ),
             ),
           );
@@ -287,7 +287,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               description: state.maybeWhen(
                 error: (message, _) => message,
                 itemError: (message, _, _) => message,
-                orElse: () => l10n.pleaseWait,
+                orElse: () => l10n.noMissionsDesc,
               ),
             ),
           );
@@ -352,7 +352,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               description: state.maybeWhen(
                 error: (message, _) => message,
                 itemError: (message, _, _) => message,
-                orElse: () => l10n.pleaseWait,
+                orElse: () => l10n.noMissionsDesc,
               ),
             ),
           );

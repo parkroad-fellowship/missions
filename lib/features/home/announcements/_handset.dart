@@ -80,7 +80,11 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                           return state.maybeWhen(
                             listLoading: (_) =>
                                 const PRFCircularProgressIndicator(),
-                            error: (message, _) => Center(child: Text(message)),
+                            error: (message, _) => PRFEmptyView(
+                              label: l10n.noAnnouncements,
+                              description: message,
+                              icon: Icons.campaign_outlined,
+                            ),
                             listLoaded: (announcements, _, _) {
                               if (announcements.isEmpty) {
                                 return RefreshIndicator(
@@ -89,7 +93,9 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
                                     children: [
                                       PRFEmptyView(
                                         label: l10n.noAnnouncements,
-                                        description: l10n.pleaseWaitForOS,
+                                        description:
+                                            l10n.noAnnouncementsDesc,
+                                        icon: Icons.campaign_outlined,
                                       ),
                                     ],
                                   ),

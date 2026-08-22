@@ -72,13 +72,13 @@ class _AddMissionGroundSuggestionViewHandsetState
     _clearErrors();
 
     if (_nameController.text.trim().isEmpty) {
-      _nameError = 'Mission ground name is required';
+      _nameError = context.l10n.groundNameRequired;
     }
     if (_contactPersonController.text.trim().isEmpty) {
-      _contactPersonError = 'Contact person is required';
+      _contactPersonError = context.l10n.contactPersonRequired;
     }
     if (!_phoneController.value.isValid()) {
-      _contactNumberError = 'Contact number is required';
+      _contactNumberError = context.l10n.contactNumberRequired;
     }
 
     setState(() => _showValidation = true);
@@ -299,7 +299,7 @@ class _AddMissionGroundSuggestionViewHandsetState
       Gaimon.warning();
       PRFSnackbar.error(
         context,
-        'Please fix the highlighted fields and try again.',
+        context.l10n.fixHighlightedFields,
       );
       return;
     }

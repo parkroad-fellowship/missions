@@ -111,8 +111,8 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                             ),
                             child: Semantics(
                               label: _form.query.isEmpty
-                                  ? 'No questions yet'
-                                  : 'No questions found',
+                                  ? l10n.noQuestionsYet
+                                  : l10n.noQuestionsFound,
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -127,8 +127,8 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                   ),
                                   Text(
                                     _form.query.isEmpty
-                                        ? 'No questions yet'
-                                        : 'No questions found',
+                                        ? l10n.noQuestionsYet
+                                        : l10n.noQuestionsFound,
                                     style: theme.textTheme.headlineSmall,
                                     textAlign: TextAlign.center,
                                   ),
@@ -137,8 +137,8 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                   ),
                                   Text(
                                     _form.query.isEmpty
-                                        ? 'Questions from missions will appear here'
-                                        : 'Try a different search term',
+                                        ? l10n.questionsFromMissionsBody
+                                        : l10n.tryDifferentSearchTerm,
                                     style: theme.textTheme.bodyMedium?.copyWith(
                                       color: theme.colorScheme.onSurface
                                           .withValues(alpha: 0.6),
@@ -200,7 +200,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                     ),
                                     Semantics(
                                       label:
-                                          'Mission theme: ${item.mission!.theme!}',
+                                          l10n.missionThemeLabel(item.mission!.theme!),
                                       child: Text(
                                         item.mission!.theme!,
                                         style: theme.textTheme.bodySmall
@@ -235,7 +235,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                             ),
                                           ),
                                           child: Text(
-                                            'No answers yet',
+                                            l10n.noAnswersYet,
                                             style: theme.textTheme.labelSmall
                                                 ?.copyWith(
                                                   color: context
@@ -253,7 +253,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                         child: Semantics(
                                           button: true,
                                           label:
-                                              'Record answer to: ${item.question}',
+                                              l10n.recordAnswerSemantic(item.question),
                                           child: PRFButton(
                                             onPressed: () => openRecorder(
                                               context,
@@ -279,7 +279,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                             onPressed: () =>
                                                 openAnswers(context, item),
                                             title:
-                                                'Answers (${item.answerCount})',
+                                                l10n.answersCount(item.answerCount),
                                             disabled: !item.hasAnswers,
                                           ),
                                         ),

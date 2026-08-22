@@ -48,7 +48,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
     final shouldDelete = await PRFConfirmationDialog.show(
       context,
       title: '${context.l10n.delete} ${context.l10n.note}',
-      message: 'Are you sure you want to continue?',
+      message: context.l10n.continueConfirm,
       confirmLabel: context.l10n.delete,
       isDestructive: true,
     );
@@ -107,20 +107,20 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
           addButtonIcon: Icons.rate_review_outlined,
           emptyLabel: l10n.noNotes,
           emptyDescription: l10n.noNotesDesc,
-          sectionTitle: 'Debrief Notes',
+          sectionTitle: l10n.debriefNotesTitle,
           items: debriefNotes.asMap().entries.map((entry) {
             final index = entry.key;
             final debriefNote = entry.value;
             return MissionResourceCard(
               canEdit: mission.canEdit,
               title: debriefNote.note.isEmpty
-                  ? 'Untitled note'
+                  ? l10n.untitledNote
                   : debriefNote.note,
               subtitle:
-                  'Captured ${DateFormatter.formatDateTime(debriefNote.createdAt, timezone)}',
-              editTooltip: 'Edit debrief note',
+                  l10n.capturedAt(DateFormatter.formatDateTime(debriefNote.createdAt, timezone)),
+              editTooltip: l10n.editDebriefTooltip,
               onEdit: () => _showEditDebriefNoteSheet(debriefNote),
-              deleteTooltip: 'Delete debrief note',
+              deleteTooltip: l10n.deleteDebriefTooltip,
               onDelete: () => _deleteDebriefNote(debriefNote),
             ).animate(delay: (index * 100).ms).fadeIn().slideX(begin: -0.3, end: 0);
           }).toList(),

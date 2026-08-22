@@ -1,12 +1,12 @@
 import 'package:app/features/home/faqs/_shared.dart';
 import 'package:app/features/home/faqs/cubit/faq_category_resource_cubit.dart';
 import 'package:app/features/home/faqs/cubit/faq_resource_cubit.dart';
+import 'package:app/features/missions/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/content/prf_faq.dart';
 import 'package:app/models/remote/content/prf_faq_category.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
@@ -19,6 +19,9 @@ class MemberFAQPageHandset extends StatefulWidget {
 
 class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
   final _form = FaqsFormState();
+
+  // The entrance cascade plays exactly once per screen instance.
+  bool _entrancePlayed = false;
 
   @override
   void initState() {
@@ -38,6 +41,8 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
+    final animateEntrance = !_entrancePlayed;
+    _entrancePlayed = true;
 
     return BlocBuilder<FaqResourceCubit, ResourceState<PRFFaq>>(
       builder: (context, faqState) {
@@ -46,10 +51,9 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
           ResourceState<PRFFaqCategory>
         >(
           builder: (context, categoryState) {
-            final faqs = faqState.maybeWhen(
-              listLoaded: (values, _, _) => values,
-              orElse: List<PRFFaq>.empty,
-            );
+            // Same source as the list: pull-to-refresh keeps cards visible
+            // instead of flashing a full-screen spinner.
+            final faqs = context.read<FaqResourceCubit>().currentItems;
             final categories = categoryState.maybeWhen(
               listLoaded: (values, _, _) => values,
               orElse: List<PRFFaqCategory>.empty,
@@ -123,12 +127,17 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                                   child: PRFCircularProgressIndicator(),
                                 ),
                               ),
-                              listLoading: (_) => const SliverFillRemaining(
-                                hasScrollBody: false,
-                                child: Center(
-                                  child: PRFCircularProgressIndicator(),
-                                ),
-                              ),
+                              listLoading: (_) =>
+                                  faqs.isEmpty
+                                  ? const SliverFillRemaining(
+                                      hasScrollBody: false,
+                                      child: Center(
+                                        child: PRFCircularProgressIndicator(),
+                                      ),
+                                    )
+                                  : const SliverToBoxAdapter(
+                                      child: SizedBox.shrink(),
+                                    ),
                               error: (message, _) => SliverFillRemaining(
                                 hasScrollBody: false,
                                 child: Align(
@@ -147,7 +156,7 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                                       alignment: Alignment.topCenter,
                                       child: PRFEmptyView(
                                         label: l10n.noFaqs,
-                                        description: l10n.pleaseWait,
+                                        description: l10n.noFaqsDesc,
                                       ),
                                     ),
                                   );
@@ -197,24 +206,19 @@ class _MemberFAQPageHandsetState extends State<MemberFAQPageHandset> {
                                     }
 
                                     final faqIndex = index - 1;
-                                    return Padding(
-                                          padding: EdgeInsets.only(
-                                            bottom:
-                                                faqIndex == values.length - 1
-                                                ? 0
-                                                : PRFSpacingTokens.md,
+                                    return buildAnimatedTimelineEntry(
+                                          context: context,
+                                          index: faqIndex,
+                                          animate: animateEntrance,
+                                          child: Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: faqIndex == values.length - 1
+                                          ? 0
+                                          : PRFSpacingTokens.md,
+                                    ),
+                                    child: FaqCard(faq: values[faqIndex]),
                                           ),
-                                          child: FaqCard(faq: values[faqIndex]),
-                                        )
-                                        .animate(
-                                          delay: Duration(
-                                            milliseconds: 70 * faqIndex,
-                                          ),
-                                        )
-                                        .fadeIn(
-                                          duration: PRFMotionTokens.enterShort,
-                                        )
-                                        .slideY(begin: 0.2, end: 0);
+                                        );
                                   },
                                 );
                               },

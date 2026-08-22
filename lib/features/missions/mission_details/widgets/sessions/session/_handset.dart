@@ -90,7 +90,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
         '${duration.inSeconds.remainder(60)}s';
     PRFSnackbar.success(
       context,
-      'Recording saved ($durationText)',
+      context.l10n.recordingSaved(durationText),
     );
   }
 
@@ -505,7 +505,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                       ),
                                       Expanded(
                                         child: Text(
-                                          'Queued recordings for this session',
+                                          l10n.queuedRecordingsForSession,
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleMedium
@@ -710,7 +710,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
     const actionButtonHeight = PRFSpacingTokens.xxxl;
     final recordedAt = hasMedia
         ? DateFormatter.formatDateTime(media.createdAt, timezone)
-        : 'Syncing recording...';
+        : l10n.syncingRecording;
     final fileSize = hasMedia ? media.humanReadableSize : '--';
 
     return Container(
@@ -941,13 +941,13 @@ class _RecordingStatusCard extends StatelessWidget {
     return BlocBuilder<AudioRecordingCubit, AudioRecordingState>(
       builder: (context, state) {
         final (label, duration, isRecording, isPaused) = state.map(
-          initial: (_) => ('Recorder idle', Duration.zero, false, false),
-          ready: (_) => ('Recorder ready', Duration.zero, false, false),
-          recording: (s) => ('Recording in progress', s.duration, true, false),
-          paused: (s) => ('Recording paused', s.duration, false, true),
-          completed: (s) => ('Saved locally', s.duration, false, false),
+          initial: (_) => (context.l10n.recorderIdle, Duration.zero, false, false),
+          ready: (_) => (context.l10n.recorderReady, Duration.zero, false, false),
+          recording: (s) => (context.l10n.recordingInProgress, s.duration, true, false),
+          paused: (s) => (context.l10n.recordingPaused, s.duration, false, true),
+          completed: (s) => (context.l10n.savedLocally, s.duration, false, false),
           error: (_) =>
-              ('Recorder needs attention', Duration.zero, false, false),
+              (context.l10n.recorderNeedsAttention, Duration.zero, false, false),
         );
 
         if (!isRecording && !isPaused) {
@@ -1109,7 +1109,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
         '- $endTime';
     final facilitator = missionSession.facilitator?.fullName ?? 'N/A';
     final notes = missionSession.notes.trim().isEmpty
-        ? 'No notes available'
+        ? l10n.noNotesAvailable
         : missionSession.notes.trim();
 
     return SliverToBoxAdapter(
@@ -1242,7 +1242,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color: notes == 'No notes available'
+                                color: notes == l10n.noNotesAvailable
                                     ? Theme.of(context).colorScheme.onSurface
                                           .withValues(alpha: 0.6)
                                     : Theme.of(context).colorScheme.onSurface,
