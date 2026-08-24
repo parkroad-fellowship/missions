@@ -59,10 +59,10 @@ dependencies:
   mime: ^2.0.0
   path_provider: ^2.1.6
   permission_handler: ^13.0.1
-  phone_form_field: ^10.0.18
+  phone_form_field: ^11.0.1
   posthog_flutter: ^5.36.4
   pretty_dio_logger: ^1.4.0
-  prf_design: ^0.8.5
+  prf_design: ^1.0.7
   # path: ../../prf_design_system
   record: ^7.1.1
   share_plus: ^13.3.0
