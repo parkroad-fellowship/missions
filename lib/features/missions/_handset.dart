@@ -268,11 +268,14 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
                 .values
                 .map((missionGroup) => missionGroup.first)
                 .toList()
-              ..sort((a, b) => a.startDate.compareTo(b.startDate));
+              ..sort((a, b) => a.startDate.compareTo(b.startDate))
+              ..reversed
+                  .toList(); // This line creates a new reversed list but doesn't assign it back to missions
+        final copy = missions.reversed.toList();
 
         final showInitialLoader =
             state is ResourceListLoading<PRFMissionSubscription> &&
-            missions.isEmpty;
+            copy.isEmpty;
 
         if (showInitialLoader) {
           return const Center(
@@ -280,7 +283,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
           );
         }
 
-        if (missions.isEmpty) {
+        if (copy.isEmpty) {
           return RefreshIndicator(
             onRefresh: () async => _form.loadTabData(1, context),
             child: PRFEmptyView(
@@ -302,10 +305,10 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
               horizontal: PRFSpacingTokens.lg,
               vertical: PRFSpacingTokens.xl,
             ),
-            itemCount: missions.length,
+            itemCount: copy.length,
             itemBuilder: (context, index) {
-              final mission = missions[index];
-              final isLast = index == missions.length - 1;
+              final mission = copy[index];
+              final isLast = index == copy.length - 1;
 
               return buildAnimatedTimelineEntry(
                 context: context,
