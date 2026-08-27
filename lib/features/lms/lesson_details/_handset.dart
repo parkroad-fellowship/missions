@@ -58,8 +58,8 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
         // instead of flashing a full-screen spinner.
         final lessonItems = context.read<LessonResourceCubit>().currentItems;
         final lessonModule = lessonItems.firstWhereOrNull(
-        (PRFLessonModule l) => l.ulid == widget.lessonModuleUlid,
-      );
+          (l) => l.ulid == widget.lessonModuleUlid,
+        );
         final lesson = lessonModule?.lesson;
         final mediaCount = [
           lesson?.videoUrl,
@@ -145,7 +145,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                             }
 
                             final resolvedLessonModule = items.firstWhere(
-                              (PRFLessonModule l) => l.ulid == widget.lessonModuleUlid,
+                              (l) => l.ulid == widget.lessonModuleUlid,
                             );
                             final resolvedCourseModule = context
                                 .read<ModuleResourceCubit>()
