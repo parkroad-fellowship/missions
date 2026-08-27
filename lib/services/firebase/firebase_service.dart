@@ -48,9 +48,9 @@ class FirebaseServiceImpl implements PRFFirebaseService {
 
       // Web requires a different authentication flow
       if (kIsWeb) {
-        return _signInWithGoogleWeb();
+        return await _signInWithGoogleWeb();
       } else {
-        return _signInWithGoogleMobile();
+        return await _signInWithGoogleMobile();
       }
     } catch (e) {
       log(e.toString(), error: e);

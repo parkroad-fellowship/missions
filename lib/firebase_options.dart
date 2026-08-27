@@ -59,8 +59,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '373327072646',
     projectId: 'hosanna-mt',
     storageBucket: 'hosanna-mt.firebasestorage.app',
-    androidClientId: '373327072646-16vphn45tpaj8ji1doorhpajs68l7dm9.apps.googleusercontent.com',
-    iosClientId: '373327072646-71v553m2m47qmt4h06r2abdh4eclc64a.apps.googleusercontent.com',
+    androidClientId:
+        '373327072646-16vphn45tpaj8ji1doorhpajs68l7dm9.apps.googleusercontent.com',
+    iosClientId:
+        '373327072646-71v553m2m47qmt4h06r2abdh4eclc64a.apps.googleusercontent.com',
     iosBundleId: 'hmt.parkroadfellowship.org',
   );
   static const FirebaseOptions web = FirebaseOptions(
