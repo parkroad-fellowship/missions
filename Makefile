@@ -35,7 +35,7 @@ build: 	# Run the app on a new computer with Flutter 2.3 installed
 		flutter pub get && make gen && make run
 
 ipa:
-		flutter build ipa  --flavor production --target lib/main_production.dart -vv
+		flutter build ipa  --flavor production --target lib/main_debug.dart
 
 build_web_dev:
 		flutter build web --target lib/main_development.dart

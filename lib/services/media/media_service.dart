@@ -380,7 +380,7 @@ class MediaServiceImpl implements MediaService {
     try {
       // FilePicker uses SAF (Storage Access Framework)
       // which doesn't require permissions
-      final result =
+      final filePaths =
           await FilePicker.pickFiles(
             type: FileType.custom,
             allowedExtensions: ['mp3', 'aac', 'ogg', 'mp4', 'wav', 'flac'],
@@ -392,16 +392,16 @@ class MediaServiceImpl implements MediaService {
             throw Failure(message: error.toString());
           });
 
-      if (result != null) {
-        final filePaths = result.paths;
+
+
         final uploadAssets = <PRFMediaDTO>[];
         final appDir = await path_provider.getApplicationDocumentsDirectory();
 
         try {
           for (final filePath in filePaths) {
-            if (filePath != null) {
-              final file = File(filePath);
-              final fileName = StringFormatter.getFileName(filePath);
+            if (filePath.path != null) {
+              final file = File(filePath.path!);
+              final fileName = StringFormatter.getFileName(filePath.path!);
               final mediaUploadsDir = '${appDir.path}/media_uploads';
               await Directory(mediaUploadsDir).create(recursive: true);
               final newPath = '$mediaUploadsDir/$fileName';
@@ -422,9 +422,9 @@ class MediaServiceImpl implements MediaService {
         } catch (e) {
           rethrow;
         }
-      }
+      
 
-      return [];
+
     } catch (e) {
       rethrow;
     } finally {
@@ -440,20 +440,20 @@ class MediaServiceImpl implements MediaService {
     try {
       // FilePicker uses SAF (Storage Access Framework)
       // which doesn't require permissions
-      final result = await FilePicker.pickFiles(
+      final filePaths = await FilePicker.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf'],
       );
 
-      if (result != null && result.paths.isNotEmpty) {
-        final filePaths = result.paths;
+      if (filePaths.isNotEmpty) {
+
         final uploadAssets = <PRFMediaDTO>[];
         final appDir = await path_provider.getApplicationDocumentsDirectory();
 
         for (final filePath in filePaths) {
-          if (filePath != null) {
-            final file = File(filePath);
-            final fileName = StringFormatter.getFileName(filePath);
+          if (filePath.path != null) {
+            final file = File(filePath.path!);
+            final fileName = StringFormatter.getFileName(filePath.path!);
             final mediaUploadsDir = '${appDir.path}/media_uploads';
             await Directory(mediaUploadsDir).create(recursive: true);
             final newPath = '$mediaUploadsDir/$fileName';
