@@ -51,6 +51,26 @@ pre_install do |installer|
 end
 
 post_install do |installer|
+  # Fix: Add a pre-build script to Runner target to ensure Pods (including audio_session) build first
+  user_project = installer.aggregate_targets.first.user_project
+  runner_target = user_project.targets.find { |t| t.name == 'Runner' }
+  
+  if runner_target
+    # Check if script phase already exists
+    existing = runner_target.build_phases.find { |p| p.is_a?(Xcodeproj::Project::Object::PBXShellScriptBuildPhase) && p.name == '[CP] Build Pods First' }
+    unless existing
+      phase = user_project.new(Xcodeproj::Project::Object::PBXShellScriptBuildPhase)
+      phase.name = '[CP] Build Pods First'
+      phase.shell_script = <<~SCRIPT
+        # Build Pods project first to ensure all modulemaps are available
+        xcodebuild -project Pods/Pods.xcodeproj -target audio_session -configuration ${CONFIGURATION} -quiet
+      SCRIPT
+      phase.show_env_vars_in_log = '0'
+      runner_target.build_phases.unshift(phase)
+      puts "Added pre-build script phase to Runner target"
+    end
+  end
+
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
 
