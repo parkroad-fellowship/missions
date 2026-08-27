@@ -29,8 +29,8 @@ class StudentEnquiryPreviewCard extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
         backgroundColor: theme.colorScheme.surface,
         leading: Container(
-          width: 40,
-          height: 40,
+          width: PRFSpacingTokens.xxxl,
+          height: PRFSpacingTokens.xxxl,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: theme.colorScheme.primaryContainer,

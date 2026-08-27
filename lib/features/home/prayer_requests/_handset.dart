@@ -1,8 +1,9 @@
-import 'package:app/features/home/prayer_requests/actions/add_prayer_request/add_prayer_request.dart';
+import 'package:app/features/home/prayer_requests/_shared.dart';
 import 'package:app/features/home/prayer_requests/cubit/prayer_request_resource_cubit.dart';
 import 'package:app/features/home/prayer_requests/widgets/prayer_request_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/prayer/prf_prayer_request.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -18,108 +19,57 @@ class PrayerRequestHandset extends StatefulWidget {
 }
 
 class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
+  final _form = PrayerRequestsFormState();
+
+  // The entrance cascade plays exactly once per screen instance.
+  bool _entrancePlayed = false;
+
   @override
   void initState() {
     super.initState();
-    context.read<PrayerRequestResourceCubit>().loadAll();
+    _form
+      ..attach(() => setState(() {}))
+      ..load(context);
+  }
+
+  @override
+  void dispose() {
+    _form.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
+    final animateEntrance = !_entrancePlayed;
+    _entrancePlayed = true;
 
     return BlocBuilder<
       PrayerRequestResourceCubit,
       ResourceState<PRFPrayerRequest>
     >(
       builder: (context, state) {
-        final prayerRequests = state.maybeWhen(
-          listLoaded: (requests, _, _) => requests,
-          orElse: List<PRFPrayerRequest>.empty,
-        );
+        // Same source as the list: pull-to-refresh keeps cards visible
+        // instead of flashing a full-screen spinner.
+        final prayerRequests = context
+            .read<PrayerRequestResourceCubit>()
+            .currentItems;
 
         return Scaffold(
           backgroundColor: theme.colorScheme.surface,
           body: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      theme.colorScheme.primary,
-                      theme.colorScheme.primary.withValues(alpha: 0.88),
-                    ],
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    PRFBrandedNavBar(
-                      title: l10n.prayerRequests,
-                      onBack: () => context.router.back(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        PRFSpacingTokens.lg,
-                        PRFSpacingTokens.xs,
-                        PRFSpacingTokens.lg,
-                        PRFSpacingTokens.lg,
-                      ),
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(PRFSpacingTokens.md),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.onPrimary.withValues(
-                            alpha: 0.1,
-                          ),
-                          borderRadius: BorderRadius.circular(
-                            PRFRadiusTokens.lg,
-                          ),
-                          border: Border.all(
-                            color: theme.colorScheme.onPrimary.withValues(
-                              alpha: 0.15,
-                            ),
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              l10n.submitPrayerRequestDesc,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.onPrimary.withValues(
-                                  alpha: 0.9,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.md),
-                            Wrap(
-                              spacing: PRFSpacingTokens.xs,
-                              runSpacing: PRFSpacingTokens.xs,
-                              children: [
-                                _PrayerStatPill(
-                                  label: l10n.total,
-                                  value: prayerRequests.length,
-                                ),
-                                _PrayerStatPill(
-                                  label: l10n.activeNow,
-                                  value: prayerRequests.length,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              buildPrayerHeader(
+                context,
+                theme,
+                l10n,
+                prayerRequests,
+                () => context.router.back(),
               ),
               Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () =>
-                      context.read<PrayerRequestResourceCubit>().loadAll(),
+                  onRefresh: () async => _form.load(context),
                   child: CustomScrollView(
                     physics: const AlwaysScrollableScrollPhysics(
                       parent: BouncingScrollPhysics(),
@@ -139,12 +89,16 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: (_) => const SliverFillRemaining(
-                            hasScrollBody: false,
-                            child: Center(
-                              child: PRFCircularProgressIndicator(),
-                            ),
-                          ),
+                          listLoading: (_) => prayerRequests.isEmpty
+                              ? const SliverFillRemaining(
+                                  hasScrollBody: false,
+                                  child: Center(
+                                    child: PRFCircularProgressIndicator(),
+                                  ),
+                                )
+                              : const SliverToBoxAdapter(
+                                  child: SizedBox.shrink(),
+                                ),
                           error: (message, _) => SliverFillRemaining(
                             hasScrollBody: false,
                             child: Align(
@@ -167,7 +121,8 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                                     description: l10n.noPrayerRequestsDesc,
                                     icon: Icons.hail_rounded,
                                     actionLabel: l10n.submitPrayerRequest,
-                                    onActionPressed: _addPrayerRequest,
+                                    onActionPressed: () =>
+                                        triggerAddPrayerRequest(context),
                                   ),
                                 ),
                               );
@@ -213,26 +168,22 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
 
                                 final requestIndex = index - 1;
                                 final prayerRequest = requests[requestIndex];
-                                return Padding(
-                                      padding: EdgeInsets.only(
-                                        bottom:
-                                            requestIndex == requests.length - 1
-                                            ? 0
-                                            : PRFSpacingTokens.lg,
-                                      ),
-                                      child: PrayerRequestCard(
-                                        prayerRequest: prayerRequest,
-                                      ),
-                                    )
-                                    .animate(
-                                      delay: Duration(
-                                        milliseconds: 70 * requestIndex,
-                                      ),
-                                    )
-                                    .fadeIn(
-                                      duration: PRFMotionTokens.enterShort,
-                                    )
-                                    .slideY(begin: 0.15, end: 0);
+                                return buildAnimatedTimelineEntry(
+                                  context: context,
+                                  index: requestIndex,
+                                  animate: animateEntrance,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom:
+                                          requestIndex == requests.length - 1
+                                          ? 0
+                                          : PRFSpacingTokens.lg,
+                                    ),
+                                    child: PrayerRequestCard(
+                                      prayerRequest: prayerRequest,
+                                    ),
+                                  ),
+                                );
                               },
                             );
                           },
@@ -247,13 +198,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
           floatingActionButton: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-              boxShadow: [
-                BoxShadow(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.28),
-                  blurRadius: 16,
-                  offset: const Offset(0, 6),
-                ),
-              ],
+              boxShadow: PRFShadowTokens.badge(theme.colorScheme.primary),
             ),
             child:
                 FloatingActionButton.extended(
@@ -261,7 +206,7 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
                       foregroundColor: theme.colorScheme.onPrimary,
                       icon: const Icon(Icons.add_rounded),
                       label: Text(l10n.submitPrayerRequest),
-                      onPressed: _addPrayerRequest,
+                      onPressed: () => triggerAddPrayerRequest(context),
                     )
                     .animate()
                     .fadeIn(duration: PRFMotionTokens.enterMedium)
@@ -269,59 +214,6 @@ class _PrayerRequestHandsetState extends State<PrayerRequestHandset> {
           ),
         );
       },
-    );
-  }
-
-  void _addPrayerRequest() =>
-      PRFBottomSheet.show<void>(
-        context,
-        title: context.l10n.submitPrayerRequest,
-        child: const AddPrayerRequestView(),
-      ).then((_) {
-        if (!mounted) return;
-        context.read<PrayerRequestResourceCubit>().loadAll();
-      });
-}
-
-class _PrayerStatPill extends StatelessWidget {
-  const _PrayerStatPill({required this.label, required this.value});
-
-  final String label;
-  final int value;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: PRFSpacingTokens.md,
-        vertical: PRFSpacingTokens.xs,
-      ),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.onPrimary.withValues(alpha: 0.16),
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-      ),
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: '$value ',
-              style: theme.textTheme.labelLarge?.copyWith(
-                color: theme.colorScheme.onPrimary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            TextSpan(
-              text: label,
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: theme.colorScheme.onPrimary.withValues(alpha: 0.85),
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

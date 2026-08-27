@@ -118,6 +118,42 @@ abstract class AppLocalizations {
   /// **'Signing In ...'**
   String get signingIn;
 
+  /// No description provided for @continueWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get continueWithGoogle;
+
+  /// No description provided for @pleaseWaitBrief.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait ...'**
+  String get pleaseWaitBrief;
+
+  /// No description provided for @orDivider.
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get orDivider;
+
+  /// No description provided for @signInPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'One home for the life of Parkroad Fellowship — serve missions together, give, pray for one another and stay close to the community wherever you are.'**
+  String get signInPanelBody;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @enterValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get enterValidEmail;
+
   /// No description provided for @missions.
   ///
   /// In en, this message translates to:
@@ -2650,6 +2686,103 @@ abstract class AppLocalizations {
   /// **'Wrapped page {currentPage} of {totalPages}'**
   String wrappedProgressSemantics(int currentPage, int totalPages);
 
+  /// No description provided for @wrappedMissionsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No missions yet.\nStart your first mission!'**
+  String get wrappedMissionsEmptyMessage;
+
+  /// No description provided for @wrappedImpactEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No impact recorded yet.\nEvery mission touches lives!'**
+  String get wrappedImpactEmptyMessage;
+
+  /// No description provided for @wrappedLearningEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No learning yet.\nStart a course to unlock this!'**
+  String get wrappedLearningEmptyMessage;
+
+  /// No description provided for @wrappedPrayerEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No prayers answered yet.\nYour journey starts today!'**
+  String get wrappedPrayerEmptyMessage;
+
+  /// No description provided for @wrappedFavoriteMissionType.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite mission type — {name}'**
+  String wrappedFavoriteMissionType(String name);
+
+  /// No description provided for @wrappedCourseProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{percentage}% complete'**
+  String wrappedCourseProgress(int percentage);
+
+  /// No description provided for @wrappedInsufficientDataTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough data yet'**
+  String get wrappedInsufficientDataTitle;
+
+  /// No description provided for @wrappedInsufficientDataMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete missions, courses, and more\nto unlock your Wrapped next season!'**
+  String get wrappedInsufficientDataMessage;
+
+  /// No description provided for @wrappedShareCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Your Wrapped'**
+  String get wrappedShareCta;
+
+  /// No description provided for @wrappedAboveAverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Above average in {categories}'**
+  String wrappedAboveAverage(String categories);
+
+  /// No description provided for @wrappedShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'My {year} PRF Missions Wrapped:\n{missions} Missions\n{souls} Souls Touched\n{courses} Courses\n{events} Events Attended\n{prayers} Prayer Responses\n\nHow was your year?'**
+  String wrappedShareText(
+    int year,
+    int missions,
+    int souls,
+    int courses,
+    int events,
+    int prayers,
+  );
+
+  /// No description provided for @wrappedLoadingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing your Wrapped…'**
+  String get wrappedLoadingMessage;
+
+  /// No description provided for @wrappedPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get wrappedPaused;
+
+  /// No description provided for @wrappedThankYouPersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, thank you for making an impact in {year}'**
+  String wrappedThankYouPersonal(String name, int year);
+
+  /// No description provided for @wrappedCommunalLine.
+  ///
+  /// In en, this message translates to:
+  /// **'One fellowship, one mission — together we made {year} count.'**
+  String wrappedCommunalLine(int year);
+
   /// No description provided for @impact.
   ///
   /// In en, this message translates to:
@@ -2697,6 +2830,1542 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Answer FAQs'**
   String get answerFaqs;
+
+  /// No description provided for @receiptPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt PDF'**
+  String get receiptPdf;
+
+  /// No description provided for @venue.
+  ///
+  /// In en, this message translates to:
+  /// **'Venue'**
+  String get venue;
+
+  /// No description provided for @dateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Date Range'**
+  String get dateRange;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @time_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get time_2;
+
+  /// No description provided for @subscribe.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe'**
+  String get subscribe;
+
+  /// No description provided for @updateSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Subscription'**
+  String get updateSubscription;
+
+  /// No description provided for @addMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Media'**
+  String get addMedia;
+
+  /// No description provided for @addEventPhotos_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Event Photos'**
+  String get addEventPhotos_2;
+
+  /// No description provided for @sharePhotosAndMemoriesFromThisEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Share photos and memories from this event'**
+  String get sharePhotosAndMemoriesFromThisEvent;
+
+  /// No description provided for @recordAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Record audio'**
+  String get recordAudio;
+
+  /// No description provided for @recordEventAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Record event audio'**
+  String get recordEventAudio;
+
+  /// No description provided for @photos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photos;
+
+  /// No description provided for @missionsCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'missions completed'**
+  String get missionsCompleted;
+
+  /// No description provided for @soulsTouched.
+  ///
+  /// In en, this message translates to:
+  /// **'souls touched'**
+  String get soulsTouched;
+
+  /// No description provided for @coursesCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'courses completed'**
+  String get coursesCompleted;
+
+  /// No description provided for @prayerResponses.
+  ///
+  /// In en, this message translates to:
+  /// **'prayer responses'**
+  String get prayerResponses;
+
+  /// No description provided for @eventsAttended.
+  ///
+  /// In en, this message translates to:
+  /// **'events attended'**
+  String get eventsAttended;
+
+  /// No description provided for @recordAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Record answer'**
+  String get recordAnswer;
+
+  /// No description provided for @noAnswersYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No answers yet'**
+  String get noAnswersYet;
+
+  /// No description provided for @answers.
+  ///
+  /// In en, this message translates to:
+  /// **'Answers'**
+  String get answers;
+
+  /// No description provided for @searchQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Search questions'**
+  String get searchQuestions;
+
+  /// No description provided for @loadingQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading questions'**
+  String get loadingQuestions;
+
+  /// No description provided for @debriefNoteDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Debrief note deleted'**
+  String get debriefNoteDeleted;
+
+  /// No description provided for @feedbackData.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback Data'**
+  String get feedbackData;
+
+  /// No description provided for @questionsCapturedAndPostMissionDebriefReflections.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions captured and post-mission debrief reflections.'**
+  String get questionsCapturedAndPostMissionDebriefReflections;
+
+  /// No description provided for @finances.
+  ///
+  /// In en, this message translates to:
+  /// **'Finances'**
+  String get finances;
+
+  /// No description provided for @requisitionsAndExpenseTrackingForThisMission.
+  ///
+  /// In en, this message translates to:
+  /// **'Requisitions and expense tracking for this mission.'**
+  String get requisitionsAndExpenseTrackingForThisMission;
+
+  /// No description provided for @overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get overview;
+
+  /// No description provided for @missionContextTeamMembersAndSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission context, team members, and sessions.'**
+  String get missionContextTeamMembersAndSessions;
+
+  /// No description provided for @receiptUploadedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt uploaded successfully'**
+  String get receiptUploadedSuccessfully;
+
+  /// No description provided for @noExpensesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Expenses Yet'**
+  String get noExpensesYet;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @receiptDeletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt deleted successfully'**
+  String get receiptDeletedSuccessfully;
+
+  /// No description provided for @deleteReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Receipt'**
+  String get deleteReceipt;
+
+  /// No description provided for @addExpense_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Expense'**
+  String get addExpense_2;
+
+  /// No description provided for @editExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Expense'**
+  String get editExpense;
+
+  /// No description provided for @deleteExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Expense'**
+  String get deleteExpense;
+
+  /// No description provided for @addRefund.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Refund'**
+  String get addRefund;
+
+  /// No description provided for @copiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to clipboard'**
+  String get copiedToClipboard;
+
+  /// No description provided for @copiedToClipboard_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied \"{value}\" to clipboard'**
+  String copiedToClipboard_2(Object value);
+
+  /// No description provided for @refundAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund Amount'**
+  String get refundAmount;
+
+  /// No description provided for @addRefundEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Refund Entry'**
+  String get addRefundEntry;
+
+  /// No description provided for @tokenAmount_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Token Amount'**
+  String get tokenAmount_2;
+
+  /// No description provided for @updateExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Expense'**
+  String get updateExpense;
+
+  /// No description provided for @mediaDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Media deleted'**
+  String get mediaDeleted;
+
+  /// No description provided for @savedToDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to device'**
+  String get savedToDevice;
+
+  /// No description provided for @failedToSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save'**
+  String get failedToSave;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @questionUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Question updated'**
+  String get questionUpdated;
+
+  /// No description provided for @questionDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Question deleted'**
+  String get questionDeleted;
+
+  /// No description provided for @update.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
+
+  /// No description provided for @requisitions.
+  ///
+  /// In en, this message translates to:
+  /// **'Requisitions'**
+  String get requisitions;
+
+  /// No description provided for @noRequisitions.
+  ///
+  /// In en, this message translates to:
+  /// **'No Requisitions'**
+  String get noRequisitions;
+
+  /// No description provided for @queued.
+  ///
+  /// In en, this message translates to:
+  /// **'Queued'**
+  String get queued;
+
+  /// No description provided for @retryAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry all'**
+  String get retryAll;
+
+  /// No description provided for @download.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get download;
+
+  /// No description provided for @processing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing'**
+  String get processing;
+
+  /// No description provided for @open.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get open;
+
+  /// No description provided for @sessionInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Session information'**
+  String get sessionInformation;
+
+  /// No description provided for @soulDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Soul deleted'**
+  String get soulDeleted;
+
+  /// No description provided for @missionSubscribers.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Subscribers'**
+  String get missionSubscribers;
+
+  /// No description provided for @membersSubscribedToThisMission.
+  ///
+  /// In en, this message translates to:
+  /// **'Members subscribed to this mission.'**
+  String get membersSubscribedToThisMission;
+
+  /// No description provided for @viewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get viewDetails;
+
+  /// No description provided for @callMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Member'**
+  String get callMember;
+
+  /// No description provided for @eGCoolHighSchool.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Cool High School'**
+  String get eGCoolHighSchool;
+
+  /// No description provided for @eGTrJohn.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Tr John'**
+  String get eGTrJohn;
+
+  /// No description provided for @students.
+  ///
+  /// In en, this message translates to:
+  /// **'{school_totalStudents} students'**
+  String students(Object school_totalStudents);
+
+  /// No description provided for @missions_2.
+  ///
+  /// In en, this message translates to:
+  /// **'{school_missions_length} missions'**
+  String missions_2(Object school_missions_length);
+
+  /// No description provided for @camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get camera;
+
+  /// No description provided for @unableToPlayAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to play audio'**
+  String get unableToPlayAudio;
+
+  /// No description provided for @view.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get view;
+
+  /// No description provided for @retryNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry now'**
+  String get retryNow;
+
+  /// No description provided for @pendingUploads.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending uploads'**
+  String get pendingUploads;
+
+  /// No description provided for @useAppWhileRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Use app while recording'**
+  String get useAppWhileRecording;
+
+  /// No description provided for @useAppWhilePaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Use app while paused'**
+  String get useAppWhilePaused;
+
+  /// No description provided for @answerUploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer uploaded'**
+  String get answerUploaded;
+
+  /// No description provided for @viewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get viewAll;
+
+  /// No description provided for @noPendingUploads.
+  ///
+  /// In en, this message translates to:
+  /// **'No pending uploads'**
+  String get noPendingUploads;
+
+  /// No description provided for @pendingUploads_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Uploads'**
+  String get pendingUploads_2;
+
+  /// No description provided for @uploadedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'{upload_name} uploaded successfully'**
+  String uploadedSuccessfully(Object upload_name);
+
+  /// No description provided for @retryFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry failed'**
+  String get retryFailed;
+
+  /// No description provided for @dashboardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Dashboard'**
+  String get dashboardTitle;
+
+  /// No description provided for @dashboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore and suggest missions, make giving contributions, and check the latest answers and announcements.'**
+  String get dashboardSubtitle;
+
+  /// No description provided for @prayerPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer prompt'**
+  String get prayerPrompt;
+
+  /// No description provided for @emptyActionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing here yet'**
+  String get emptyActionsTitle;
+
+  /// No description provided for @emptyActionsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Fellowship actions will appear here once they are published.'**
+  String get emptyActionsBody;
+
+  /// No description provided for @allPast.
+  ///
+  /// In en, this message translates to:
+  /// **'All Past'**
+  String get allPast;
+
+  /// No description provided for @yourNextMission.
+  ///
+  /// In en, this message translates to:
+  /// **'Your next mission'**
+  String get yourNextMission;
+
+  /// No description provided for @missionsIntroBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a mission to serve in — or catch up on the grounds we have already visited.'**
+  String get missionsIntroBody;
+
+  /// No description provided for @upcomingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Upcoming'**
+  String upcomingCount(int count);
+
+  /// No description provided for @subscribedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Subscribed'**
+  String subscribedCount(int count);
+
+  /// No description provided for @noUnreadQuestionsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'No unread questions right now. New questions from students will appear here.'**
+  String get noUnreadQuestionsDesc;
+
+  /// No description provided for @noRepliedQuestionsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'No replied questions yet. Answers you send to students will collect here.'**
+  String get noRepliedQuestionsDesc;
+
+  /// No description provided for @noAnnouncementsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements and publications from the fellowship will appear here.'**
+  String get noAnnouncementsDesc;
+
+  /// No description provided for @schoolPastMissions.
+  ///
+  /// In en, this message translates to:
+  /// **'School Past Missions'**
+  String get schoolPastMissions;
+
+  /// No description provided for @spiritualLegacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Spiritual Legacy'**
+  String get spiritualLegacy;
+
+  /// No description provided for @schoolLegacyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore all historical missions carried out by PRF at this school. Touch lives, follow up with student enquiries, and review past statistics.'**
+  String get schoolLegacyBody;
+
+  /// No description provided for @noPastMissionsForSchool.
+  ///
+  /// In en, this message translates to:
+  /// **'No past missions for this school.'**
+  String get noPastMissionsForSchool;
+
+  /// No description provided for @groundSuggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Ground Suggestions'**
+  String get groundSuggestions;
+
+  /// No description provided for @pendingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pendingStatus;
+
+  /// No description provided for @suggestGroundsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest Mission Grounds'**
+  String get suggestGroundsTitle;
+
+  /// No description provided for @suggestGroundsPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest new schools or centers that need spiritual interventions. The fellowship review board evaluates all entries to establish new missions.'**
+  String get suggestGroundsPanelBody;
+
+  /// No description provided for @noQuestionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions yet'**
+  String get noQuestionsYet;
+
+  /// No description provided for @noQuestionsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions found'**
+  String get noQuestionsFound;
+
+  /// No description provided for @questionsFromMissionsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions from missions will appear here'**
+  String get questionsFromMissionsBody;
+
+  /// No description provided for @tryDifferentSearchTerm.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a different search term'**
+  String get tryDifferentSearchTerm;
+
+  /// No description provided for @missionsFaqHub.
+  ///
+  /// In en, this message translates to:
+  /// **'Missions FAQ Hub'**
+  String get missionsFaqHub;
+
+  /// No description provided for @faqHubIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Record audio answers to student questions, which are transcribed into text automatically.'**
+  String get faqHubIntro;
+
+  /// No description provided for @answerTranscribeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer & Transcribe'**
+  String get answerTranscribeTitle;
+
+  /// No description provided for @faqHubPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Review incoming student questions on the left. Tap \"Record Answer\" to capture your audio feedback, which is transcribed by AI to serve the fellowship.'**
+  String get faqHubPanelBody;
+
+  /// No description provided for @awaitingAnswers.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting answers'**
+  String get awaitingAnswers;
+
+  /// No description provided for @answersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Answers ({count})'**
+  String answersCount(int count);
+
+  /// No description provided for @missionThemeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission theme: {theme}'**
+  String missionThemeLabel(Object theme);
+
+  /// No description provided for @recordAnswerSemantic.
+  ///
+  /// In en, this message translates to:
+  /// **'Record answer to: {question}'**
+  String recordAnswerSemantic(Object question);
+
+  /// No description provided for @overviewTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get overviewTab;
+
+  /// No description provided for @feedbackDataTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback Data'**
+  String get feedbackDataTab;
+
+  /// No description provided for @financeTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Finance'**
+  String get financeTab;
+
+  /// No description provided for @missionOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Overview'**
+  String get missionOverview;
+
+  /// No description provided for @schoolNotSpecified.
+  ///
+  /// In en, this message translates to:
+  /// **'School not specified'**
+  String get schoolNotSpecified;
+
+  /// No description provided for @generalMission.
+  ///
+  /// In en, this message translates to:
+  /// **'General Mission'**
+  String get generalMission;
+
+  /// No description provided for @interactiveActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Interactive Actions'**
+  String get interactiveActions;
+
+  /// No description provided for @missionActionsGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'The button below dynamically adapts to your current selected tab. Add sessions, write debriefs, register souls, or report expenses seamlessly.'**
+  String get missionActionsGuidance;
+
+  /// No description provided for @latestCampaign.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest Campaign'**
+  String get latestCampaign;
+
+  /// No description provided for @announcementsPanelIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements and publications received recently from the Fellowship admin.'**
+  String get announcementsPanelIntro;
+
+  /// No description provided for @stayUpToDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay Up to Date'**
+  String get stayUpToDate;
+
+  /// No description provided for @announcementsPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep track of important announcements, spiritual years publications, events alerts, and news directly shared by Park Road Fellowship.'**
+  String get announcementsPanelBody;
+
+  /// No description provided for @publicationsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Publications'**
+  String publicationsCount(int count);
+
+  /// No description provided for @prayerSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Summary'**
+  String get prayerSummaryTitle;
+
+  /// No description provided for @prayerPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit your prayer needs directly to the fellowship. Together in one spirit, we stand in prayer watch and lift up our requests.'**
+  String get prayerPanelBody;
+
+  /// No description provided for @enquiryDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Enquiry Dashboard'**
+  String get enquiryDashboard;
+
+  /// No description provided for @unreadQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread Questions'**
+  String get unreadQuestions;
+
+  /// No description provided for @repliedQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Replied Questions'**
+  String get repliedQuestions;
+
+  /// No description provided for @ministerToStudents.
+  ///
+  /// In en, this message translates to:
+  /// **'Minister to Students'**
+  String get ministerToStudents;
+
+  /// No description provided for @enquiriesPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer enquiries submitted by students. Share wisdom and feedback on spiritual matters, or guide them through their doubts.'**
+  String get enquiriesPanelBody;
+
+  /// No description provided for @helpCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Help Center'**
+  String get helpCenter;
+
+  /// No description provided for @findQuickAnswers.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Quick Answers'**
+  String get findQuickAnswers;
+
+  /// No description provided for @faqsPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Search through compiled FAQs or filter by categories on the left panel to find immediate guidelines about PRF Missions and fellowship rules.'**
+  String get faqsPanelBody;
+
+  /// No description provided for @noFaqsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse categories or search to find answers about PRF Missions and fellowship life.'**
+  String get noFaqsDesc;
+
+  /// No description provided for @givingSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Giving Summary'**
+  String get givingSummary;
+
+  /// No description provided for @supportFellowshipMissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Support Fellowship Missions'**
+  String get supportFellowshipMissions;
+
+  /// No description provided for @givingPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your giving enables spiritual growth and supports critical missions, local requisitions, and fellowship operations.'**
+  String get givingPanelBody;
+
+  /// No description provided for @fellowshipEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Fellowship Events'**
+  String get fellowshipEvents;
+
+  /// No description provided for @eventsPanelIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Join fellowship gatherings, teachings, conferences and local spiritual events.'**
+  String get eventsPanelIntro;
+
+  /// No description provided for @participateLearn.
+  ///
+  /// In en, this message translates to:
+  /// **'Participate & Learn'**
+  String get participateLearn;
+
+  /// No description provided for @eventsPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap any event from the left list to subscribe and secure your slot, view attendees lists, and read schedules and timelines.'**
+  String get eventsPanelBody;
+
+  /// No description provided for @availableCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Available'**
+  String availableCount(int count);
+
+  /// No description provided for @venueNotSpecified.
+  ///
+  /// In en, this message translates to:
+  /// **'Venue not specified'**
+  String get venueNotSpecified;
+
+  /// No description provided for @addRecordings.
+  ///
+  /// In en, this message translates to:
+  /// **'Add recordings'**
+  String get addRecordings;
+
+  /// No description provided for @recordingsCaptureBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Record audio to capture event highlights.'**
+  String get recordingsCaptureBody;
+
+  /// No description provided for @growInKnowledge.
+  ///
+  /// In en, this message translates to:
+  /// **'Grow in Knowledge'**
+  String get growInKnowledge;
+
+  /// No description provided for @lmsPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Acquire wisdom and understanding through structured learning courses. Take courses, complete modules, and learn at your own pace.'**
+  String get lmsPanelBody;
+
+  /// No description provided for @noCoursesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'New courses will appear here as the fellowship publishes them.'**
+  String get noCoursesDesc;
+
+  /// No description provided for @completeAllModules.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete all Modules'**
+  String get completeAllModules;
+
+  /// No description provided for @modulesPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Each module has specific learning content and lessons. View and study module actions on the left panel.'**
+  String get modulesPanelBody;
+
+  /// No description provided for @noModulesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Modules will appear here once the course content is published.'**
+  String get noModulesDesc;
+
+  /// No description provided for @studyYourLessons.
+  ///
+  /// In en, this message translates to:
+  /// **'Study your Lessons'**
+  String get studyYourLessons;
+
+  /// No description provided for @lessonsPanelBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Each lesson includes informative texts and resources to grow. Tap lessons on the left list to begin studying.'**
+  String get lessonsPanelBody;
+
+  /// No description provided for @noLessonsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Lessons will appear here once the module content is published.'**
+  String get noLessonsDesc;
+
+  /// No description provided for @noLessonResources.
+  ///
+  /// In en, this message translates to:
+  /// **'No learning resources are attached to this lesson yet.'**
+  String get noLessonResources;
+
+  /// No description provided for @noMissionsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming missions will appear here once the missions desk announces them.'**
+  String get noMissionsDesc;
+
+  /// No description provided for @noRepliesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No replies yet. Responses from the desk will appear here.'**
+  String get noRepliesYet;
+
+  /// No description provided for @noSubscribersDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions will appear here as members join this mission.'**
+  String get noSubscribersDesc;
+
+  /// No description provided for @question.
+  ///
+  /// In en, this message translates to:
+  /// **'Question'**
+  String get question;
+
+  /// No description provided for @fieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'{field} is required'**
+  String fieldRequired(Object field);
+
+  /// No description provided for @fixHighlightedFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fix the highlighted fields and try again.'**
+  String get fixHighlightedFields;
+
+  /// No description provided for @ticketsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of tickets is required'**
+  String get ticketsRequired;
+
+  /// No description provided for @noPaymentTypesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No payment types found'**
+  String get noPaymentTypesFound;
+
+  /// No description provided for @noSubscribersFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No subscribers found'**
+  String get noSubscribersFound;
+
+  /// No description provided for @noClassGroupsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No class groups found'**
+  String get noClassGroupsFound;
+
+  /// No description provided for @updateSessionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Session'**
+  String get updateSessionTitle;
+
+  /// No description provided for @updateQuestionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Question'**
+  String get updateQuestionTitle;
+
+  /// No description provided for @updateNoteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Note'**
+  String get updateNoteTitle;
+
+  /// No description provided for @updateSoulTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Soul'**
+  String get updateSoulTitle;
+
+  /// No description provided for @failedUploadReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to upload receipt: {message}'**
+  String failedUploadReceipt(Object message);
+
+  /// No description provided for @failedSelectImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to select image: {error}'**
+  String failedSelectImage(Object error);
+
+  /// No description provided for @failedSelectPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to select PDF: {error}'**
+  String failedSelectPdf(Object error);
+
+  /// No description provided for @startAddingExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Start by adding your first expense'**
+  String get startAddingExpense;
+
+  /// No description provided for @tapToHideDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to hide details'**
+  String get tapToHideDetails;
+
+  /// No description provided for @tapToViewTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to view {count} transactions'**
+  String tapToViewTransactions(int count);
+
+  /// No description provided for @deleteReceiptConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this receipt? This action cannot be undone.'**
+  String get deleteReceiptConfirm;
+
+  /// No description provided for @deleteExpenseConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this expense?'**
+  String get deleteExpenseConfirm;
+
+  /// No description provided for @attachReceiptOrDocumentation.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach receipt or documentation'**
+  String get attachReceiptOrDocumentation;
+
+  /// No description provided for @receiptMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt Missing'**
+  String get receiptMissing;
+
+  /// No description provided for @transactionBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction Breakdown'**
+  String get transactionBreakdown;
+
+  /// No description provided for @refundEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund Entries'**
+  String get refundEntries;
+
+  /// No description provided for @deficitAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Deficit Amount'**
+  String get deficitAmount;
+
+  /// No description provided for @confirmationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmation'**
+  String get confirmationLabel;
+
+  /// No description provided for @imageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Image'**
+  String get imageLabel;
+
+  /// No description provided for @attachmentsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} Attachment} other{{count} Attachments}}'**
+  String attachmentsCount(int count);
+
+  /// No description provided for @continueConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to continue?'**
+  String get continueConfirm;
+
+  /// No description provided for @editDebriefTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit debrief note'**
+  String get editDebriefTooltip;
+
+  /// No description provided for @deleteDebriefTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete debrief note'**
+  String get deleteDebriefTooltip;
+
+  /// No description provided for @removeNotImplemented.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove functionality not implemented'**
+  String get removeNotImplemented;
+
+  /// No description provided for @debriefNoteRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Note is required'**
+  String get debriefNoteRequired;
+
+  /// No description provided for @sessionNotesRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparation notes are required'**
+  String get sessionNotesRequired;
+
+  /// No description provided for @prayerRequestRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer request is required'**
+  String get prayerRequestRequired;
+
+  /// No description provided for @viewSubscriberTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'View subscriber'**
+  String get viewSubscriberTooltip;
+
+  /// No description provided for @callSubscriberTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Call subscriber'**
+  String get callSubscriberTooltip;
+
+  /// No description provided for @selectedPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Photos'**
+  String get selectedPhotos;
+
+  /// No description provided for @debriefNotesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Debrief Notes'**
+  String get debriefNotesTitle;
+
+  /// No description provided for @untitledNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Untitled note'**
+  String get untitledNote;
+
+  /// No description provided for @travelTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel Time'**
+  String get travelTime;
+
+  /// No description provided for @deleteMediaConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this media?'**
+  String get deleteMediaConfirm;
+
+  /// No description provided for @errorLoadingMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading media'**
+  String get errorLoadingMedia;
+
+  /// No description provided for @tapToSelectMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to select {mediaType}'**
+  String tapToSelectMedia(Object mediaType);
+
+  /// No description provided for @chooseMultipleToShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose multiple {mediaType} to share'**
+  String chooseMultipleToShare(Object mediaType);
+
+  /// No description provided for @groundNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission ground name is required'**
+  String get groundNameRequired;
+
+  /// No description provided for @contactPersonRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact person is required'**
+  String get contactPersonRequired;
+
+  /// No description provided for @contactNumberRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact number is required'**
+  String get contactNumberRequired;
+
+  /// No description provided for @statusRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Status is required'**
+  String get statusRequired;
+
+  /// No description provided for @noStatusesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No statuses found'**
+  String get noStatusesFound;
+
+  /// No description provided for @editSoulTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit soul'**
+  String get editSoulTooltip;
+
+  /// No description provided for @deleteSoulTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete soul'**
+  String get deleteSoulTooltip;
+
+  /// No description provided for @recordingSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording saved ({duration})'**
+  String recordingSaved(Object duration);
+
+  /// No description provided for @queuedRecordingsForSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Queued recordings for this session'**
+  String get queuedRecordingsForSession;
+
+  /// No description provided for @syncingRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing recording...'**
+  String get syncingRecording;
+
+  /// No description provided for @recorderIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorder idle'**
+  String get recorderIdle;
+
+  /// No description provided for @recorderReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorder ready'**
+  String get recorderReady;
+
+  /// No description provided for @recordingInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording in progress'**
+  String get recordingInProgress;
+
+  /// No description provided for @savedLocally.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved locally'**
+  String get savedLocally;
+
+  /// No description provided for @recorderNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorder needs attention'**
+  String get recorderNeedsAttention;
+
+  /// No description provided for @noNotesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No notes available'**
+  String get noNotesAvailable;
+
+  /// No description provided for @missionQuestionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Questions'**
+  String get missionQuestionsTitle;
+
+  /// No description provided for @untitledQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Untitled question'**
+  String get untitledQuestion;
+
+  /// No description provided for @editQuestionTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit question'**
+  String get editQuestionTooltip;
+
+  /// No description provided for @deleteQuestionTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete question'**
+  String get deleteQuestionTooltip;
+
+  /// No description provided for @queuedRecordings.
+  ///
+  /// In en, this message translates to:
+  /// **'Queued recordings'**
+  String get queuedRecordings;
+
+  /// No description provided for @offlineRecordingNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'You are offline. The app will retry when you are back online. You can continue using the app.'**
+  String get offlineRecordingNotice;
+
+  /// No description provided for @backgroundRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording continues in the background.'**
+  String get backgroundRecording;
+
+  /// No description provided for @confirmationMessageRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmation message is required'**
+  String get confirmationMessageRequired;
+
+  /// No description provided for @enterConfirmationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter confirmation message or reference number'**
+  String get enterConfirmationHint;
+
+  /// No description provided for @addTokenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Token'**
+  String get addTokenTitle;
+
+  /// No description provided for @addTokenDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Add funds as a credit entry to the allocation'**
+  String get addTokenDesc;
+
+  /// No description provided for @enterTokenAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter token amount'**
+  String get enterTokenAmount;
+
+  /// No description provided for @editExpenseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Expense'**
+  String get editExpenseTitle;
+
+  /// No description provided for @editExpenseDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Update expense details and receipts'**
+  String get editExpenseDesc;
+
+  /// No description provided for @addNewExpenseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Expense'**
+  String get addNewExpenseTitle;
+
+  /// No description provided for @addNewExpenseDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in the details below to record a new expense'**
+  String get addNewExpenseDesc;
+
+  /// No description provided for @addRefundEntryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Refund Entry'**
+  String get addRefundEntryTitle;
+
+  /// No description provided for @addRefundEntryDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Record a new refund entry for this accounting event'**
+  String get addRefundEntryDesc;
+
+  /// No description provided for @enterRefundAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter refund amount'**
+  String get enterRefundAmount;
+
+  /// No description provided for @refundAddedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund entry added successfully'**
+  String get refundAddedSuccessfully;
+
+  /// No description provided for @downloadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Download failed'**
+  String get downloadFailed;
+
+  /// No description provided for @capturedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Captured {date}'**
+  String capturedAt(Object date);
+
+  /// No description provided for @soulsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Souls'**
+  String get soulsTitle;
+
+  /// No description provided for @dayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {day}'**
+  String dayLabel(int day);
+
+  /// No description provided for @loadingVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading video...'**
+  String get loadingVideo;
+
+  /// No description provided for @errorLoadingVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading video'**
+  String get errorLoadingVideo;
+
+  /// No description provided for @unknownErrorOccurred.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error occurred'**
+  String get unknownErrorOccurred;
+
+  /// No description provided for @missionGroundTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Ground'**
+  String get missionGroundTab;
+
+  /// No description provided for @failedToLoadImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load image'**
+  String get failedToLoadImage;
+
+  /// No description provided for @noFinancialDataForMission.
+  ///
+  /// In en, this message translates to:
+  /// **'No financial data available for this mission.'**
+  String get noFinancialDataForMission;
+
+  /// No description provided for @noRequisitionsCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'No requisitions have been created for this mission.'**
+  String get noRequisitionsCreated;
+
+  /// No description provided for @noLineItems.
+  ///
+  /// In en, this message translates to:
+  /// **'No line items'**
+  String get noLineItems;
+
+  /// No description provided for @subscribers.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribers'**
+  String get subscribers;
 }
 
 class _AppLocalizationsDelegate

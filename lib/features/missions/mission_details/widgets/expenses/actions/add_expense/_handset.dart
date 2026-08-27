@@ -82,7 +82,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
+            Theme.of(
+              context,
+            ).colorScheme.primary.withValues(alpha: PRFOpacities.faint),
             Theme.of(context).colorScheme.surface,
           ],
         ),
@@ -104,15 +106,20 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                           Theme.of(context).colorScheme.primary,
                           Theme.of(
                             context,
-                          ).colorScheme.primary.withValues(alpha: 0.8),
+                          ).colorScheme.primary.withValues(
+                            alpha: PRFOpacities.stronger,
+                          ),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.3),
+                          color:
+                              Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(
+                                alpha: PRFOpacities.glow,
+                              ),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -127,7 +134,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.sm),
                         Text(
-                          'Add New Expense',
+                          l10n.addNewExpenseTitle,
                           style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.onPrimary,
@@ -136,12 +143,15 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.xs),
                         Text(
-                          'Fill in the details below to record a new expense',
+                          l10n.addNewExpenseDesc,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary.withValues(
+                                      alpha: PRFOpacities.nearOpaque,
+                                    ),
                               ),
                           textAlign: TextAlign.center,
                         ),
@@ -191,13 +201,16 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                   border: Border.all(
                     color: Theme.of(
                       context,
-                    ).colorScheme.outline.withValues(alpha: 0.2),
+                    ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.shadow.withValues(alpha: 0.1),
+                      color:
+                          Theme.of(
+                            context,
+                          ).colorScheme.shadow.withValues(
+                            alpha: PRFOpacities.subtle,
+                          ),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -296,13 +309,14 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                           isRequired: true,
                           child: Column(
                             children: [
-                              PRFTextAreaInput(
+                              PRFTextField(
+                                type: PRFTextFieldType.textArea,
                                 hintText: l10n.paymentDesc,
                                 controller: _narrationController,
-                                textInputAction: TextInputAction.next,
                               ),
                               const SizedBox(height: PRFSpacingTokens.lg),
-                              PRFTextAreaInput(
+                              PRFTextField(
+                                type: PRFTextFieldType.textArea,
                                 hintText: l10n.confirmationMsg,
                                 controller: _confirmationMessageController,
                                 textInputAction: TextInputAction.done,
@@ -350,7 +364,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       );
                     },
                     builder: (context, state) {
-                      return PRFPrimaryButton(
+                      return PRFButton(
                         onPressed: _submitForm,
                         title: l10n.recordExpense,
                         disabled: !_isFormValid,
@@ -395,7 +409,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               border: Border.all(
                 color: isSelected
                     ? theme.colorScheme.primary
-                    : theme.colorScheme.outline.withValues(alpha: 0.3),
+                    : theme.colorScheme.outline.withValues(
+                        alpha: PRFOpacities.glow,
+                      ),
               ),
             ),
             child: Text(
@@ -432,7 +448,8 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
           ),
         ),
         const SizedBox(height: PRFSpacingTokens.sm),
-        PRFNumberInput(
+        PRFTextField(
+          type: PRFTextFieldType.number,
           controller: controller,
           hintText: hint,
           prefixText: prefix,
@@ -450,10 +467,14 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
     return Container(
       padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(
+          alpha: PRFOpacities.half,
+        ),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+          color: theme.colorScheme.outline.withValues(
+            alpha: PRFOpacities.muted,
+          ),
         ),
       ),
       child: Column(
@@ -526,7 +547,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
               border: Border.all(
                 color: isSelected
                     ? theme.colorScheme.primary
-                    : theme.colorScheme.outline.withValues(alpha: 0.3),
+                    : theme.colorScheme.outline.withValues(
+                        alpha: PRFOpacities.glow,
+                      ),
               ),
             ),
             child: Row(

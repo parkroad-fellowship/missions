@@ -1,4 +1,5 @@
 import 'package:app/di/di_container.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/models/local/upload_retry_progress.dart';
 import 'package:app/services/media/failed_recording_upload_service.dart';
@@ -41,9 +42,12 @@ class GlobalRecordingUploadsBar extends StatelessWidget {
                       color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       border: Border.all(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.outline.withValues(alpha: 0.2),
+                        color:
+                            Theme.of(
+                              context,
+                            ).colorScheme.outline.withValues(
+                              alpha: PRFOpacities.muted,
+                            ),
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -80,10 +84,10 @@ class GlobalRecordingUploadsBar extends StatelessWidget {
                             const SizedBox(width: PRFSpacingTokens.sm),
                             SizedBox(
                               width: 88,
-                              child: PRFSecondaryButton(
+                              child: PRFButton(
+                                variant: PRFButtonVariant.secondary,
                                 onPressed: () => _showDetails(context),
-                                title: 'View',
-                                disabled: false,
+                                title: context.l10n.view,
                               ),
                             ),
                           ],
@@ -118,13 +122,12 @@ class GlobalRecordingUploadsBar extends StatelessWidget {
                           Row(
                             children: [
                               Expanded(
-                                child: PRFPrimaryButton(
+                                child: PRFButton(
                                   onPressed: () {
                                     getIt<FailedRecordingUploadService>()
                                         .retryAllUploads();
                                   },
-                                  title: 'Retry now',
-                                  disabled: false,
+                                  title: context.l10n.retryNow,
                                 ),
                               ),
                             ],
@@ -148,7 +151,7 @@ class GlobalRecordingUploadsBar extends StatelessWidget {
     final sheetContext = navigatorContext ?? context;
     PRFBottomSheet.show<void>(
       sheetContext,
-      title: 'Pending uploads',
+      title: context.l10n.pendingUploads,
       child: const _PendingUploadsDetails(),
     );
   }
@@ -186,7 +189,7 @@ class _PendingUploadsDetails extends StatelessWidget {
                           progressSnapshot.data ?? UploadRetryProgress.idle;
                       return SizedBox(
                         width: 120,
-                        child: PRFPrimaryButton(
+                        child: PRFButton(
                           onPressed: () {
                             getIt<FailedRecordingUploadService>()
                                 .retryAllUploads();
@@ -243,7 +246,9 @@ class _UploadTile extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+          color: Theme.of(
+            context,
+          ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
         ),
       ),
       child: Row(
@@ -276,9 +281,12 @@ class _UploadTile extends StatelessWidget {
                 Text(
                   '${upload.model.collection} • ${dateFormat.format(upload.failedAt)} • retries ${upload.retryCount}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.6),
+                    color:
+                        Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(
+                          alpha: PRFOpacities.prominent,
+                        ),
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),

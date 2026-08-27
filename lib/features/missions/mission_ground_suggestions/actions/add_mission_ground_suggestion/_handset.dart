@@ -72,13 +72,13 @@ class _AddMissionGroundSuggestionViewHandsetState
     _clearErrors();
 
     if (_nameController.text.trim().isEmpty) {
-      _nameError = 'Mission ground name is required';
+      _nameError = context.l10n.groundNameRequired;
     }
     if (_contactPersonController.text.trim().isEmpty) {
-      _contactPersonError = 'Contact person is required';
+      _contactPersonError = context.l10n.contactPersonRequired;
     }
     if (!_phoneController.value.isValid()) {
-      _contactNumberError = 'Contact number is required';
+      _contactNumberError = context.l10n.contactNumberRequired;
     }
 
     setState(() => _showValidation = true);
@@ -98,7 +98,9 @@ class _AddMissionGroundSuggestionViewHandsetState
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
+            Theme.of(
+              context,
+            ).colorScheme.primary.withValues(alpha: PRFOpacities.faint),
             Theme.of(context).colorScheme.surface,
           ],
         ),
@@ -120,15 +122,20 @@ class _AddMissionGroundSuggestionViewHandsetState
                           Theme.of(context).colorScheme.primary,
                           Theme.of(
                             context,
-                          ).colorScheme.primary.withValues(alpha: 0.8),
+                          ).colorScheme.primary.withValues(
+                            alpha: PRFOpacities.stronger,
+                          ),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.3),
+                          color:
+                              Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(
+                                alpha: PRFOpacities.glow,
+                              ),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -155,9 +162,12 @@ class _AddMissionGroundSuggestionViewHandsetState
                           l10n.suggestMissionSubTitle,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary.withValues(
+                                      alpha: PRFOpacities.nearOpaque,
+                                    ),
                               ),
                           textAlign: TextAlign.center,
                         ),
@@ -179,13 +189,16 @@ class _AddMissionGroundSuggestionViewHandsetState
                   border: Border.all(
                     color: Theme.of(
                       context,
-                    ).colorScheme.outline.withValues(alpha: 0.2),
+                    ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.shadow.withValues(alpha: 0.1),
+                      color:
+                          Theme.of(
+                            context,
+                          ).colorScheme.shadow.withValues(
+                            alpha: PRFOpacities.subtle,
+                          ),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -197,8 +210,8 @@ class _AddMissionGroundSuggestionViewHandsetState
                       icon: Icons.school_outlined,
                       title: l10n.missionGround,
                       isRequired: true,
-                      child: PRFTextInput(
-                        hintText: 'e.g., Cool High School',
+                      child: PRFTextField(
+                        hintText: context.l10n.eGCoolHighSchool,
                         controller: _nameController,
                         errorText: _showValidation ? _nameError : null,
                       ),
@@ -208,8 +221,8 @@ class _AddMissionGroundSuggestionViewHandsetState
                           icon: Icons.person_outline,
                           title: l10n.contactPerson,
                           isRequired: true,
-                          child: PRFTextInput(
-                            hintText: 'e.g., Tr John',
+                          child: PRFTextField(
+                            hintText: context.l10n.eGTrJohn,
                             controller: _contactPersonController,
                             errorText: _showValidation
                                 ? _contactPersonError
@@ -274,7 +287,7 @@ class _AddMissionGroundSuggestionViewHandsetState
                       );
                     },
                     builder: (context, state) {
-                      return PRFPrimaryButton(
+                      return PRFButton(
                         onPressed: _submitForm,
                         title: l10n.record,
                         disabled: !_isFormValid,
@@ -299,7 +312,7 @@ class _AddMissionGroundSuggestionViewHandsetState
       Gaimon.warning();
       PRFSnackbar.error(
         context,
-        'Please fix the highlighted fields and try again.',
+        context.l10n.fixHighlightedFields,
       );
       return;
     }

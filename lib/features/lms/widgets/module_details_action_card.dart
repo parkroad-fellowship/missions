@@ -31,18 +31,14 @@ class ModuleDetailsActionCard extends StatelessWidget {
         color: theme.colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
         border: Border.all(
-          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.primary.withValues(alpha: 0.08),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
+          color: theme.colorScheme.outlineVariant.withValues(
+            alpha: PRFOpacities.accent,
           ),
-        ],
+        ),
+        boxShadow: PRFShadowTokens.raised(theme.colorScheme.primary),
       ),
       child: Material(
-        color: PRFColors.transparent,
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
         child: InkWell(
           borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),

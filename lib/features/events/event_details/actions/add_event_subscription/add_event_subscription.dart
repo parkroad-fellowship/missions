@@ -1,7 +1,7 @@
 import 'package:app/features/events/event_details/actions/add_event_subscription/_handset.dart';
 import 'package:app/models/remote/event/prf_event.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
+import 'package:prf_design/prf_design.dart';
 
 class AddEventSubscriptionView extends StatelessWidget {
   const AddEventSubscriptionView({required this.event, super.key});
@@ -10,11 +10,9 @@ class AddEventSubscriptionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptiveBuilder(
-      defaultBuilder: (_, _) => AddEventSubscriptionViewHandset(event: event),
-      layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, _) => AddEventSubscriptionViewHandset(event: event),
-      ),
+    return PRFAdaptive(
+      handset: (_) => AddEventSubscriptionViewHandset(event: event),
+      builder: (_, _) => AddEventSubscriptionViewHandset(event: event),
     );
   }
 }

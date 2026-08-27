@@ -1,6 +1,6 @@
 import 'package:app/features/missions/mission_details/widgets/expenses/_handset.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_adaptive_ui/flutter_adaptive_ui.dart';
+import 'package:prf_design/prf_design.dart';
 
 class ExpensesView extends StatelessWidget {
   const ExpensesView({
@@ -14,16 +14,14 @@ class ExpensesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptiveBuilder(
-      defaultBuilder: (_, _) => ExpensesViewHandset(
+    return PRFAdaptive(
+      handset: (_) => ExpensesViewHandset(
         accountingEventUlid: accountingEventUlid,
         canEdit: canEdit,
       ),
-      layoutDelegate: AdaptiveLayoutDelegateWithMinimallScreenType(
-        handset: (_, _) => ExpensesViewHandset(
-          accountingEventUlid: accountingEventUlid,
-          canEdit: canEdit,
-        ),
+      builder: (_, _) => ExpensesViewHandset(
+        accountingEventUlid: accountingEventUlid,
+        canEdit: canEdit,
       ),
     );
   }

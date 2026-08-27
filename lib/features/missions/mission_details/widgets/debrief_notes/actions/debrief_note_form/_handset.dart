@@ -44,6 +44,12 @@ class _DebriefNoteFormViewHandsetState
     _noteController.addListener(_onFormChanged);
   }
 
+  @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
+  }
+
   void _onFormChanged() {
     if (_showValidation) {
       _validateForm();
@@ -59,7 +65,7 @@ class _DebriefNoteFormViewHandsetState
     _clearErrors();
 
     if (_noteController.text.trim().isEmpty) {
-      _noteError = 'Note is required';
+      _noteError = context.l10n.debriefNoteRequired;
     }
 
     setState(() => _showValidation = true);
@@ -78,7 +84,7 @@ class _DebriefNoteFormViewHandsetState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _isEditing ? 'Update Note' : l10n.addDebriefNote,
+              _isEditing ? l10n.updateNoteTitle : l10n.addDebriefNote,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -90,7 +96,8 @@ class _DebriefNoteFormViewHandsetState
               icon: Icons.edit_note,
               title: l10n.note,
               isRequired: true,
-              child: PRFTextAreaInput(
+              child: PRFTextField(
+                type: PRFTextFieldType.textArea,
                 hintText: l10n.addDebriefNoteDesc,
                 controller: _noteController,
                 enabled: !_isLoading,
@@ -132,9 +139,9 @@ class _DebriefNoteFormViewHandsetState
                 );
               },
               builder: (context, state) {
-                return PRFPrimaryButton(
+                return PRFButton(
                   onPressed: _submitForm,
-                  title: _isEditing ? 'Update' : l10n.record,
+                  title: _isEditing ? l10n.update : l10n.record,
                   disabled: !_isFormValid,
                   isLoading: _isLoading,
                 );
@@ -151,7 +158,7 @@ class _DebriefNoteFormViewHandsetState
       Gaimon.warning();
       PRFSnackbar.error(
         context,
-        'Please fix the highlighted fields and try again.',
+        context.l10n.fixHighlightedFields,
       );
       return;
     }

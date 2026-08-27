@@ -1,4 +1,5 @@
 import 'package:app/features/missions/mission_details/widgets/expenses/cubit/allocation_entry_resource_cubit.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/expense/prf_allocation_entry.dart';
 import 'package:app/models/remote/expense/prf_refund_dto.dart';
 import 'package:app/utils/crud/resource_state.dart';
@@ -58,10 +59,10 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
     _clearErrors();
 
     if (_amountController.text.trim().isEmpty) {
-      _amountError = 'Amount is required';
+      _amountError = context.l10n.fieldRequired(context.l10n.amount);
     }
     if (_confirmationController.text.trim().isEmpty) {
-      _confirmationError = 'Confirmation message is required';
+      _confirmationError = context.l10n.confirmationMessageRequired;
     }
 
     setState(() => _showValidation = true);
@@ -76,7 +77,9 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.05),
+            Theme.of(
+              context,
+            ).colorScheme.tertiary.withValues(alpha: PRFOpacities.faint),
             Theme.of(context).colorScheme.surface,
           ],
         ),
@@ -98,15 +101,20 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                           Theme.of(context).colorScheme.tertiary,
                           Theme.of(
                             context,
-                          ).colorScheme.tertiary.withValues(alpha: 0.8),
+                          ).colorScheme.tertiary.withValues(
+                            alpha: PRFOpacities.stronger,
+                          ),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.tertiary.withValues(alpha: 0.3),
+                          color:
+                              Theme.of(
+                                context,
+                              ).colorScheme.tertiary.withValues(
+                                alpha: PRFOpacities.glow,
+                              ),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -121,7 +129,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.sm),
                         Text(
-                          'Add Refund Entry',
+                          context.l10n.addRefundEntryTitle,
                           style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.onTertiary,
@@ -130,12 +138,15 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.xs),
                         Text(
-                          'Record a new refund entry for this accounting event',
+                          context.l10n.addRefundEntryDesc,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onTertiary.withValues(alpha: 0.9),
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onTertiary.withValues(
+                                      alpha: PRFOpacities.nearOpaque,
+                                    ),
                               ),
                           textAlign: TextAlign.center,
                         ),
@@ -157,13 +168,16 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                   border: Border.all(
                     color: Theme.of(
                       context,
-                    ).colorScheme.outline.withValues(alpha: 0.2),
+                    ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.shadow.withValues(alpha: 0.1),
+                      color:
+                          Theme.of(
+                            context,
+                          ).colorScheme.shadow.withValues(
+                            alpha: PRFOpacities.subtle,
+                          ),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -173,12 +187,12 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                   children: [
                     PRFFormSection(
                           icon: Icons.attach_money,
-                          title: 'Refund Amount',
+                          title: context.l10n.refundAmount,
                           isRequired: true,
                           child: _buildNumberField(
                             controller: _amountController,
-                            label: 'Amount',
-                            hint: 'Enter refund amount',
+                            label: context.l10n.amount,
+                            hint: context.l10n.enterRefundAmount,
                             prefix: 'KES ',
                           ),
                         )
@@ -188,14 +202,13 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
 
                     PRFFormSection(
                           icon: Icons.description,
-                          title: 'Confirmation Message',
+                          title: context.l10n.confirmationMessage,
                           isRequired: true,
                           child: Column(
                             children: [
-                              PRFTextAreaInput(
-                                hintText:
-                                    'Enter confirmation message or '
-                                    'reference number',
+                              PRFTextField(
+                                type: PRFTextFieldType.textArea,
+                                hintText: context.l10n.enterConfirmationHint,
                                 controller: _confirmationController,
                                 maxLines: 3,
                                 textInputAction: TextInputAction.done,
@@ -235,7 +248,7 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                           Navigator.of(context).pop();
                           PRFSnackbar.success(
                             context,
-                            'Refund entry added successfully',
+                            context.l10n.refundAddedSuccessfully,
                           );
                         },
                         error: (error) {
@@ -247,9 +260,9 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
                       );
                     },
                     builder: (context, state) {
-                      return PRFPrimaryButton(
+                      return PRFButton(
                         onPressed: _submitForm,
-                        title: 'Add Refund Entry',
+                        title: context.l10n.addRefundEntry,
                         disabled: !_isFormValid,
                         isLoading: _isLoading,
                       );
@@ -285,7 +298,8 @@ class _AddRefundViewHandsetState extends State<AddRefundViewHandset> {
           ),
         ),
         const SizedBox(height: PRFSpacingTokens.sm),
-        PRFNumberInput(
+        PRFTextField(
+          type: PRFTextFieldType.number,
           controller: controller,
           hintText: hint,
           prefixText: prefix,

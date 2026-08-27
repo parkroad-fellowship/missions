@@ -4,6 +4,7 @@ import 'package:app/models/remote/course/prf_lesson_member_dto.dart';
 import 'package:app/models/remote/course/prf_lesson_module.dart';
 import 'package:app/services/api/lesson_member_service.dart';
 import 'package:app/services/api/lesson_module_service.dart';
+import 'package:app/services/local_storage/hive/db/lesson_module_hive_db_service.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/utils/crud/resource_cubit.dart';
 import 'package:app/utils/crud/resource_state.dart';
@@ -66,6 +67,10 @@ class LessonResourceCubit extends ResourceCubit<PRFLessonModule> {
   Future<List<PRFLessonModule>> loadCachedList({
     Map<String, dynamic>? filters,
   }) {
+    final moduleUlid = filters?['module_ulid'] as String?;
+    if (moduleUlid != null) {
+      return (dbService as LessonModuleHiveDbService).listByModule(moduleUlid);
+    }
     return dbService.list();
   }
 }

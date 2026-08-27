@@ -1,6 +1,8 @@
 import 'package:app/features/missions/_handset.dart';
+import 'package:app/features/missions/_tablet.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:prf_design/prf_design.dart';
 
 @RoutePage()
 class MissionsPage extends StatelessWidget {
@@ -8,6 +10,10 @@ class MissionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MissionsPageHandset();
+    return PRFAdaptive(
+      builder: (context, _) => const MissionsPageTablet(),
+      handset: (context) => const MissionsPageHandset(),
+      tablet: (context) => const MissionsPageTablet(),
+    );
   }
 }

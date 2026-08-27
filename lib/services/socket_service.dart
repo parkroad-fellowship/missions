@@ -16,6 +16,10 @@ import 'package:logger/logger.dart';
 abstract class SocketService {
   SocketConfig defaultConfig();
   Future<void> init({required SocketConfig socketConfig});
+
+  /// Tears down subscriptions for the given private channels so their
+  /// listeners do not outlive the screen that registered them.
+  Future<void> unsubscribePrivateChannels(Set<String> channelNames);
   Future<void> dispose();
   Stream<bool> get connectionState;
 }
@@ -27,6 +31,9 @@ class SocketServiceImpl implements SocketService {
 
   late HiveService _hiveService;
   PusherChannelsClient? _client;
+  StreamSubscription<void>? _connectionEstablishedSubscription;
+  final Map<String, PrivateChannel> _privateChannels = {};
+  final Map<String, PresenceChannel> _presenceChannels = {};
   final StreamController<bool> _connectionStateController =
       StreamController<bool>.broadcast();
 
@@ -130,30 +137,6 @@ class SocketServiceImpl implements SocketService {
     );
   }
 
-  void _subscribeToPrivateChannelsEvent({
-    required PusherChannelsClient client,
-    required List<Channel> channels,
-  }) {
-    client.onConnectionEstablished.listen((_) {
-      for (final channel in channels) {
-        channel.subscribeIfNotUnsubscribed();
-        Logger().i('Subscribed to private channel: ${channel.name}');
-      }
-    });
-  }
-
-  void _subscribeToPresenceChannelsEvent({
-    required PusherChannelsClient client,
-    required List<Channel> channels,
-  }) {
-    client.onConnectionEstablished.listen((_) {
-      for (final channel in channels) {
-        channel.subscribeIfNotUnsubscribed();
-        Logger().i('Subscribed to presence channel: ${channel.name}');
-      }
-    });
-  }
-
   void _bindEventToPresenceChannel({
     required PresenceChannel channel,
     required String eventName,
@@ -249,15 +232,37 @@ class SocketServiceImpl implements SocketService {
     });
   }
 
+  void _bindResubscribeOnReconnect({
+    required PusherChannelsClient client,
+  }) {
+    _connectionEstablishedSubscription?.cancel();
+    _connectionEstablishedSubscription = client.onConnectionEstablished.listen(
+      (_) {
+        for (final channel in _privateChannels.values) {
+          channel.subscribeIfNotUnsubscribed();
+          Logger().i('Subscribed to private channel: ${channel.name}');
+        }
+        for (final channel in _presenceChannels.values) {
+          channel.subscribeIfNotUnsubscribed();
+          Logger().i('Subscribed to presence channel: ${channel.name}');
+        }
+      },
+    );
+  }
+
   @override
   Future<void> init({required SocketConfig socketConfig}) async {
-    final client = _initClient();
-    _client = client;
+    // Reuse the running client so repeated init calls (e.g. screens adding a
+    // channel) never stack parallel connections or duplicate listeners.
+    final client = _client ??= _initClient();
+    final isNewClient = _connectionEstablishedSubscription == null;
 
-    final configuredChannels = <PrivateChannel>[];
-    final configuredPresenceChannels = <PresenceChannel>[];
+    if (isNewClient) {
+      _bindResubscribeOnReconnect(client: client);
+    }
 
     socketConfig.privateChannels.forEach((channelName, events) {
+      if (_privateChannels.containsKey(channelName)) return;
       final privateChannel = _registerToPrivateChannel(
         client: client,
         channelName: channelName,
@@ -267,15 +272,15 @@ class SocketServiceImpl implements SocketService {
         _bindEventToChannel(channel: privateChannel, eventName: eventName);
       }
 
-      configuredChannels.add(privateChannel);
+      _privateChannels[channelName] = privateChannel;
+      if (!isNewClient) {
+        privateChannel.subscribeIfNotUnsubscribed();
+        Logger().i('Subscribed to private channel: ${privateChannel.name}');
+      }
     });
 
-    _subscribeToPrivateChannelsEvent(
-      client: client,
-      channels: configuredChannels,
-    );
-
     socketConfig.presenceChannels?.forEach((channelName, events) {
+      if (_presenceChannels.containsKey(channelName)) return;
       final presenceChannel = _registerToPresenceChannel(
         client: client,
         channelName: channelName,
@@ -288,18 +293,31 @@ class SocketServiceImpl implements SocketService {
         );
       }
 
-      configuredPresenceChannels.add(presenceChannel);
+      _presenceChannels[channelName] = presenceChannel;
+      if (!isNewClient) {
+        presenceChannel.subscribeIfNotUnsubscribed();
+        Logger().i('Subscribed to presence channel: ${presenceChannel.name}');
+      }
     });
-    _subscribeToPresenceChannelsEvent(
-      client: client,
-      channels: configuredPresenceChannels,
-    );
 
-    await _connectClient(client: client);
+    if (isNewClient) {
+      await _connectClient(client: client);
+    }
+  }
+
+  @override
+  Future<void> unsubscribePrivateChannels(Set<String> channelNames) async {
+    for (final channelName in channelNames) {
+      _privateChannels.remove(channelName)?.unsubscribe();
+    }
   }
 
   @override
   Future<void> dispose() async {
+    await _connectionEstablishedSubscription?.cancel();
+    _connectionEstablishedSubscription = null;
+    _privateChannels.clear();
+    _presenceChannels.clear();
     await _client?.disconnect();
     _client = null;
     await _connectionStateController.close();

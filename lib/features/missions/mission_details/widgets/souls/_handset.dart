@@ -28,7 +28,10 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
     return PRFBottomSheet.show<void>(
       context,
       title: context.l10n.recordSoul,
-      child: SoulFormView(missionUlid: mission.ulid),
+      child: SoulFormView(
+        missionUlid: mission.ulid,
+        institutionType: mission.school?.institutionType,
+      ),
     );
   }
 
@@ -38,6 +41,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
       title: context.l10n.edit,
       child: SoulFormView(
         missionUlid: mission.ulid,
+        institutionType: mission.school?.institutionType,
         soul: soul,
       ),
     );
@@ -47,7 +51,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
     final shouldDelete = await PRFConfirmationDialog.show(
       context,
       title: '${context.l10n.delete} ${context.l10n.souls}',
-      message: 'Are you sure you want to continue?',
+      message: context.l10n.continueConfirm,
       confirmLabel: context.l10n.delete,
       isDestructive: true,
     );
@@ -64,7 +68,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
       PRFSnackbar.error(context, error);
       return;
     }
-    PRFSnackbar.success(context, 'Soul deleted');
+    PRFSnackbar.success(context, context.l10n.soulDeleted);
   }
 
   Future<void> _loadSouls() {
@@ -87,7 +91,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
         );
 
         return MissionResourceTabView(
-          sectionTitle: 'Souls',
+          sectionTitle: l10n.soulsTitle,
           addButtonLabel: l10n.recordSoul,
           addButtonIcon: Icons.favorite_outline,
           emptyLabel: l10n.noSouls,
@@ -107,10 +111,15 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
                     title: souls[index].fullName,
                     subtitle: souls[index].notes?.trim().isNotEmpty ?? false
                         ? souls[index].notes
-                        : 'Captured ${DateFormatter.formatDateTime(souls[index].createdAt, timezone)}',
-                    editTooltip: 'Edit soul',
+                        : l10n.capturedAt(
+                            DateFormatter.formatDateTime(
+                              souls[index].createdAt,
+                              timezone,
+                            ),
+                          ),
+                    editTooltip: l10n.editSoulTooltip,
                     onEdit: () => _showEditSoulSheet(souls[index]),
-                    deleteTooltip: 'Delete soul',
+                    deleteTooltip: l10n.deleteSoulTooltip,
                     onDelete: () => _deleteSoul(souls[index]),
                     canEdit: mission.canEdit,
                   )

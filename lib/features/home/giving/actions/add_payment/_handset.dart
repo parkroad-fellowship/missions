@@ -57,10 +57,10 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
     _clearErrors();
 
     if (_amountController.text.trim().isEmpty) {
-      _amountError = 'Amount is required';
+      _amountError = context.l10n.fieldRequired(context.l10n.amount);
     }
     if (selectedPaymentType == null) {
-      _paymentTypeError = 'Please select a reason for giving';
+      _paymentTypeError = context.l10n.selectReasonForGiving;
     }
 
     setState(() => _showValidation = true);
@@ -110,7 +110,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                               }),
                               selection: selectedPaymentType,
                               hintText: l10n.reasonForGiving,
-                              emptyText: 'No payment types found',
+                              emptyText: l10n.noPaymentTypesFound,
                             ),
                       );
                     },
@@ -121,7 +121,8 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
               title: l10n.amount,
               isRequired: true,
               margin: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
-              child: PRFNumberInput(
+              child: PRFTextField(
+                type: PRFTextFieldType.number,
                 hintText: l10n.enterAmount,
                 controller: _amountController,
                 errorText: _showValidation ? _amountError : null,
@@ -167,16 +168,16 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                   curr is ResourceMutating<PRFPayment> ||
                   curr is ResourceError<PRFPayment>,
               builder: (context, state) {
-                return PRFPrimaryButton(
+                return PRFButton(
                   title: _isLoading ? l10n.recording : l10n.record,
                   disabled: _isLoading,
-                  isLoading: _isLoading ? true : null,
+                  isLoading: _isLoading,
                   onPressed: () async {
                     if (!_validateForm()) {
                       Gaimon.warning();
                       PRFSnackbar.error(
                         context,
-                        'Please fix the highlighted fields and try again.',
+                        l10n.fixHighlightedFields,
                       );
                       return;
                     }

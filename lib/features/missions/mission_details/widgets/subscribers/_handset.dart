@@ -81,7 +81,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
                 FilledButton.icon(
                   onPressed: _loadSubscriptions,
                   icon: const Icon(Icons.refresh_rounded),
-                  label: const Text('Retry'),
+                  label: Text(context.l10n.retry),
                 ),
               ],
             ),
@@ -100,8 +100,8 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
             ),
             children: [
               MissionSectionCard(
-                title: 'Mission Subscribers',
-                subtitle: 'Members subscribed to this mission.',
+                title: context.l10n.missionSubscribers,
+                subtitle: context.l10n.membersSubscribedToThisMission,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -140,7 +140,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
                     if (subscriptions.isEmpty)
                       PRFEmptyView(
                         label: l10n.noSubscribers,
-                        description: l10n.pleaseWait,
+                        description: l10n.noSubscribersDesc,
                       )
                     else
                       ...subscriptions.map(
@@ -213,7 +213,7 @@ class _SubscriptionCard extends StatelessWidget {
                         foregroundColor: theme.colorScheme.primary,
                       ),
                       onPressed: () => _viewSubscriber(context, member),
-                      child: const Text('View details'),
+                      child: Text(context.l10n.viewDetails),
                     ),
                   Text(
                     subtitle,
@@ -226,7 +226,7 @@ class _SubscriptionCard extends StatelessWidget {
             ),
             if (member != null)
               IconButton(
-                tooltip: 'View subscriber',
+                tooltip: context.l10n.viewSubscriberTooltip,
                 onPressed: () => _viewSubscriber(context, member),
                 icon: Icon(
                   Icons.visibility_outlined,
@@ -234,7 +234,7 @@ class _SubscriptionCard extends StatelessWidget {
                 ),
               ),
             IconButton(
-              tooltip: 'Call subscriber',
+              tooltip: context.l10n.callSubscriberTooltip,
               onPressed: () => _makeCall(member),
               icon: Icon(
                 Icons.phone_outlined,
@@ -331,7 +331,7 @@ class _SubscriptionCard extends StatelessWidget {
                   border: Border.all(
                     color: Theme.of(
                       context,
-                    ).colorScheme.outline.withValues(alpha: 0.2),
+                    ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
                   ),
                 ),
                 child: Text(
@@ -347,10 +347,9 @@ class _SubscriptionCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: PRFPrimaryButton(
+                  child: PRFButton(
                     onPressed: () => _makeCall(member),
-                    title: 'Call Member',
-                    disabled: false,
+                    title: context.l10n.callMember,
                   ),
                 ),
               ],
@@ -366,8 +365,10 @@ class _SubscriptionCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            theme.colorScheme.primary.withValues(alpha: 0.8),
-            theme.colorScheme.secondary.withValues(alpha: 0.6),
+            theme.colorScheme.primary.withValues(alpha: PRFOpacities.stronger),
+            theme.colorScheme.secondary.withValues(
+              alpha: PRFOpacities.prominent,
+            ),
           ],
         ),
       ),

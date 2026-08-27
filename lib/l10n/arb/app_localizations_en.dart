@@ -21,6 +21,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signingIn => 'Signing In ...';
 
   @override
+  String get continueWithGoogle => 'Continue with Google';
+
+  @override
+  String get pleaseWaitBrief => 'Please wait ...';
+
+  @override
+  String get orDivider => 'OR';
+
+  @override
+  String get signInPanelBody =>
+      'One home for the life of Parkroad Fellowship — serve missions together, give, pray for one another and stay close to the community wherever you are.';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get enterValidEmail => 'Please enter a valid email address';
+
+  @override
   String get missions => 'Missions';
 
   @override
@@ -1386,6 +1405,75 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get wrappedMissionsEmptyMessage =>
+      'No missions yet.\nStart your first mission!';
+
+  @override
+  String get wrappedImpactEmptyMessage =>
+      'No impact recorded yet.\nEvery mission touches lives!';
+
+  @override
+  String get wrappedLearningEmptyMessage =>
+      'No learning yet.\nStart a course to unlock this!';
+
+  @override
+  String get wrappedPrayerEmptyMessage =>
+      'No prayers answered yet.\nYour journey starts today!';
+
+  @override
+  String wrappedFavoriteMissionType(String name) {
+    return 'Favorite mission type — $name';
+  }
+
+  @override
+  String wrappedCourseProgress(int percentage) {
+    return '$percentage% complete';
+  }
+
+  @override
+  String get wrappedInsufficientDataTitle => 'Not enough data yet';
+
+  @override
+  String get wrappedInsufficientDataMessage =>
+      'Complete missions, courses, and more\nto unlock your Wrapped next season!';
+
+  @override
+  String get wrappedShareCta => 'Share Your Wrapped';
+
+  @override
+  String wrappedAboveAverage(String categories) {
+    return 'Above average in $categories';
+  }
+
+  @override
+  String wrappedShareText(
+    int year,
+    int missions,
+    int souls,
+    int courses,
+    int events,
+    int prayers,
+  ) {
+    return 'My $year PRF Missions Wrapped:\n$missions Missions\n$souls Souls Touched\n$courses Courses\n$events Events Attended\n$prayers Prayer Responses\n\nHow was your year?';
+  }
+
+  @override
+  String get wrappedLoadingMessage => 'Preparing your Wrapped…';
+
+  @override
+  String get wrappedPaused => 'Paused';
+
+  @override
+  String wrappedThankYouPersonal(String name, int year) {
+    return '$name, thank you for making an impact in $year';
+  }
+
+  @override
+  String wrappedCommunalLine(int year) {
+    return 'One fellowship, one mission — together we made $year count.';
+  }
+
+  @override
   String impact(int year) {
     return '$year Review';
   }
@@ -1410,4 +1498,869 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get answerFaqs => 'Answer FAQs';
+
+  @override
+  String get receiptPdf => 'Receipt PDF';
+
+  @override
+  String get venue => 'Venue';
+
+  @override
+  String get dateRange => 'Date Range';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get time_2 => 'Time';
+
+  @override
+  String get subscribe => 'Subscribe';
+
+  @override
+  String get updateSubscription => 'Update Subscription';
+
+  @override
+  String get addMedia => 'Add Media';
+
+  @override
+  String get addEventPhotos_2 => 'Add Event Photos';
+
+  @override
+  String get sharePhotosAndMemoriesFromThisEvent =>
+      'Share photos and memories from this event';
+
+  @override
+  String get recordAudio => 'Record audio';
+
+  @override
+  String get recordEventAudio => 'Record event audio';
+
+  @override
+  String get photos => 'Photos';
+
+  @override
+  String get missionsCompleted => 'missions completed';
+
+  @override
+  String get soulsTouched => 'souls touched';
+
+  @override
+  String get coursesCompleted => 'courses completed';
+
+  @override
+  String get prayerResponses => 'prayer responses';
+
+  @override
+  String get eventsAttended => 'events attended';
+
+  @override
+  String get recordAnswer => 'Record answer';
+
+  @override
+  String get noAnswersYet => 'No answers yet';
+
+  @override
+  String get answers => 'Answers';
+
+  @override
+  String get searchQuestions => 'Search questions';
+
+  @override
+  String get loadingQuestions => 'Loading questions';
+
+  @override
+  String get debriefNoteDeleted => 'Debrief note deleted';
+
+  @override
+  String get feedbackData => 'Feedback Data';
+
+  @override
+  String get questionsCapturedAndPostMissionDebriefReflections =>
+      'Questions captured and post-mission debrief reflections.';
+
+  @override
+  String get finances => 'Finances';
+
+  @override
+  String get requisitionsAndExpenseTrackingForThisMission =>
+      'Requisitions and expense tracking for this mission.';
+
+  @override
+  String get overview => 'Overview';
+
+  @override
+  String get missionContextTeamMembersAndSessions =>
+      'Mission context, team members, and sessions.';
+
+  @override
+  String get receiptUploadedSuccessfully => 'Receipt uploaded successfully';
+
+  @override
+  String get noExpensesYet => 'No Expenses Yet';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get receiptDeletedSuccessfully => 'Receipt deleted successfully';
+
+  @override
+  String get deleteReceipt => 'Delete Receipt';
+
+  @override
+  String get addExpense_2 => 'Add Expense';
+
+  @override
+  String get editExpense => 'Edit Expense';
+
+  @override
+  String get deleteExpense => 'Delete Expense';
+
+  @override
+  String get addRefund => 'Add Refund';
+
+  @override
+  String get copiedToClipboard => 'Copied to clipboard';
+
+  @override
+  String copiedToClipboard_2(Object value) {
+    return 'Copied \"$value\" to clipboard';
+  }
+
+  @override
+  String get refundAmount => 'Refund Amount';
+
+  @override
+  String get addRefundEntry => 'Add Refund Entry';
+
+  @override
+  String get tokenAmount_2 => 'Token Amount';
+
+  @override
+  String get updateExpense => 'Update Expense';
+
+  @override
+  String get mediaDeleted => 'Media deleted';
+
+  @override
+  String get savedToDevice => 'Saved to device';
+
+  @override
+  String get failedToSave => 'Failed to save';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get questionUpdated => 'Question updated';
+
+  @override
+  String get questionDeleted => 'Question deleted';
+
+  @override
+  String get update => 'Update';
+
+  @override
+  String get requisitions => 'Requisitions';
+
+  @override
+  String get noRequisitions => 'No Requisitions';
+
+  @override
+  String get queued => 'Queued';
+
+  @override
+  String get retryAll => 'Retry all';
+
+  @override
+  String get download => 'Download';
+
+  @override
+  String get processing => 'Processing';
+
+  @override
+  String get open => 'Open';
+
+  @override
+  String get sessionInformation => 'Session information';
+
+  @override
+  String get soulDeleted => 'Soul deleted';
+
+  @override
+  String get missionSubscribers => 'Mission Subscribers';
+
+  @override
+  String get membersSubscribedToThisMission =>
+      'Members subscribed to this mission.';
+
+  @override
+  String get viewDetails => 'View details';
+
+  @override
+  String get callMember => 'Call Member';
+
+  @override
+  String get eGCoolHighSchool => 'e.g., Cool High School';
+
+  @override
+  String get eGTrJohn => 'e.g., Tr John';
+
+  @override
+  String students(Object school_totalStudents) {
+    return '$school_totalStudents students';
+  }
+
+  @override
+  String missions_2(Object school_missions_length) {
+    return '$school_missions_length missions';
+  }
+
+  @override
+  String get camera => 'Camera';
+
+  @override
+  String get unableToPlayAudio => 'Unable to play audio';
+
+  @override
+  String get view => 'View';
+
+  @override
+  String get retryNow => 'Retry now';
+
+  @override
+  String get pendingUploads => 'Pending uploads';
+
+  @override
+  String get useAppWhileRecording => 'Use app while recording';
+
+  @override
+  String get useAppWhilePaused => 'Use app while paused';
+
+  @override
+  String get answerUploaded => 'Answer uploaded';
+
+  @override
+  String get viewAll => 'View All';
+
+  @override
+  String get noPendingUploads => 'No pending uploads';
+
+  @override
+  String get pendingUploads_2 => 'Pending Uploads';
+
+  @override
+  String uploadedSuccessfully(Object upload_name) {
+    return '$upload_name uploaded successfully';
+  }
+
+  @override
+  String get retryFailed => 'Retry failed';
+
+  @override
+  String get dashboardTitle => 'Mission Dashboard';
+
+  @override
+  String get dashboardSubtitle =>
+      'Explore and suggest missions, make giving contributions, and check the latest answers and announcements.';
+
+  @override
+  String get prayerPrompt => 'Prayer prompt';
+
+  @override
+  String get emptyActionsTitle => 'Nothing here yet';
+
+  @override
+  String get emptyActionsBody =>
+      'Fellowship actions will appear here once they are published.';
+
+  @override
+  String get allPast => 'All Past';
+
+  @override
+  String get yourNextMission => 'Your next mission';
+
+  @override
+  String get missionsIntroBody =>
+      'Choose a mission to serve in — or catch up on the grounds we have already visited.';
+
+  @override
+  String upcomingCount(int count) {
+    return '$count Upcoming';
+  }
+
+  @override
+  String subscribedCount(int count) {
+    return '$count Subscribed';
+  }
+
+  @override
+  String get noUnreadQuestionsDesc =>
+      'No unread questions right now. New questions from students will appear here.';
+
+  @override
+  String get noRepliedQuestionsDesc =>
+      'No replied questions yet. Answers you send to students will collect here.';
+
+  @override
+  String get noAnnouncementsDesc =>
+      'Announcements and publications from the fellowship will appear here.';
+
+  @override
+  String get schoolPastMissions => 'School Past Missions';
+
+  @override
+  String get spiritualLegacy => 'Spiritual Legacy';
+
+  @override
+  String get schoolLegacyBody =>
+      'Explore all historical missions carried out by PRF at this school. Touch lives, follow up with student enquiries, and review past statistics.';
+
+  @override
+  String get noPastMissionsForSchool => 'No past missions for this school.';
+
+  @override
+  String get groundSuggestions => 'Ground Suggestions';
+
+  @override
+  String get pendingStatus => 'Pending';
+
+  @override
+  String get suggestGroundsTitle => 'Suggest Mission Grounds';
+
+  @override
+  String get suggestGroundsPanelBody =>
+      'Suggest new schools or centers that need spiritual interventions. The fellowship review board evaluates all entries to establish new missions.';
+
+  @override
+  String get noQuestionsYet => 'No questions yet';
+
+  @override
+  String get noQuestionsFound => 'No questions found';
+
+  @override
+  String get questionsFromMissionsBody =>
+      'Questions from missions will appear here';
+
+  @override
+  String get tryDifferentSearchTerm => 'Try a different search term';
+
+  @override
+  String get missionsFaqHub => 'Missions FAQ Hub';
+
+  @override
+  String get faqHubIntro =>
+      'Record audio answers to student questions, which are transcribed into text automatically.';
+
+  @override
+  String get answerTranscribeTitle => 'Answer & Transcribe';
+
+  @override
+  String get faqHubPanelBody =>
+      'Review incoming student questions on the left. Tap \"Record Answer\" to capture your audio feedback, which is transcribed by AI to serve the fellowship.';
+
+  @override
+  String get awaitingAnswers => 'Awaiting answers';
+
+  @override
+  String answersCount(int count) {
+    return 'Answers ($count)';
+  }
+
+  @override
+  String missionThemeLabel(Object theme) {
+    return 'Mission theme: $theme';
+  }
+
+  @override
+  String recordAnswerSemantic(Object question) {
+    return 'Record answer to: $question';
+  }
+
+  @override
+  String get overviewTab => 'Overview';
+
+  @override
+  String get feedbackDataTab => 'Feedback Data';
+
+  @override
+  String get financeTab => 'Finance';
+
+  @override
+  String get missionOverview => 'Mission Overview';
+
+  @override
+  String get schoolNotSpecified => 'School not specified';
+
+  @override
+  String get generalMission => 'General Mission';
+
+  @override
+  String get interactiveActions => 'Interactive Actions';
+
+  @override
+  String get missionActionsGuidance =>
+      'The button below dynamically adapts to your current selected tab. Add sessions, write debriefs, register souls, or report expenses seamlessly.';
+
+  @override
+  String get latestCampaign => 'Latest Campaign';
+
+  @override
+  String get announcementsPanelIntro =>
+      'Announcements and publications received recently from the Fellowship admin.';
+
+  @override
+  String get stayUpToDate => 'Stay Up to Date';
+
+  @override
+  String get announcementsPanelBody =>
+      'Keep track of important announcements, spiritual years publications, events alerts, and news directly shared by Park Road Fellowship.';
+
+  @override
+  String publicationsCount(int count) {
+    return '$count Publications';
+  }
+
+  @override
+  String get prayerSummaryTitle => 'Prayer Summary';
+
+  @override
+  String get prayerPanelBody =>
+      'Submit your prayer needs directly to the fellowship. Together in one spirit, we stand in prayer watch and lift up our requests.';
+
+  @override
+  String get enquiryDashboard => 'Enquiry Dashboard';
+
+  @override
+  String get unreadQuestions => 'Unread Questions';
+
+  @override
+  String get repliedQuestions => 'Replied Questions';
+
+  @override
+  String get ministerToStudents => 'Minister to Students';
+
+  @override
+  String get enquiriesPanelBody =>
+      'Answer enquiries submitted by students. Share wisdom and feedback on spiritual matters, or guide them through their doubts.';
+
+  @override
+  String get helpCenter => 'Help Center';
+
+  @override
+  String get findQuickAnswers => 'Find Quick Answers';
+
+  @override
+  String get faqsPanelBody =>
+      'Search through compiled FAQs or filter by categories on the left panel to find immediate guidelines about PRF Missions and fellowship rules.';
+
+  @override
+  String get noFaqsDesc =>
+      'Browse categories or search to find answers about PRF Missions and fellowship life.';
+
+  @override
+  String get givingSummary => 'Giving Summary';
+
+  @override
+  String get supportFellowshipMissions => 'Support Fellowship Missions';
+
+  @override
+  String get givingPanelBody =>
+      'Your giving enables spiritual growth and supports critical missions, local requisitions, and fellowship operations.';
+
+  @override
+  String get fellowshipEvents => 'Fellowship Events';
+
+  @override
+  String get eventsPanelIntro =>
+      'Join fellowship gatherings, teachings, conferences and local spiritual events.';
+
+  @override
+  String get participateLearn => 'Participate & Learn';
+
+  @override
+  String get eventsPanelBody =>
+      'Tap any event from the left list to subscribe and secure your slot, view attendees lists, and read schedules and timelines.';
+
+  @override
+  String availableCount(int count) {
+    return '$count Available';
+  }
+
+  @override
+  String get venueNotSpecified => 'Venue not specified';
+
+  @override
+  String get addRecordings => 'Add recordings';
+
+  @override
+  String get recordingsCaptureBody =>
+      'Record audio to capture event highlights.';
+
+  @override
+  String get growInKnowledge => 'Grow in Knowledge';
+
+  @override
+  String get lmsPanelBody =>
+      'Acquire wisdom and understanding through structured learning courses. Take courses, complete modules, and learn at your own pace.';
+
+  @override
+  String get noCoursesDesc =>
+      'New courses will appear here as the fellowship publishes them.';
+
+  @override
+  String get completeAllModules => 'Complete all Modules';
+
+  @override
+  String get modulesPanelBody =>
+      'Each module has specific learning content and lessons. View and study module actions on the left panel.';
+
+  @override
+  String get noModulesDesc =>
+      'Modules will appear here once the course content is published.';
+
+  @override
+  String get studyYourLessons => 'Study your Lessons';
+
+  @override
+  String get lessonsPanelBody =>
+      'Each lesson includes informative texts and resources to grow. Tap lessons on the left list to begin studying.';
+
+  @override
+  String get noLessonsDesc =>
+      'Lessons will appear here once the module content is published.';
+
+  @override
+  String get noLessonResources =>
+      'No learning resources are attached to this lesson yet.';
+
+  @override
+  String get noMissionsDesc =>
+      'Upcoming missions will appear here once the missions desk announces them.';
+
+  @override
+  String get noRepliesYet =>
+      'No replies yet. Responses from the desk will appear here.';
+
+  @override
+  String get noSubscribersDesc =>
+      'Subscriptions will appear here as members join this mission.';
+
+  @override
+  String get question => 'Question';
+
+  @override
+  String fieldRequired(Object field) {
+    return '$field is required';
+  }
+
+  @override
+  String get fixHighlightedFields =>
+      'Please fix the highlighted fields and try again.';
+
+  @override
+  String get ticketsRequired => 'Number of tickets is required';
+
+  @override
+  String get noPaymentTypesFound => 'No payment types found';
+
+  @override
+  String get noSubscribersFound => 'No subscribers found';
+
+  @override
+  String get noClassGroupsFound => 'No class groups found';
+
+  @override
+  String get updateSessionTitle => 'Update Session';
+
+  @override
+  String get updateQuestionTitle => 'Update Question';
+
+  @override
+  String get updateNoteTitle => 'Update Note';
+
+  @override
+  String get updateSoulTitle => 'Update Soul';
+
+  @override
+  String failedUploadReceipt(Object message) {
+    return 'Failed to upload receipt: $message';
+  }
+
+  @override
+  String failedSelectImage(Object error) {
+    return 'Failed to select image: $error';
+  }
+
+  @override
+  String failedSelectPdf(Object error) {
+    return 'Failed to select PDF: $error';
+  }
+
+  @override
+  String get startAddingExpense => 'Start by adding your first expense';
+
+  @override
+  String get tapToHideDetails => 'Tap to hide details';
+
+  @override
+  String tapToViewTransactions(int count) {
+    return 'Tap to view $count transactions';
+  }
+
+  @override
+  String get deleteReceiptConfirm =>
+      'Are you sure you want to delete this receipt? This action cannot be undone.';
+
+  @override
+  String get deleteExpenseConfirm =>
+      'Are you sure you want to delete this expense?';
+
+  @override
+  String get attachReceiptOrDocumentation => 'Attach receipt or documentation';
+
+  @override
+  String get receiptMissing => 'Receipt Missing';
+
+  @override
+  String get transactionBreakdown => 'Transaction Breakdown';
+
+  @override
+  String get refundEntries => 'Refund Entries';
+
+  @override
+  String get deficitAmount => 'Deficit Amount';
+
+  @override
+  String get confirmationLabel => 'Confirmation';
+
+  @override
+  String get imageLabel => 'Image';
+
+  @override
+  String attachmentsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Attachments',
+      one: '$count Attachment',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get continueConfirm => 'Are you sure you want to continue?';
+
+  @override
+  String get editDebriefTooltip => 'Edit debrief note';
+
+  @override
+  String get deleteDebriefTooltip => 'Delete debrief note';
+
+  @override
+  String get removeNotImplemented => 'Remove functionality not implemented';
+
+  @override
+  String get debriefNoteRequired => 'Note is required';
+
+  @override
+  String get sessionNotesRequired => 'Preparation notes are required';
+
+  @override
+  String get prayerRequestRequired => 'Prayer request is required';
+
+  @override
+  String get viewSubscriberTooltip => 'View subscriber';
+
+  @override
+  String get callSubscriberTooltip => 'Call subscriber';
+
+  @override
+  String get selectedPhotos => 'Selected Photos';
+
+  @override
+  String get debriefNotesTitle => 'Debrief Notes';
+
+  @override
+  String get untitledNote => 'Untitled note';
+
+  @override
+  String get travelTime => 'Travel Time';
+
+  @override
+  String get deleteMediaConfirm =>
+      'Are you sure you want to delete this media?';
+
+  @override
+  String get errorLoadingMedia => 'Error loading media';
+
+  @override
+  String tapToSelectMedia(Object mediaType) {
+    return 'Tap to select $mediaType';
+  }
+
+  @override
+  String chooseMultipleToShare(Object mediaType) {
+    return 'Choose multiple $mediaType to share';
+  }
+
+  @override
+  String get groundNameRequired => 'Mission ground name is required';
+
+  @override
+  String get contactPersonRequired => 'Contact person is required';
+
+  @override
+  String get contactNumberRequired => 'Contact number is required';
+
+  @override
+  String get statusRequired => 'Status is required';
+
+  @override
+  String get noStatusesFound => 'No statuses found';
+
+  @override
+  String get editSoulTooltip => 'Edit soul';
+
+  @override
+  String get deleteSoulTooltip => 'Delete soul';
+
+  @override
+  String recordingSaved(Object duration) {
+    return 'Recording saved ($duration)';
+  }
+
+  @override
+  String get queuedRecordingsForSession => 'Queued recordings for this session';
+
+  @override
+  String get syncingRecording => 'Syncing recording...';
+
+  @override
+  String get recorderIdle => 'Recorder idle';
+
+  @override
+  String get recorderReady => 'Recorder ready';
+
+  @override
+  String get recordingInProgress => 'Recording in progress';
+
+  @override
+  String get savedLocally => 'Saved locally';
+
+  @override
+  String get recorderNeedsAttention => 'Recorder needs attention';
+
+  @override
+  String get noNotesAvailable => 'No notes available';
+
+  @override
+  String get missionQuestionsTitle => 'Mission Questions';
+
+  @override
+  String get untitledQuestion => 'Untitled question';
+
+  @override
+  String get editQuestionTooltip => 'Edit question';
+
+  @override
+  String get deleteQuestionTooltip => 'Delete question';
+
+  @override
+  String get queuedRecordings => 'Queued recordings';
+
+  @override
+  String get offlineRecordingNotice =>
+      'You are offline. The app will retry when you are back online. You can continue using the app.';
+
+  @override
+  String get backgroundRecording => 'Recording continues in the background.';
+
+  @override
+  String get confirmationMessageRequired => 'Confirmation message is required';
+
+  @override
+  String get enterConfirmationHint =>
+      'Enter confirmation message or reference number';
+
+  @override
+  String get addTokenTitle => 'Add Token';
+
+  @override
+  String get addTokenDesc => 'Add funds as a credit entry to the allocation';
+
+  @override
+  String get enterTokenAmount => 'Enter token amount';
+
+  @override
+  String get editExpenseTitle => 'Edit Expense';
+
+  @override
+  String get editExpenseDesc => 'Update expense details and receipts';
+
+  @override
+  String get addNewExpenseTitle => 'Add New Expense';
+
+  @override
+  String get addNewExpenseDesc =>
+      'Fill in the details below to record a new expense';
+
+  @override
+  String get addRefundEntryTitle => 'Add Refund Entry';
+
+  @override
+  String get addRefundEntryDesc =>
+      'Record a new refund entry for this accounting event';
+
+  @override
+  String get enterRefundAmount => 'Enter refund amount';
+
+  @override
+  String get refundAddedSuccessfully => 'Refund entry added successfully';
+
+  @override
+  String get downloadFailed => 'Download failed';
+
+  @override
+  String capturedAt(Object date) {
+    return 'Captured $date';
+  }
+
+  @override
+  String get soulsTitle => 'Souls';
+
+  @override
+  String dayLabel(int day) {
+    return 'Day $day';
+  }
+
+  @override
+  String get loadingVideo => 'Loading video...';
+
+  @override
+  String get errorLoadingVideo => 'Error loading video';
+
+  @override
+  String get unknownErrorOccurred => 'Unknown error occurred';
+
+  @override
+  String get missionGroundTab => 'Mission Ground';
+
+  @override
+  String get failedToLoadImage => 'Failed to load image';
+
+  @override
+  String get noFinancialDataForMission =>
+      'No financial data available for this mission.';
+
+  @override
+  String get noRequisitionsCreated =>
+      'No requisitions have been created for this mission.';
+
+  @override
+  String get noLineItems => 'No line items';
+
+  @override
+  String get subscribers => 'Subscribers';
 }

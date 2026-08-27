@@ -1,16 +1,16 @@
 import 'package:app/enums/payment/prf_completion_status.dart';
 import 'package:app/features/lms/cubit/lesson_resource_cubit.dart';
 import 'package:app/features/lms/cubit/module_resource_cubit.dart';
+import 'package:app/features/lms/lesson_details/_shared.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/course/prf_lesson_module.dart';
 import 'package:app/utils/crud/resource_state.dart';
-import 'package:app/utils/helpers/url_helper.dart';
 import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:gaimon/gaimon.dart';
 import 'package:prf_design/prf_design.dart';
 
@@ -29,17 +29,16 @@ class LessonDetailsHandset extends StatefulWidget {
 }
 
 class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
-  String get lessonModuleUlid => widget.lessonModuleUlid;
-  String get courseModuleUlid => widget.courseModuleUlid;
+  late final _form = LessonDetailsFormState(
+    lessonModuleUlid: widget.lessonModuleUlid,
+  );
 
   @override
   void initState() {
     super.initState();
-
-    final lessonCubit = context.read<LessonResourceCubit>();
-    if (!lessonCubit.currentItems.any((l) => l.ulid == lessonModuleUlid)) {
-      lessonCubit.loadAll();
-    }
+    _form
+      ..attach(() => setState(() {}))
+      ..load(context);
   }
 
   bool _isLoading = false;
@@ -55,9 +54,11 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
         orElse: () => true,
       ),
       builder: (context, state) {
-        final lessonModule = state.maybeWhen(
-          listLoaded: (items, _, _) => items.isNotEmpty ? items.first : null,
-          orElse: () => null,
+        // Same source as the list: pull-to-refresh keeps content visible
+        // instead of flashing a full-screen spinner.
+        final lessonItems = context.read<LessonResourceCubit>().currentItems;
+        final lessonModule = lessonItems.firstWhereOrNull(
+          (l) => l.ulid == widget.lessonModuleUlid,
         );
         final lesson = lessonModule?.lesson;
         final mediaCount = [
@@ -73,88 +74,23 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
           backgroundColor: theme.colorScheme.surface,
           body: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      theme.colorScheme.primary,
-                      theme.colorScheme.primary.withValues(alpha: 0.88),
-                    ],
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    PRFBrandedNavBar(
-                      title: l10n.lessonDetails,
-                      onBack: () => context.router.popUntilRouteWithPath(
-                        PRFSuperAppRouter.moduleDetailsRoute,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        PRFSpacingTokens.lg,
-                        PRFSpacingTokens.xs,
-                        PRFSpacingTokens.lg,
-                        PRFSpacingTokens.lg,
-                      ),
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(PRFSpacingTokens.md),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.onPrimary.withValues(
-                            alpha: 0.1,
-                          ),
-                          borderRadius: BorderRadius.circular(
-                            PRFRadiusTokens.lg,
-                          ),
-                          border: Border.all(
-                            color: theme.colorScheme.onPrimary.withValues(
-                              alpha: 0.15,
-                            ),
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              lesson?.name ?? l10n.lessonDetails,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.onPrimary.withValues(
-                                  alpha: 0.9,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.md),
-                            Wrap(
-                              spacing: PRFSpacingTokens.xs,
-                              runSpacing: PRFSpacingTokens.xs,
-                              children: [
-                                _LessonStatPill(
-                                  label: l10n.total,
-                                  value: mediaCount,
-                                ),
-                                _LessonStatPill(
-                                  label: l10n.completed,
-                                  value: isCompleted ? 1 : 0,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+              buildLessonDetailsHeader(
+                context,
+                theme,
+                l10n,
+                lessonModule,
+                mediaCount,
+                isCompleted,
+                () => context.router.popUntilRouteWithPath(
+                  PRFSuperAppRouter.moduleDetailsRoute,
                 ),
               ),
               Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () => context.read<LessonResourceCubit>().loadAll(
-                    filters: {'lesson_module_id': lessonModuleUlid},
-                  ),
+                  onRefresh: () async =>
+                      context.read<LessonResourceCubit>().loadAll(
+                        filters: {'lesson_module_id': widget.lessonModuleUlid},
+                      ),
                   child: CustomScrollView(
                     physics: const AlwaysScrollableScrollPhysics(
                       parent: BouncingScrollPhysics(),
@@ -174,12 +110,16 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: (_) => const SliverFillRemaining(
-                            hasScrollBody: false,
-                            child: Center(
-                              child: PRFCircularProgressIndicator(),
-                            ),
-                          ),
+                          listLoading: (_) => lessonItems.isEmpty
+                              ? const SliverFillRemaining(
+                                  hasScrollBody: false,
+                                  child: Center(
+                                    child: PRFCircularProgressIndicator(),
+                                  ),
+                                )
+                              : const SliverToBoxAdapter(
+                                  child: SizedBox.shrink(),
+                                ),
                           error: (message, _) => SliverFillRemaining(
                             hasScrollBody: false,
                             child: Align(
@@ -198,13 +138,15 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                                   alignment: Alignment.topCenter,
                                   child: PRFEmptyView(
                                     label: l10n.lessonDetails,
-                                    description: l10n.pleaseWait,
+                                    description: l10n.noLessonsDesc,
                                   ),
                                 ),
                               );
                             }
 
-                            final resolvedLessonModule = items.first;
+                            final resolvedLessonModule = items.firstWhere(
+                              (l) => l.ulid == widget.lessonModuleUlid,
+                            );
                             final resolvedCourseModule = context
                                 .read<ModuleResourceCubit>()
                                 .state
@@ -212,7 +154,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                                   listLoaded: (courseModules, _, _) {
                                     for (final courseModule in courseModules) {
                                       if (courseModule.ulid ==
-                                          courseModuleUlid) {
+                                          widget.courseModuleUlid) {
                                         return courseModule;
                                       }
                                     }
@@ -222,11 +164,12 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                                 );
                             return SliverList.list(
                               children: [
-                                _LessonContentCard(
+                                LessonContentCard(
                                   lessonModule: resolvedLessonModule,
                                 ),
                                 const SizedBox(height: PRFSpacingTokens.lg),
-                                _buildLessonMedia(
+                                buildLessonMedia(
+                                  context: context,
                                   lessonModule: resolvedLessonModule,
                                   l10n: l10n,
                                 ),
@@ -249,77 +192,6 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildLessonMedia({
-    required PRFLessonModule lessonModule,
-    required AppLocalizations l10n,
-  }) {
-    final lesson = lessonModule.lesson;
-    final resources = <Widget>[];
-
-    if ((lesson?.videoUrl ?? '').trim().isNotEmpty) {
-      resources.add(
-        _LessonResourceTile(
-          icon: Icons.play_circle_outline_rounded,
-          title: l10n.video,
-          value: lesson!.videoUrl!,
-          onTap: () async {
-            final uri = Uri.parse(lesson.videoUrl!);
-            await UrlHelper.openUrl(uri);
-          },
-        ),
-      );
-    }
-    if ((lesson?.documentUrl ?? '').trim().isNotEmpty) {
-      resources.add(
-        _LessonResourceTile(
-          icon: Icons.description_outlined,
-          title: l10n.document,
-          value: lesson!.documentUrl!,
-          onTap: () async {
-            final uri = Uri.parse(lesson.documentUrl!);
-            await UrlHelper.openUrl(uri);
-          },
-        ),
-      );
-    }
-    if ((lesson?.audioUrl ?? '').trim().isNotEmpty) {
-      resources.add(
-        _LessonResourceTile(
-          icon: Icons.headphones_rounded,
-          title: l10n.audio,
-          value: lesson!.audioUrl!,
-          onTap: () async {
-            final uri = Uri.parse(lesson.audioUrl!);
-            await UrlHelper.openUrl(uri);
-          },
-        ),
-      );
-    }
-
-    if (resources.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                context.l10n.lessonResources,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: PRFSpacingTokens.md),
-        ...resources,
-      ],
     );
   }
 
@@ -368,7 +240,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
               },
               builder: (context, state) {
                 return state.maybeWhen(
-                  orElse: () => PRFPrimaryButton(
+                  orElse: () => PRFButton(
                     onPressed: () async {
                       final moduleUlid = lessonModule.module?.ulid;
                       final lessonUlid = lessonModule.lesson?.ulid;
@@ -376,7 +248,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                       if (courseUlid == null ||
                           moduleUlid == null ||
                           lessonUlid == null) {
-                        PRFSnackbar.error(context, l10n.pleaseWait);
+                        PRFSnackbar.error(context, l10n.pleaseWaitBrief);
                         return;
                       }
 
@@ -388,7 +260,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                     },
                     title: _isLoading ? l10n.completing : l10n.complete,
                     disabled: _isLoading,
-                    isLoading: _isLoading ? true : null,
+                    isLoading: _isLoading,
                   ),
                 );
               },
@@ -397,150 +269,5 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
     }
 
     return const SizedBox.shrink();
-  }
-}
-
-class _LessonContentCard extends StatelessWidget {
-  const _LessonContentCard({required this.lessonModule});
-
-  final PRFLessonModule lessonModule;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final lesson = lessonModule.lesson;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
-        border: Border.all(
-          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(PRFSpacingTokens.md),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              (lesson?.name ?? '').toUpperCase(),
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            if ((lesson?.content ?? '').trim().isNotEmpty) ...[
-              const SizedBox(height: PRFSpacingTokens.md),
-              HtmlWidget(
-                lesson!.content!,
-                textStyle: theme.textTheme.bodyMedium,
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _LessonResourceTile extends StatelessWidget {
-  const _LessonResourceTile({
-    required this.icon,
-    required this.title,
-    required this.value,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String title;
-  final String value;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: PRFSpacingTokens.sm),
-      child: Container(
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surfaceContainerHigh,
-          borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-          border: Border.all(
-            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
-          ),
-        ),
-        child: Material(
-          color: PRFColors.transparent,
-          child: ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(PRFSpacingTokens.sm),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer,
-                borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-              ),
-              child: Icon(
-                icon,
-                color: theme.colorScheme.onPrimaryContainer,
-              ),
-            ),
-            title: Text(title),
-            subtitle: Text(
-              value,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            trailing: Icon(
-              Icons.open_in_new_rounded,
-              color: theme.colorScheme.primary,
-            ),
-            onTap: onTap,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _LessonStatPill extends StatelessWidget {
-  const _LessonStatPill({required this.label, required this.value});
-
-  final String label;
-  final int value;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: PRFSpacingTokens.md,
-        vertical: PRFSpacingTokens.xs,
-      ),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.onPrimary.withValues(alpha: 0.16),
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-      ),
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: '$value ',
-              style: theme.textTheme.labelLarge?.copyWith(
-                color: theme.colorScheme.onPrimary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            TextSpan(
-              text: label,
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: theme.colorScheme.onPrimary.withValues(alpha: 0.85),
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

@@ -49,7 +49,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
     final shouldDelete = await PRFConfirmationDialog.show(
       context,
       title: '${context.l10n.delete} ${context.l10n.sessions}',
-      message: 'Are you sure you want to continue?',
+      message: context.l10n.continueConfirm,
       confirmLabel: context.l10n.delete,
       isDestructive: true,
     );
@@ -68,7 +68,7 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
       PRFSnackbar.error(context, error);
       return;
     }
-    PRFSnackbar.success(context, 'Session deleted');
+    PRFSnackbar.success(context, context.l10n.sessionDeleted);
   }
 
   Future<void> _loadSessions() {
@@ -153,8 +153,8 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
                                         child: Row(
                                           children: [
                                             Container(
-                                              width: 4,
-                                              height: 24,
+                                              width: PRFSpacingTokens.xs,
+                                              height: PRFSpacingTokens.xl,
                                               decoration: BoxDecoration(
                                                 color:
                                                     theme.colorScheme.primary,
@@ -278,8 +278,8 @@ class TimelineSessionCard extends StatelessWidget {
           Column(
             children: [
               Container(
-                width: 16,
-                height: 16,
+                width: PRFSpacingTokens.lg,
+                height: PRFSpacingTokens.lg,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary,
                   shape: BoxShape.circle,
@@ -295,7 +295,7 @@ class TimelineSessionCard extends StatelessWidget {
                   height: 80,
                   color: Theme.of(
                     context,
-                  ).colorScheme.primary.withValues(alpha: 0.3),
+                  ).colorScheme.primary.withValues(alpha: PRFOpacities.glow),
                 ),
             ],
           ),

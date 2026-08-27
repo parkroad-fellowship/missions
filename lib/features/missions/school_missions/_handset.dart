@@ -1,14 +1,15 @@
+import 'package:app/features/missions/_shared.dart';
 import 'package:app/features/missions/cubit/school_details_resource_cubit.dart';
+import 'package:app/features/missions/school_missions/_shared.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/course/prf_school.dart';
 import 'package:app/models/remote/mission/prf_mission.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
-import 'package:app/utils/helpers/mission_helper.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
@@ -23,9 +24,32 @@ class SchoolMissionsHandset extends StatefulWidget {
 
 class _SchoolMissionsHandsetState extends State<SchoolMissionsHandset>
     with TimezoneMixin {
+  late final _form = SchoolMissionsFormState(schoolUlid: widget.schoolUlid);
+
+  // The entrance cascade plays exactly once per screen instance; stored on
+  // the state so helper build methods can gate their timelines too.
+  bool _entrancePlayed = false;
+  late bool _animateEntrance;
+
+  @override
+  void initState() {
+    super.initState();
+    _form
+      ..attach(() => setState(() {}))
+      ..load(context);
+  }
+
+  @override
+  void dispose() {
+    _form.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    _animateEntrance = !_entrancePlayed;
+    _entrancePlayed = true;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -52,13 +76,8 @@ class _SchoolMissionsHandsetState extends State<SchoolMissionsHandset>
                       ),
                       const SizedBox(height: PRFSpacingTokens.md),
                       FilledButton(
-                        onPressed: () {
-                          context.read<SchoolDetailsResourceCubit>().loadSchool(
-                            schoolUlid: widget.schoolUlid,
-                            refresh: true,
-                          );
-                        },
-                        child: const Text('Retry'),
+                        onPressed: () => _form.load(context, refresh: true),
+                        child: Text(context.l10n.retry),
                       ),
                     ],
                   ),
@@ -86,12 +105,7 @@ class _SchoolMissionsHandsetState extends State<SchoolMissionsHandset>
           child: missions.isEmpty
               ? _buildEmptyState(context)
               : RefreshIndicator(
-                  onRefresh: () async {
-                    await context.read<SchoolDetailsResourceCubit>().loadSchool(
-                      schoolUlid: widget.schoolUlid,
-                      refresh: true,
-                    );
-                  },
+                  onRefresh: () async => _form.load(context, refresh: true),
                   child: ListView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     padding: const EdgeInsets.fromLTRB(
@@ -101,31 +115,25 @@ class _SchoolMissionsHandsetState extends State<SchoolMissionsHandset>
                       PRFSpacingTokens.xl,
                     ),
                     children: [
-                      _buildSchoolHeader(context, school),
+                      buildSchoolHeader(context, school),
                       const SizedBox(height: PRFSpacingTokens.md),
                       ...missions.asMap().entries.map((entry) {
                         final index = entry.key;
                         final mission = entry.value;
                         final isLast = index == missions.length - 1;
 
-                        return _buildTimelineMissionCard(
-                              context,
-                              mission: mission,
-                              isLast: isLast,
-                              onTap: () => context.router.push(
-                                MissionsDetailsRoute(missionUlid: mission.ulid),
-                              ),
-                            )
-                            .animate()
-                            .fadeIn(
-                              delay: Duration(milliseconds: index * 100),
-                              duration: PRFMotionTokens.enterShort,
-                            )
-                            .slideX(
-                              begin: 0.3,
-                              end: 0,
-                              curve: Curves.easeOutCubic,
-                            );
+                        return buildAnimatedTimelineEntry(
+                          context: context,
+                          index: index,
+                          animate: _animateEntrance,
+                          child: TimelineMissionCard(
+                            mission: mission,
+                            isLast: isLast,
+                            onTap: () => context.router.push(
+                              MissionsDetailsRoute(missionUlid: mission.ulid),
+                            ),
+                          ),
+                        );
                       }),
                     ],
                   ),
@@ -140,179 +148,8 @@ class _SchoolMissionsHandsetState extends State<SchoolMissionsHandset>
     return Center(
       child: PRFEmptyView(
         label: l10n.noMissions,
-        description: 'No past missions for this school.',
+        description: l10n.noPastMissionsForSchool,
       ),
     );
-  }
-
-  Widget _buildSchoolHeader(BuildContext context, PRFSchool school) {
-    final theme = Theme.of(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(PRFSpacingTokens.sm),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
-              ),
-              child: Icon(
-                Icons.school_rounded,
-                size: 28,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-            const SizedBox(width: PRFSpacingTokens.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    school.name,
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: PRFSpacingTokens.xs),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.location_on_rounded,
-                        size: 14,
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                      const SizedBox(width: PRFSpacingTokens.xs),
-                      Expanded(
-                        child: Text(
-                          school.address,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: PRFSpacingTokens.sm),
-        Row(
-          children: [
-            _buildInfoChip(
-              theme,
-              icon: Icons.people_rounded,
-              label: '${school.totalStudents} students',
-            ),
-            const SizedBox(width: PRFSpacingTokens.sm),
-            _buildInfoChip(
-              theme,
-              icon: Icons.flag_rounded,
-              label: '${school.missions.length} missions',
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildInfoChip(
-    ThemeData theme, {
-    required IconData icon,
-    required String label,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: PRFSpacingTokens.sm,
-        vertical: PRFSpacingTokens.xs,
-      ),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.full),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 14, color: theme.colorScheme.onSurfaceVariant),
-          const SizedBox(width: PRFSpacingTokens.xs),
-          Text(
-            label,
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTimelineMissionCard(
-    BuildContext context, {
-    required PRFMission mission,
-    required bool isLast,
-    required VoidCallback onTap,
-  }) {
-    final l10n = context.l10n;
-    final theme = Theme.of(context);
-    final startDate = mission.startDate;
-    final endDate = mission.endDate;
-    final isMultiDay = !MissionHelper.isSameDay(startDate, endDate);
-    final now = DateTime.now();
-    final isOngoing =
-        (startDate.isBefore(now) || MissionHelper.isSameDay(startDate, now)) &&
-        (endDate.isAfter(now) || MissionHelper.isSameDay(endDate, now));
-    final durationDays = endDate.difference(startDate).inDays + 1;
-    final timeRange =
-        '${DateFormatter.formatTime(mission.startTime, timezone)} - ${DateFormatter.formatTime(mission.endTime, timezone)}';
-    final datePrimaryText = isMultiDay
-        ? '${DateFormatter.formatDate(startDate, timezone)} - ${DateFormatter.formatDate(endDate, timezone)}'
-        : DateFormatter.formatDate(startDate, timezone);
-
-    return PRFTimelineMissionCard(
-      isLast: isLast,
-      startDate: startDate,
-      endDate: endDate,
-      statusColor: _resolveMissionStatusColor(mission, theme),
-      statusText: mission.status.name,
-      schoolName: mission.school?.name ?? '-',
-      missionTypeName: mission.missionType?.name ?? '-',
-      durationLabel: l10n.duration,
-      durationValue: isMultiDay ? l10n.durationDesc(durationDays) : timeRange,
-      capacityLabel: l10n.capacity,
-      capacityValue: l10n.capacityDesc(mission.missionSubscriptionsNeeded),
-      datePrimaryText: datePrimaryText,
-      dateSecondaryText: timeRange,
-      showActiveIndicator: isOngoing,
-      activeIndicatorColor: theme.colorScheme.tertiary,
-      actionLabel: l10n.missionDetails,
-      onTap: onTap,
-    );
-  }
-
-  Color _resolveMissionStatusColor(PRFMission mission, ThemeData theme) {
-    switch (mission.status.apiKey) {
-      case 1:
-        return Colors.amber.shade700;
-      case 2:
-        return Colors.green.shade700;
-      case 3:
-        return theme.colorScheme.error;
-      case 4:
-        return Colors.red.shade700;
-      case 5:
-        return theme.colorScheme.primary;
-      case 6:
-        return theme.colorScheme.secondary;
-      case 7:
-        return Colors.deepOrange.shade500;
-      default:
-        return theme.colorScheme.primary;
-    }
   }
 }

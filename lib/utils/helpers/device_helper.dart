@@ -94,7 +94,7 @@ class DeviceHelper {
   static Future<bool> _isHuaweiDevice() async {
     try {
       if (Platform.isAndroid) {
-        return _checkHuaweiManufacturer();
+        return await _checkHuaweiManufacturer();
       }
       return false;
     } catch (e) {

@@ -1,3 +1,4 @@
+import 'package:app/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:prf_design/prf_design.dart';
@@ -140,7 +141,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       appBar: AppBar(
         backgroundColor: PRFColors.black,
         iconTheme: const IconThemeData(color: PRFColors.white),
-        elevation: 0,
+        elevation: PRFElevationTokens.none,
         title: Text(
           'Video',
           style: theme.textTheme.titleLarge?.copyWith(
@@ -163,7 +164,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
           const PRFCircularProgressIndicator(color: PRFColors.white),
           const SizedBox(height: PRFSpacingTokens.lg),
           Text(
-            'Loading video...',
+            context.l10n.loadingVideo,
             style: theme.textTheme.bodyLarge?.copyWith(color: PRFColors.white),
           ),
         ],
@@ -183,7 +184,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             ),
             const SizedBox(height: PRFSpacingTokens.lg),
             Text(
-              'Error loading video',
+              context.l10n.errorLoadingVideo,
               style: theme.textTheme.titleLarge?.copyWith(
                 color: PRFColors.white,
                 fontWeight: FontWeight.w600,
@@ -191,16 +192,15 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             ),
             const SizedBox(height: PRFSpacingTokens.sm),
             Text(
-              _errorMessage ?? 'Unknown error occurred',
+              _errorMessage ?? context.l10n.unknownErrorOccurred,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: Colors.white70,
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: PRFSpacingTokens.xl),
-            PRFPrimaryButton(
-              title: 'Retry',
-              disabled: false,
+            PRFButton(
+              title: context.l10n.retry,
               onPressed: () {
                 setState(() {
                   _hasError = false;
@@ -256,10 +256,10 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              PRFColors.black.withValues(alpha: 0.7),
-              PRFColors.transparent,
-              PRFColors.transparent,
-              PRFColors.black.withValues(alpha: 0.7),
+              PRFColors.black.withValues(alpha: PRFOpacities.high),
+              Colors.transparent,
+              Colors.transparent,
+              PRFColors.black.withValues(alpha: PRFOpacities.high),
             ],
             stops: const [0.0, 0.3, 0.7, 1.0],
           ),
@@ -268,9 +268,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
           children: [
             // Top controls
             Positioned(
-              top: 16,
-              left: 16,
-              right: 16,
+              top: PRFSpacingTokens.lg,
+              left: PRFSpacingTokens.lg,
+              right: PRFSpacingTokens.lg,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -303,11 +303,15 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                   duration: PRFMotionTokens.slow,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.9),
+                      color: theme.colorScheme.primary.withValues(
+                        alpha: PRFOpacities.nearOpaque,
+                      ),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: PRFColors.black.withValues(alpha: 0.3),
+                          color: PRFColors.black.withValues(
+                            alpha: PRFOpacities.glow,
+                          ),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -327,9 +331,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             ),
             // Bottom controls
             Positioned(
-              bottom: 16,
-              left: 16,
-              right: 16,
+              bottom: PRFSpacingTokens.lg,
+              left: PRFSpacingTokens.lg,
+              right: PRFSpacingTokens.lg,
               child: Column(
                 children: [
                   // Progress bar
@@ -414,7 +418,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
         });
       },
       child: ColoredBox(
-        color: PRFColors.transparent,
+        color: Colors.transparent,
         child: Stack(
           children: [
             // Center play/pause button
@@ -424,13 +428,18 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 duration: PRFMotionTokens.slow,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.9),
+                    color:
+                        Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(
+                          alpha: PRFOpacities.nearOpaque,
+                        ),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: PRFColors.black.withValues(alpha: 0.3),
+                        color: PRFColors.black.withValues(
+                          alpha: PRFOpacities.glow,
+                        ),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -449,13 +458,15 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             ),
             // Full-screen button
             Positioned(
-              top: 8,
-              right: 8,
+              top: PRFSpacingTokens.sm,
+              right: PRFSpacingTokens.sm,
               child: GestureDetector(
                 onTap: _toggleFullScreen,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: PRFColors.black.withValues(alpha: 0.6),
+                    color: PRFColors.black.withValues(
+                      alpha: PRFOpacities.prominent,
+                    ),
                     borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
                   ),
                   padding: const EdgeInsets.all(PRFSpacingTokens.sm),

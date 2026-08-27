@@ -1,17 +1,16 @@
+import 'package:app/features/events/_shared.dart';
 import 'package:app/features/events/cubit/event_resource_cubit.dart';
 import 'package:app/features/events/cubit/event_subscription_resource_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/event/prf_event.dart';
 import 'package:app/models/remote/event/prf_event_subscription.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
-import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:app/utils/router/router.dart';
 import 'package:app/utils/router/router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:prf_design/prf_design.dart';
 
 class EventsPageHandset extends StatefulWidget {
@@ -24,6 +23,12 @@ class EventsPageHandset extends StatefulWidget {
 class _EventsPageHandsetState extends State<EventsPageHandset>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  final _form = EventsFormState();
+
+  // The entrance cascade plays exactly once per screen instance; stored on
+  // the state so helper build methods can gate their timelines too.
+  bool _entrancePlayed = false;
+  late bool _animateEntrance;
 
   @override
   void initState() {
@@ -40,12 +45,23 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
         context.read<EventSubscriptionResourceCubit>().loadAll();
       }
     });
+
+    _form.attach(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    _form.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
+    _animateEntrance = !_entrancePlayed;
+    _entrancePlayed = true;
 
     return DefaultTabController(
       length: 2,
@@ -148,13 +164,32 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
 
     return BlocBuilder<EventResourceCubit, ResourceState<PRFEvent>>(
       builder: (context, state) {
-        return state.maybeWhen(
-          orElse: () => Center(
+        // Same source as the list: pull-to-refresh keeps cards visible
+        // instead of flashing a full-screen spinner.
+        final currentEvents = context.read<EventResourceCubit>().currentItems;
+
+        final showInitialLoader =
+            state is ResourceListLoading<PRFEvent> && currentEvents.isEmpty;
+
+        if (showInitialLoader) {
+          return Center(
             child: PRFCircularProgressIndicator(
               color: theme.colorScheme.primary,
             ),
-          ),
-          error: (message, _) => Center(
+          );
+        }
+
+        if (state.maybeWhen(
+          error: (_, _) => true,
+          itemError: (_, _, _) => true,
+          orElse: () => false,
+        )) {
+          final message = state.maybeWhen(
+            error: (message, _) => message,
+            itemError: (message, _, _) => message,
+            orElse: () => '',
+          );
+          return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -172,54 +207,47 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
                 ),
               ],
             ),
-          ),
-          listLoaded: (events, _, _) {
-            if (events.isEmpty) {
-              return RefreshIndicator(
-                onRefresh: () => context.read<EventResourceCubit>().loadAll(),
-                child: PRFEmptyView(
-                  label: l10n.noEvents,
-                  description: l10n.pleaseWaitOS,
+          );
+        }
+
+        if (currentEvents.isEmpty) {
+          return RefreshIndicator(
+            onRefresh: () => context.read<EventResourceCubit>().loadAll(),
+            child: PRFEmptyView(
+              label: l10n.noEvents,
+              description: l10n.pleaseWaitOS,
+            ),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () => context.read<EventResourceCubit>().loadAll(),
+          child: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.lg,
+              vertical: PRFSpacingTokens.xl,
+            ),
+            itemCount: currentEvents.length,
+            itemBuilder: (context, index) {
+              final event = currentEvents[index];
+              final isLast = index == currentEvents.length - 1;
+
+              return buildAnimatedTimelineEntry(
+                context: context,
+                index: index,
+                animate: _animateEntrance,
+                child: TimelineEventCard(
+                  event: event,
+                  isLast: isLast,
+                  index: index,
+                  onTap: () => context.router.push(
+                    EventDetailsRoute(event: event),
+                  ),
                 ),
               );
-            }
-            Logger().e(events);
-
-            return RefreshIndicator(
-              onRefresh: () => context.read<EventResourceCubit>().loadAll(),
-              child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: PRFSpacingTokens.lg,
-                  vertical: PRFSpacingTokens.xl,
-                ),
-                itemCount: events.length,
-                itemBuilder: (context, index) {
-                  final event = events[index];
-                  final isLast = index == events.length - 1;
-
-                  return TimelineEventCard(
-                        event: event,
-                        isLast: isLast,
-                        index: index,
-                        onTap: () => context.router.push(
-                          EventDetailsRoute(event: event),
-                        ),
-                      )
-                      .animate()
-                      .fadeIn(
-                        delay: Duration(milliseconds: index * 100),
-                        duration: PRFMotionTokens.enterShort,
-                      )
-                      .slideX(
-                        begin: 0.3,
-                        end: 0,
-                        curve: Curves.easeOutCubic,
-                      );
-                },
-              ),
-            );
-          },
+            },
+          ),
         );
       },
     );
@@ -234,13 +262,39 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
       ResourceState<PRFEventSubscription>
     >(
       builder: (context, state) {
-        return state.maybeWhen(
-          orElse: () => Center(
+        // Same source as the list: pull-to-refresh keeps cards visible
+        // instead of flashing a full-screen spinner.
+        final subscriptions = context
+            .read<EventSubscriptionResourceCubit>()
+            .currentItems;
+        final events = subscriptions
+            .map((subscription) => subscription.event)
+            .whereType<PRFEvent>()
+            .toList();
+
+        final showInitialLoader =
+            state is ResourceListLoading<PRFEventSubscription> &&
+            events.isEmpty;
+
+        if (showInitialLoader) {
+          return Center(
             child: PRFCircularProgressIndicator(
               color: theme.colorScheme.primary,
             ),
-          ),
-          error: (message, _) => Center(
+          );
+        }
+
+        if (state.maybeWhen(
+          error: (_, _) => true,
+          itemError: (_, _, _) => true,
+          orElse: () => false,
+        )) {
+          final message = state.maybeWhen(
+            error: (message, _) => message,
+            itemError: (message, _, _) => message,
+            orElse: () => '',
+          );
+          return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -258,236 +312,52 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
                 ),
               ],
             ),
-          ),
-          listLoaded: (eventSubscriptions, _, _) {
-            if (eventSubscriptions.isEmpty) {
-              return RefreshIndicator(
-                onRefresh: () =>
-                    context.read<EventSubscriptionResourceCubit>().loadAll(),
-                child: PRFEmptyView(
-                  label: l10n.noEvents,
-                  description: l10n.pleaseWaitForOS,
+          );
+        }
+
+        if (events.isEmpty) {
+          return RefreshIndicator(
+            onRefresh: () =>
+                context.read<EventSubscriptionResourceCubit>().loadAll(),
+            child: PRFEmptyView(
+              label: l10n.noEvents,
+              description: l10n.pleaseWaitForOS,
+            ),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () =>
+              context.read<EventSubscriptionResourceCubit>().loadAll(),
+          child: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: PRFSpacingTokens.lg,
+              vertical: PRFSpacingTokens.xl,
+            ),
+            itemCount: events.length,
+            itemBuilder: (context, index) {
+              final event = events[index];
+              final isLast = index == events.length - 1;
+
+              return buildAnimatedTimelineEntry(
+                context: context,
+                index: index,
+                animate: _animateEntrance,
+                child: TimelineEventCard(
+                  event: event,
+                  isLast: isLast,
+                  index: index,
+                  isSubscribed: true,
+                  onTap: () => context.router.push(
+                    EventDetailsRoute(event: event),
+                  ),
                 ),
               );
-            }
-            Logger().e(eventSubscriptions);
-
-            final events = eventSubscriptions
-                .map((subscription) => subscription.event)
-                .whereType<PRFEvent>()
-                .toList();
-
-            return RefreshIndicator(
-              onRefresh: () =>
-                  context.read<EventSubscriptionResourceCubit>().loadAll(),
-              child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: PRFSpacingTokens.lg,
-                  vertical: PRFSpacingTokens.xl,
-                ),
-                itemCount: events.length,
-                itemBuilder: (context, index) {
-                  final event = events[index];
-                  final isLast = index == events.length - 1;
-
-                  return TimelineEventCard(
-                        event: event,
-                        isLast: isLast,
-                        index: index,
-                        isSubscribed: true,
-                        onTap: () => context.router.push(
-                          EventDetailsRoute(event: event),
-                        ),
-                      )
-                      .animate()
-                      .fadeIn(
-                        delay: Duration(milliseconds: index * 100),
-                        duration: PRFMotionTokens.enterShort,
-                      )
-                      .slideX(
-                        begin: 0.3,
-                        end: 0,
-                        curve: Curves.easeOutCubic,
-                      );
-                },
-              ),
-            );
-          },
+            },
+          ),
         );
       },
-    );
-  }
-}
-
-class TimelineEventCard extends StatelessWidget with TimezoneMixin {
-  const TimelineEventCard({
-    required this.event,
-    required this.isLast,
-    required this.index,
-    this.isSubscribed = false,
-    this.onTap,
-    super.key,
-  });
-
-  final PRFEvent event;
-  final bool isLast;
-  final int index;
-  final bool isSubscribed;
-  final VoidCallback? onTap;
-
-  bool _isSameDay(DateTime date1, DateTime date2) {
-    return date1.year == date2.year &&
-        date1.month == date2.month &&
-        date1.day == date2.day;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final now = DateTime.now();
-    final startDate = event.startDate;
-    final endDate = event.endDate;
-    final isUpcoming = startDate.isAfter(now);
-    final isPast = endDate.isBefore(now.subtract(const Duration(days: 1)));
-    final isOngoing = startDate.isBefore(now) && endDate.isAfter(now);
-    final isMultiDay = !_isSameDay(startDate, endDate);
-    final duration = endDate.difference(startDate).inDays + 1;
-
-    // Premium status color system
-    final statusColor = isSubscribed
-        ? PRFColors.limeGreen
-        : isOngoing
-        ? PRFColors
-              .limeGreen // Active green
-        : isUpcoming
-        ? theme.colorScheme.primary
-        : isPast
-        ? theme.colorScheme.onSurfaceVariant
-        : theme.colorScheme.secondary;
-
-    final statusText = isSubscribed
-        ? 'Subscribed'
-        : isOngoing
-        ? 'Active'
-        : isUpcoming
-        ? 'Upcoming'
-        : isPast
-        ? 'Completed'
-        : 'Available';
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        PRFTimelineDateBadge(
-          startDate: startDate,
-          endDate: isMultiDay ? endDate : null,
-          statusColor: statusColor,
-          isLast: isLast,
-        ),
-
-        const SizedBox(width: PRFSpacingTokens.lg),
-
-        Expanded(
-          child: PRFDetailActionCard(
-            onTap: onTap,
-            margin: EdgeInsets.only(bottom: isLast ? 0 : PRFSpacingTokens.lg),
-            backgroundColor: theme.colorScheme.surface,
-            title: event.name,
-            subtitle: event.description.isNotEmpty
-                ? event.description.split('\n').first
-                : 'Tap to view event details',
-            trailing: PRFStatusBadge(
-              label: statusText,
-              color: statusColor,
-            ),
-            footer: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (event.venue != null) ...[
-                  PRFInfoCard(
-                    icon: Icons.location_on_rounded,
-                    label: 'Venue',
-                    value: event.venue!,
-                  ),
-                  const SizedBox(height: PRFSpacingTokens.sm),
-                ],
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildInfoChip(
-                        context,
-                        Icons.schedule_rounded,
-                        'Duration',
-                        isMultiDay ? '$duration days' : 'Single day',
-                      ),
-                    ),
-                    const SizedBox(width: PRFSpacingTokens.sm),
-                    Expanded(
-                      child: _buildInfoChip(
-                        context,
-                        Icons.people_rounded,
-                        'Capacity',
-                        '${event.capacity} attendees',
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: PRFSpacingTokens.sm),
-                PRFInfoCard(
-                  icon: Icons.calendar_today_rounded,
-                  label: isMultiDay ? 'Date Range' : 'Date',
-                  value: isMultiDay
-                      ? '${DateFormatter.formatDate(startDate, timezone)} - '
-                            '${DateFormatter.formatDate(endDate, timezone)}'
-                      : DateFormatter.formatDate(startDate, timezone),
-                ),
-                const SizedBox(height: PRFSpacingTokens.sm),
-                PRFInfoCard(
-                  icon: Icons.access_time_rounded,
-                  label: 'Time',
-                  value:
-                      '${DateFormatter.formatTime(event.startTime, timezone)} '
-                      '- ${DateFormatter.formatTime(event.endTime, timezone)} '
-                      'daily',
-                ),
-                const SizedBox(height: PRFSpacingTokens.sm),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'View Details',
-                      style: theme.textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: statusColor,
-                      ),
-                    ),
-                    const SizedBox(width: PRFSpacingTokens.xs),
-                    Icon(
-                      Icons.arrow_forward_rounded,
-                      size: 18,
-                      color: statusColor,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildInfoChip(
-    BuildContext context,
-    IconData icon,
-    String label,
-    String value,
-  ) {
-    return PRFInfoCard(
-      icon: icon,
-      label: label,
-      value: value,
     );
   }
 }

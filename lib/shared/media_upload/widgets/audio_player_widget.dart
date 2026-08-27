@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/di/di_container.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/services/media/audio_playback_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_soloud/flutter_soloud.dart';
@@ -102,7 +103,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       _startTicker();
     } catch (_) {
       if (!mounted) return;
-      PRFSnackbar.error(context, 'Unable to play audio');
+      PRFSnackbar.error(context, context.l10n.unableToPlayAudio);
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -124,7 +125,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
     await PRFBottomSheet.show<void>(
       context,
-      title: 'Transcript',
+      title: context.l10n.viewTranscript,
       child: SizedBox(
         height: MediaQuery.sizeOf(context).height * 0.8,
         child: SingleChildScrollView(
@@ -149,7 +150,9 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+          color: Theme.of(
+            context,
+          ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
         ),
       ),
       child: Column(

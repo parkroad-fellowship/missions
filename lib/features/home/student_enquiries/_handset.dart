@@ -1,3 +1,4 @@
+import 'package:app/features/home/student_enquiries/_shared.dart';
 import 'package:app/features/home/student_enquiries/cubit/enquiry_resource_cubit.dart';
 import 'package:app/features/home/student_enquiries/widgets/student_enquiry_filter_header.dart';
 import 'package:app/features/home/student_enquiries/widgets/student_enquiry_preview_card.dart';
@@ -23,12 +24,20 @@ class StudentEnquiriesPageHandset extends StatefulWidget {
 class _StudentEnquiriesPageHandsetState
     extends State<StudentEnquiriesPageHandset>
     with TimezoneMixin {
-  bool _selectedReplyStatus = false;
+  final _form = StudentEnquiriesFormState();
 
   @override
   void initState() {
-    context.read<EnquiryResourceCubit>().loadAll();
     super.initState();
+    _form
+      ..attach(() => setState(() {}))
+      ..load(context);
+  }
+
+  @override
+  void dispose() {
+    _form.dispose();
+    super.dispose();
   }
 
   @override
@@ -60,7 +69,7 @@ class _StudentEnquiriesPageHandsetState
           ),
           Expanded(
             child: RefreshIndicator(
-              onRefresh: () => context.read<EnquiryResourceCubit>().loadAll(),
+              onRefresh: () async => _form.load(context),
               child:
                   BlocBuilder<
                     EnquiryResourceCubit,
@@ -88,11 +97,7 @@ class _StudentEnquiriesPageHandsetState
                             child: StudentEnquiryFilterHeader(
                               unreadCount: unreadCount,
                               repliedCount: repliedCount,
-                              onStatusSelected: (status) {
-                                setState(() {
-                                  _selectedReplyStatus = status;
-                                });
-                              },
+                              onStatusSelected: _form.setReplyStatus,
                             ),
                           ),
                           state.maybeWhen(
@@ -117,7 +122,9 @@ class _StudentEnquiriesPageHandsetState
                             listLoaded: (loadedEnquiries, _, _) {
                               final enquiries = loadedEnquiries
                                   .where(
-                                    (e) => e.hasReplies == _selectedReplyStatus,
+                                    (e) =>
+                                        e.hasReplies ==
+                                        _form.selectedReplyStatus,
                                   )
                                   .toList();
 
@@ -128,7 +135,9 @@ class _StudentEnquiriesPageHandsetState
                                     alignment: Alignment.topCenter,
                                     child: PRFEmptyView(
                                       label: l10n.noQuestions,
-                                      description: l10n.pleaseWait,
+                                      description: _form.selectedReplyStatus
+                                          ? l10n.noRepliedQuestionsDesc
+                                          : l10n.noUnreadQuestionsDesc,
                                     ),
                                   ),
                                 );

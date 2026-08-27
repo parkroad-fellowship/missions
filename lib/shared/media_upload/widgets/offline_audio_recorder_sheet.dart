@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app/di/di_container.dart';
 import 'package:app/enums/prf_media_model.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/media/prf_media_dto.dart';
 import 'package:app/services/local_storage/hive/hive_service.dart';
 import 'package:app/services/media/failed_recording_upload_service.dart';
@@ -37,7 +38,7 @@ class OfflineAudioRecorderSheet extends StatelessWidget {
             initial: () {},
             loading: () {},
             loaded: (_) {
-              PRFSnackbar.success(context, 'Answer uploaded');
+              PRFSnackbar.success(context, context.l10n.answerUploaded);
               Navigator.of(context).pop();
             },
             multipleLoaded: (_) {},
@@ -66,9 +67,12 @@ class OfflineAudioRecorderSheet extends StatelessWidget {
                   margin: const EdgeInsets.all(PRFSpacingTokens.lg),
                   padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                   decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.1),
+                    color:
+                        Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(
+                          alpha: PRFOpacities.subtle,
+                        ),
                     borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                   ),
                   child: Row(

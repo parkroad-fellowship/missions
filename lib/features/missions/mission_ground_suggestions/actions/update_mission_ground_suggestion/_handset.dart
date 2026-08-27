@@ -96,16 +96,16 @@ class _UpdateMissionGroundSuggestionViewHandsetState
     _clearErrors();
 
     if (_nameController.text.trim().isEmpty) {
-      _nameError = 'Mission ground name is required';
+      _nameError = context.l10n.groundNameRequired;
     }
     if (_contactPersonController.text.trim().isEmpty) {
-      _contactPersonError = 'Contact person is required';
+      _contactPersonError = context.l10n.contactPersonRequired;
     }
     if (!_phoneController.value.isValid()) {
-      _contactNumberError = 'Contact number is required';
+      _contactNumberError = context.l10n.contactNumberRequired;
     }
     if (_selectedStatus == null) {
-      _statusError = 'Status is required';
+      _statusError = context.l10n.statusRequired;
     }
 
     setState(() => _showValidation = true);
@@ -126,7 +126,9 @@ class _UpdateMissionGroundSuggestionViewHandsetState
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
+            Theme.of(
+              context,
+            ).colorScheme.primary.withValues(alpha: PRFOpacities.faint),
             Theme.of(context).colorScheme.surface,
           ],
         ),
@@ -148,15 +150,20 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                           Theme.of(context).colorScheme.primary,
                           Theme.of(
                             context,
-                          ).colorScheme.primary.withValues(alpha: 0.8),
+                          ).colorScheme.primary.withValues(
+                            alpha: PRFOpacities.stronger,
+                          ),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.3),
+                          color:
+                              Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(
+                                alpha: PRFOpacities.glow,
+                              ),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -183,9 +190,12 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                           l10n.editMissionSuggestionSubTitle,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary.withValues(
+                                      alpha: PRFOpacities.nearOpaque,
+                                    ),
                               ),
                           textAlign: TextAlign.center,
                         ),
@@ -207,13 +217,16 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                   border: Border.all(
                     color: Theme.of(
                       context,
-                    ).colorScheme.outline.withValues(alpha: 0.2),
+                    ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.shadow.withValues(alpha: 0.1),
+                      color:
+                          Theme.of(
+                            context,
+                          ).colorScheme.shadow.withValues(
+                            alpha: PRFOpacities.subtle,
+                          ),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -225,7 +238,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                       icon: Icons.school_outlined,
                       title: l10n.missionGround,
                       isRequired: true,
-                      child: PRFTextInput(
+                      child: PRFTextField(
                         hintText: l10n.missionGround,
                         controller: _nameController,
                         errorText: _showValidation ? _nameError : null,
@@ -236,7 +249,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                           icon: Icons.person_outline,
                           title: l10n.contactPerson,
                           isRequired: true,
-                          child: PRFTextInput(
+                          child: PRFTextField(
                             hintText: l10n.contactPerson,
                             controller: _contactPersonController,
                             errorText: _showValidation
@@ -286,7 +299,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                                 }),
                                 selection: _selectedStatus,
                                 hintText: l10n.status,
-                                emptyText: 'No statuses found',
+                                emptyText: l10n.noStatusesFound,
                               ),
                         )
                         .animate(delay: PRFMotionTokens.slow)
@@ -296,7 +309,8 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                     PRFFormSection(
                           icon: Icons.notes_outlined,
                           title: l10n.comments,
-                          child: PRFTextAreaInput(
+                          child: PRFTextField(
+                            type: PRFTextFieldType.textArea,
                             hintText: l10n.comments,
                             controller: _notesController,
                           ),
@@ -346,7 +360,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
                       );
                     },
                     builder: (context, state) {
-                      return PRFPrimaryButton(
+                      return PRFButton(
                         onPressed: _submitForm,
                         title: l10n.record,
                         disabled: !_isFormValid,
@@ -371,7 +385,7 @@ class _UpdateMissionGroundSuggestionViewHandsetState
       Gaimon.warning();
       PRFSnackbar.error(
         context,
-        'Please fix the highlighted fields and try again.',
+        context.l10n.fixHighlightedFields,
       );
       return;
     }

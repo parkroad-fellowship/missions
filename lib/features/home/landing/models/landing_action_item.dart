@@ -9,6 +9,7 @@ class LandingActionItem {
     this.isVisible = true,
     this.isNeutralCard = false,
     this.isSettings = false,
+    this.isAccent = false,
     this.deskGroup,
   });
 
@@ -19,5 +20,6 @@ class LandingActionItem {
   final bool isVisible;
   final bool isNeutralCard;
   final bool isSettings;
+  final bool isAccent;
   final String? deskGroup;
 }

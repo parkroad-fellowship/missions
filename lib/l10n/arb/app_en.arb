@@ -8,6 +8,18 @@
     "@signIn": {},
     "signingIn": "Signing In ...",
     "@signingIn": {},
+    "continueWithGoogle": "Continue with Google",
+    "@continueWithGoogle": {},
+    "pleaseWaitBrief": "Please wait ...",
+    "@pleaseWaitBrief": {},
+    "orDivider": "OR",
+    "@orDivider": {},
+    "signInPanelBody": "One home for the life of Parkroad Fellowship — serve missions together, give, pray for one another and stay close to the community wherever you are.",
+    "@signInPanelBody": {},
+    "password": "Password",
+    "@password": {},
+    "enterValidEmail": "Please enter a valid email address",
+    "@enterValidEmail": {},
     "missions": "Missions",
     "@missions": {},
     "myAccount": "My Account",
@@ -1062,6 +1074,90 @@
             }
         }
     },
+    "wrappedMissionsEmptyMessage": "No missions yet.\nStart your first mission!",
+    "@wrappedMissionsEmptyMessage": {},
+    "wrappedImpactEmptyMessage": "No impact recorded yet.\nEvery mission touches lives!",
+    "@wrappedImpactEmptyMessage": {},
+    "wrappedLearningEmptyMessage": "No learning yet.\nStart a course to unlock this!",
+    "@wrappedLearningEmptyMessage": {},
+    "wrappedPrayerEmptyMessage": "No prayers answered yet.\nYour journey starts today!",
+    "@wrappedPrayerEmptyMessage": {},
+    "wrappedFavoriteMissionType": "Favorite mission type — {name}",
+    "@wrappedFavoriteMissionType": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "wrappedCourseProgress": "{percentage}% complete",
+    "@wrappedCourseProgress": {
+        "placeholders": {
+            "percentage": {
+                "type": "int"
+            }
+        }
+    },
+    "wrappedInsufficientDataTitle": "Not enough data yet",
+    "@wrappedInsufficientDataTitle": {},
+    "wrappedInsufficientDataMessage": "Complete missions, courses, and more\nto unlock your Wrapped next season!",
+    "@wrappedInsufficientDataMessage": {},
+    "wrappedShareCta": "Share Your Wrapped",
+    "@wrappedShareCta": {},
+    "wrappedAboveAverage": "Above average in {categories}",
+    "@wrappedAboveAverage": {
+        "placeholders": {
+            "categories": {
+                "type": "String"
+            }
+        }
+    },
+    "wrappedShareText": "My {year} PRF Missions Wrapped:\n{missions} Missions\n{souls} Souls Touched\n{courses} Courses\n{events} Events Attended\n{prayers} Prayer Responses\n\nHow was your year?",
+    "@wrappedShareText": {
+        "placeholders": {
+            "year": {
+                "type": "int"
+            },
+            "missions": {
+                "type": "int"
+            },
+            "souls": {
+                "type": "int"
+            },
+            "courses": {
+                "type": "int"
+            },
+            "events": {
+                "type": "int"
+            },
+            "prayers": {
+                "type": "int"
+            }
+        }
+    },
+    "wrappedLoadingMessage": "Preparing your Wrapped…",
+    "@wrappedLoadingMessage": {},
+    "wrappedPaused": "Paused",
+    "@wrappedPaused": {},
+    "wrappedThankYouPersonal": "{name}, thank you for making an impact in {year}",
+    "@wrappedThankYouPersonal": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            },
+            "year": {
+                "type": "int"
+            }
+        }
+    },
+    "wrappedCommunalLine": "One fellowship, one mission — together we made {year} count.",
+    "@wrappedCommunalLine": {
+        "placeholders": {
+            "year": {
+                "type": "int"
+            }
+        }
+    },
     "impact": "{year} Review",
     "@impact": {
         "placeholders": {
@@ -1083,5 +1179,605 @@
     "darkModeEnabled": "Dark mode enabled",
     "@darkModeEnabled": {},
     "answerFaqs": "Answer FAQs",
-    "@answerFaqs": {}
+    "@answerFaqs": {},
+    "receiptPdf": "Receipt PDF",
+    "@receiptPdf": {},
+    "venue": "Venue",
+    "@venue": {},
+    "dateRange": "Date Range",
+    "@dateRange": {},
+    "date": "Date",
+    "@date": {},
+    "time_2": "Time",
+    "@time_2": {},
+    "subscribe": "Subscribe",
+    "@subscribe": {},
+    "updateSubscription": "Update Subscription",
+    "@updateSubscription": {},
+    "addMedia": "Add Media",
+    "@addMedia": {},
+    "addEventPhotos_2": "Add Event Photos",
+    "@addEventPhotos_2": {},
+    "sharePhotosAndMemoriesFromThisEvent": "Share photos and memories from this event",
+    "@sharePhotosAndMemoriesFromThisEvent": {},
+    "recordAudio": "Record audio",
+    "@recordAudio": {},
+    "recordEventAudio": "Record event audio",
+    "@recordEventAudio": {},
+    "photos": "Photos",
+    "@photos": {},
+    "missionsCompleted": "missions completed",
+    "@missionsCompleted": {},
+    "soulsTouched": "souls touched",
+    "@soulsTouched": {},
+    "coursesCompleted": "courses completed",
+    "@coursesCompleted": {},
+    "prayerResponses": "prayer responses",
+    "@prayerResponses": {},
+    "eventsAttended": "events attended",
+    "@eventsAttended": {},
+    "recordAnswer": "Record answer",
+    "@recordAnswer": {},
+    "noAnswersYet": "No answers yet",
+    "@noAnswersYet": {},
+    "answers": "Answers",
+    "@answers": {},
+    "searchQuestions": "Search questions",
+    "@searchQuestions": {},
+    "loadingQuestions": "Loading questions",
+    "@loadingQuestions": {},
+    "debriefNoteDeleted": "Debrief note deleted",
+    "@debriefNoteDeleted": {},
+    "feedbackData": "Feedback Data",
+    "@feedbackData": {},
+    "questionsCapturedAndPostMissionDebriefReflections": "Questions captured and post-mission debrief reflections.",
+    "@questionsCapturedAndPostMissionDebriefReflections": {},
+    "finances": "Finances",
+    "@finances": {},
+    "requisitionsAndExpenseTrackingForThisMission": "Requisitions and expense tracking for this mission.",
+    "@requisitionsAndExpenseTrackingForThisMission": {},
+    "overview": "Overview",
+    "@overview": {},
+    "missionContextTeamMembersAndSessions": "Mission context, team members, and sessions.",
+    "@missionContextTeamMembersAndSessions": {},
+    "receiptUploadedSuccessfully": "Receipt uploaded successfully",
+    "@receiptUploadedSuccessfully": {},
+    "noExpensesYet": "No Expenses Yet",
+    "@noExpensesYet": {},
+    "error": "Error",
+    "@error": {},
+    "receiptDeletedSuccessfully": "Receipt deleted successfully",
+    "@receiptDeletedSuccessfully": {},
+    "deleteReceipt": "Delete Receipt",
+    "@deleteReceipt": {},
+    "addExpense_2": "Add Expense",
+    "@addExpense_2": {},
+    "editExpense": "Edit Expense",
+    "@editExpense": {},
+    "deleteExpense": "Delete Expense",
+    "@deleteExpense": {},
+    "addRefund": "Add Refund",
+    "@addRefund": {},
+    "copiedToClipboard": "Copied to clipboard",
+    "@copiedToClipboard": {},
+    "copiedToClipboard_2": "Copied \"{value}\" to clipboard",
+    "@copiedToClipboard_2": {},
+    "refundAmount": "Refund Amount",
+    "@refundAmount": {},
+    "addRefundEntry": "Add Refund Entry",
+    "@addRefundEntry": {},
+    "tokenAmount_2": "Token Amount",
+    "@tokenAmount_2": {},
+    "updateExpense": "Update Expense",
+    "@updateExpense": {},
+    "mediaDeleted": "Media deleted",
+    "@mediaDeleted": {},
+    "savedToDevice": "Saved to device",
+    "@savedToDevice": {},
+    "failedToSave": "Failed to save",
+    "@failedToSave": {},
+    "retry": "Retry",
+    "@retry": {},
+    "questionUpdated": "Question updated",
+    "@questionUpdated": {},
+    "questionDeleted": "Question deleted",
+    "@questionDeleted": {},
+    "update": "Update",
+    "@update": {},
+    "requisitions": "Requisitions",
+    "@requisitions": {},
+    "noRequisitions": "No Requisitions",
+    "@noRequisitions": {},
+    "queued": "Queued",
+    "@queued": {},
+    "retryAll": "Retry all",
+    "@retryAll": {},
+    "download": "Download",
+    "@download": {},
+    "processing": "Processing",
+    "@processing": {},
+    "open": "Open",
+    "@open": {},
+    "sessionInformation": "Session information",
+    "@sessionInformation": {},
+    "soulDeleted": "Soul deleted",
+    "@soulDeleted": {},
+    "missionSubscribers": "Mission Subscribers",
+    "@missionSubscribers": {},
+    "membersSubscribedToThisMission": "Members subscribed to this mission.",
+    "@membersSubscribedToThisMission": {},
+    "viewDetails": "View details",
+    "@viewDetails": {},
+    "callMember": "Call Member",
+    "@callMember": {},
+    "eGCoolHighSchool": "e.g., Cool High School",
+    "@eGCoolHighSchool": {},
+    "eGTrJohn": "e.g., Tr John",
+    "@eGTrJohn": {},
+    "students": "{school_totalStudents} students",
+    "@students": {},
+    "missions_2": "{school_missions_length} missions",
+    "@missions_2": {},
+    "camera": "Camera",
+    "@camera": {},
+    "unableToPlayAudio": "Unable to play audio",
+    "@unableToPlayAudio": {},
+    "view": "View",
+    "@view": {},
+    "retryNow": "Retry now",
+    "@retryNow": {},
+    "pendingUploads": "Pending uploads",
+    "@pendingUploads": {},
+    "useAppWhileRecording": "Use app while recording",
+    "@useAppWhileRecording": {},
+    "useAppWhilePaused": "Use app while paused",
+    "@useAppWhilePaused": {},
+    "answerUploaded": "Answer uploaded",
+    "@answerUploaded": {},
+    "viewAll": "View All",
+    "@viewAll": {},
+    "noPendingUploads": "No pending uploads",
+    "@noPendingUploads": {},
+    "pendingUploads_2": "Pending Uploads",
+    "@pendingUploads_2": {},
+    "uploadedSuccessfully": "{upload_name} uploaded successfully",
+    "@uploadedSuccessfully": {},
+    "retryFailed": "Retry failed",
+    "@retryFailed": {},
+    "dashboardTitle": "Mission Dashboard",
+    "@dashboardTitle": {},
+    "dashboardSubtitle": "Explore and suggest missions, make giving contributions, and check the latest answers and announcements.",
+    "@dashboardSubtitle": {},
+    "prayerPrompt": "Prayer prompt",
+    "@prayerPrompt": {},
+    "emptyActionsTitle": "Nothing here yet",
+    "@emptyActionsTitle": {},
+    "emptyActionsBody": "Fellowship actions will appear here once they are published.",
+    "@emptyActionsBody": {},
+    "allPast": "All Past",
+    "@allPast": {},
+    "yourNextMission": "Your next mission",
+    "@yourNextMission": {},
+    "missionsIntroBody": "Choose a mission to serve in — or catch up on the grounds we have already visited.",
+    "@missionsIntroBody": {},
+    "upcomingCount": "{count} Upcoming",
+    "@upcomingCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "subscribedCount": "{count} Subscribed",
+    "@subscribedCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "noUnreadQuestionsDesc": "No unread questions right now. New questions from students will appear here.",
+    "@noUnreadQuestionsDesc": {},
+    "noRepliedQuestionsDesc": "No replied questions yet. Answers you send to students will collect here.",
+    "@noRepliedQuestionsDesc": {},
+    "noAnnouncementsDesc": "Announcements and publications from the fellowship will appear here.",
+    "@noAnnouncementsDesc": {},
+    "schoolPastMissions": "School Past Missions",
+    "@schoolPastMissions": {},
+    "spiritualLegacy": "Spiritual Legacy",
+    "@spiritualLegacy": {},
+    "schoolLegacyBody": "Explore all historical missions carried out by PRF at this school. Touch lives, follow up with student enquiries, and review past statistics.",
+    "@schoolLegacyBody": {},
+    "noPastMissionsForSchool": "No past missions for this school.",
+    "@noPastMissionsForSchool": {},
+    "groundSuggestions": "Ground Suggestions",
+    "@groundSuggestions": {},
+    "pendingStatus": "Pending",
+    "@pendingStatus": {},
+    "suggestGroundsTitle": "Suggest Mission Grounds",
+    "@suggestGroundsTitle": {},
+    "suggestGroundsPanelBody": "Suggest new schools or centers that need spiritual interventions. The fellowship review board evaluates all entries to establish new missions.",
+    "@suggestGroundsPanelBody": {},
+    "noQuestionsYet": "No questions yet",
+    "@noQuestionsYet": {},
+    "noQuestionsFound": "No questions found",
+    "@noQuestionsFound": {},
+    "questionsFromMissionsBody": "Questions from missions will appear here",
+    "@questionsFromMissionsBody": {},
+    "tryDifferentSearchTerm": "Try a different search term",
+    "@tryDifferentSearchTerm": {},
+    "missionsFaqHub": "Missions FAQ Hub",
+    "@missionsFaqHub": {},
+    "faqHubIntro": "Record audio answers to student questions, which are transcribed into text automatically.",
+    "@faqHubIntro": {},
+    "answerTranscribeTitle": "Answer & Transcribe",
+    "@answerTranscribeTitle": {},
+    "faqHubPanelBody": "Review incoming student questions on the left. Tap \"Record Answer\" to capture your audio feedback, which is transcribed by AI to serve the fellowship.",
+    "@faqHubPanelBody": {},
+    "awaitingAnswers": "Awaiting answers",
+    "@awaitingAnswers": {},
+    "answersCount": "Answers ({count})",
+    "@answersCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "missionThemeLabel": "Mission theme: {theme}",
+    "@missionThemeLabel": {
+        "placeholders": {
+            "theme": {}
+        }
+    },
+    "recordAnswerSemantic": "Record answer to: {question}",
+    "@recordAnswerSemantic": {
+        "placeholders": {
+            "question": {}
+        }
+    },
+    "overviewTab": "Overview",
+    "@overviewTab": {},
+    "feedbackDataTab": "Feedback Data",
+    "@feedbackDataTab": {},
+    "financeTab": "Finance",
+    "@financeTab": {},
+    "missionOverview": "Mission Overview",
+    "@missionOverview": {},
+    "schoolNotSpecified": "School not specified",
+    "@schoolNotSpecified": {},
+    "generalMission": "General Mission",
+    "@generalMission": {},
+    "interactiveActions": "Interactive Actions",
+    "@interactiveActions": {},
+    "missionActionsGuidance": "The button below dynamically adapts to your current selected tab. Add sessions, write debriefs, register souls, or report expenses seamlessly.",
+    "@missionActionsGuidance": {},
+    "latestCampaign": "Latest Campaign",
+    "@latestCampaign": {},
+    "announcementsPanelIntro": "Announcements and publications received recently from the Fellowship admin.",
+    "@announcementsPanelIntro": {},
+    "stayUpToDate": "Stay Up to Date",
+    "@stayUpToDate": {},
+    "announcementsPanelBody": "Keep track of important announcements, spiritual years publications, events alerts, and news directly shared by Park Road Fellowship.",
+    "@announcementsPanelBody": {},
+    "publicationsCount": "{count} Publications",
+    "@publicationsCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "prayerSummaryTitle": "Prayer Summary",
+    "@prayerSummaryTitle": {},
+    "prayerPanelBody": "Submit your prayer needs directly to the fellowship. Together in one spirit, we stand in prayer watch and lift up our requests.",
+    "@prayerPanelBody": {},
+    "enquiryDashboard": "Enquiry Dashboard",
+    "@enquiryDashboard": {},
+    "unreadQuestions": "Unread Questions",
+    "@unreadQuestions": {},
+    "repliedQuestions": "Replied Questions",
+    "@repliedQuestions": {},
+    "ministerToStudents": "Minister to Students",
+    "@ministerToStudents": {},
+    "enquiriesPanelBody": "Answer enquiries submitted by students. Share wisdom and feedback on spiritual matters, or guide them through their doubts.",
+    "@enquiriesPanelBody": {},
+    "helpCenter": "Help Center",
+    "@helpCenter": {},
+    "findQuickAnswers": "Find Quick Answers",
+    "@findQuickAnswers": {},
+    "faqsPanelBody": "Search through compiled FAQs or filter by categories on the left panel to find immediate guidelines about PRF Missions and fellowship rules.",
+    "@faqsPanelBody": {},
+    "noFaqsDesc": "Browse categories or search to find answers about PRF Missions and fellowship life.",
+    "@noFaqsDesc": {},
+    "givingSummary": "Giving Summary",
+    "@givingSummary": {},
+    "supportFellowshipMissions": "Support Fellowship Missions",
+    "@supportFellowshipMissions": {},
+    "givingPanelBody": "Your giving enables spiritual growth and supports critical missions, local requisitions, and fellowship operations.",
+    "@givingPanelBody": {},
+    "fellowshipEvents": "Fellowship Events",
+    "@fellowshipEvents": {},
+    "eventsPanelIntro": "Join fellowship gatherings, teachings, conferences and local spiritual events.",
+    "@eventsPanelIntro": {},
+    "participateLearn": "Participate & Learn",
+    "@participateLearn": {},
+    "eventsPanelBody": "Tap any event from the left list to subscribe and secure your slot, view attendees lists, and read schedules and timelines.",
+    "@eventsPanelBody": {},
+    "availableCount": "{count} Available",
+    "@availableCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "venueNotSpecified": "Venue not specified",
+    "@venueNotSpecified": {},
+    "addRecordings": "Add recordings",
+    "@addRecordings": {},
+    "recordingsCaptureBody": "Record audio to capture event highlights.",
+    "@recordingsCaptureBody": {},
+    "growInKnowledge": "Grow in Knowledge",
+    "@growInKnowledge": {},
+    "lmsPanelBody": "Acquire wisdom and understanding through structured learning courses. Take courses, complete modules, and learn at your own pace.",
+    "@lmsPanelBody": {},
+    "noCoursesDesc": "New courses will appear here as the fellowship publishes them.",
+    "@noCoursesDesc": {},
+    "completeAllModules": "Complete all Modules",
+    "@completeAllModules": {},
+    "modulesPanelBody": "Each module has specific learning content and lessons. View and study module actions on the left panel.",
+    "@modulesPanelBody": {},
+    "noModulesDesc": "Modules will appear here once the course content is published.",
+    "@noModulesDesc": {},
+    "studyYourLessons": "Study your Lessons",
+    "@studyYourLessons": {},
+    "lessonsPanelBody": "Each lesson includes informative texts and resources to grow. Tap lessons on the left list to begin studying.",
+    "@lessonsPanelBody": {},
+    "noLessonsDesc": "Lessons will appear here once the module content is published.",
+    "@noLessonsDesc": {},
+    "noLessonResources": "No learning resources are attached to this lesson yet.",
+    "@noLessonResources": {},
+    "noMissionsDesc": "Upcoming missions will appear here once the missions desk announces them.",
+    "@noMissionsDesc": {},
+    "noRepliesYet": "No replies yet. Responses from the desk will appear here.",
+    "@noRepliesYet": {},
+    "noSubscribersDesc": "Subscriptions will appear here as members join this mission.",
+    "@noSubscribersDesc": {},
+    "question": "Question",
+    "@question": {},
+    "fieldRequired": "{field} is required",
+    "@fieldRequired": {
+        "placeholders": {
+            "field": {}
+        }
+    },
+    "fixHighlightedFields": "Please fix the highlighted fields and try again.",
+    "@fixHighlightedFields": {},
+    "ticketsRequired": "Number of tickets is required",
+    "@ticketsRequired": {},
+    "noPaymentTypesFound": "No payment types found",
+    "@noPaymentTypesFound": {},
+    "noSubscribersFound": "No subscribers found",
+    "@noSubscribersFound": {},
+    "noClassGroupsFound": "No class groups found",
+    "@noClassGroupsFound": {},
+    "updateSessionTitle": "Update Session",
+    "@updateSessionTitle": {},
+    "updateQuestionTitle": "Update Question",
+    "@updateQuestionTitle": {},
+    "updateNoteTitle": "Update Note",
+    "@updateNoteTitle": {},
+    "updateSoulTitle": "Update Soul",
+    "@updateSoulTitle": {},
+    "failedUploadReceipt": "Failed to upload receipt: {message}",
+    "@failedUploadReceipt": {
+        "placeholders": {
+            "message": {}
+        }
+    },
+    "failedSelectImage": "Failed to select image: {error}",
+    "@failedSelectImage": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "failedSelectPdf": "Failed to select PDF: {error}",
+    "@failedSelectPdf": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "startAddingExpense": "Start by adding your first expense",
+    "@startAddingExpense": {},
+    "tapToHideDetails": "Tap to hide details",
+    "@tapToHideDetails": {},
+    "tapToViewTransactions": "Tap to view {count} transactions",
+    "@tapToViewTransactions": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deleteReceiptConfirm": "Are you sure you want to delete this receipt? This action cannot be undone.",
+    "@deleteReceiptConfirm": {},
+    "deleteExpenseConfirm": "Are you sure you want to delete this expense?",
+    "@deleteExpenseConfirm": {},
+    "attachReceiptOrDocumentation": "Attach receipt or documentation",
+    "@attachReceiptOrDocumentation": {},
+    "receiptMissing": "Receipt Missing",
+    "@receiptMissing": {},
+    "transactionBreakdown": "Transaction Breakdown",
+    "@transactionBreakdown": {},
+    "refundEntries": "Refund Entries",
+    "@refundEntries": {},
+    "deficitAmount": "Deficit Amount",
+    "@deficitAmount": {},
+    "confirmationLabel": "Confirmation",
+    "@confirmationLabel": {},
+    "imageLabel": "Image",
+    "@imageLabel": {},
+    "attachmentsCount": "{count, plural, one{{count} Attachment} other{{count} Attachments}}",
+    "@attachmentsCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "continueConfirm": "Are you sure you want to continue?",
+    "@continueConfirm": {},
+    "editDebriefTooltip": "Edit debrief note",
+    "@editDebriefTooltip": {},
+    "deleteDebriefTooltip": "Delete debrief note",
+    "@deleteDebriefTooltip": {},
+    "removeNotImplemented": "Remove functionality not implemented",
+    "@removeNotImplemented": {},
+    "debriefNoteRequired": "Note is required",
+    "@debriefNoteRequired": {},
+    "sessionNotesRequired": "Preparation notes are required",
+    "@sessionNotesRequired": {},
+    "prayerRequestRequired": "Prayer request is required",
+    "@prayerRequestRequired": {},
+    "viewSubscriberTooltip": "View subscriber",
+    "@viewSubscriberTooltip": {},
+    "callSubscriberTooltip": "Call subscriber",
+    "@callSubscriberTooltip": {},
+    "selectedPhotos": "Selected Photos",
+    "@selectedPhotos": {},
+    "debriefNotesTitle": "Debrief Notes",
+    "@debriefNotesTitle": {},
+    "untitledNote": "Untitled note",
+    "@untitledNote": {},
+    "travelTime": "Travel Time",
+    "@travelTime": {},
+    "deleteMediaConfirm": "Are you sure you want to delete this media?",
+    "@deleteMediaConfirm": {},
+    "errorLoadingMedia": "Error loading media",
+    "@errorLoadingMedia": {},
+    "tapToSelectMedia": "Tap to select {mediaType}",
+    "@tapToSelectMedia": {
+        "placeholders": {
+            "mediaType": {}
+        }
+    },
+    "chooseMultipleToShare": "Choose multiple {mediaType} to share",
+    "@chooseMultipleToShare": {
+        "placeholders": {
+            "mediaType": {}
+        }
+    },
+    "groundNameRequired": "Mission ground name is required",
+    "@groundNameRequired": {},
+    "contactPersonRequired": "Contact person is required",
+    "@contactPersonRequired": {},
+    "contactNumberRequired": "Contact number is required",
+    "@contactNumberRequired": {},
+    "statusRequired": "Status is required",
+    "@statusRequired": {},
+    "noStatusesFound": "No statuses found",
+    "@noStatusesFound": {},
+    "editSoulTooltip": "Edit soul",
+    "@editSoulTooltip": {},
+    "deleteSoulTooltip": "Delete soul",
+    "@deleteSoulTooltip": {},
+    "recordingSaved": "Recording saved ({duration})",
+    "@recordingSaved": {
+        "placeholders": {
+            "duration": {}
+        }
+    },
+    "queuedRecordingsForSession": "Queued recordings for this session",
+    "@queuedRecordingsForSession": {},
+    "syncingRecording": "Syncing recording...",
+    "@syncingRecording": {},
+    "recorderIdle": "Recorder idle",
+    "@recorderIdle": {},
+    "recorderReady": "Recorder ready",
+    "@recorderReady": {},
+    "recordingInProgress": "Recording in progress",
+    "@recordingInProgress": {},
+    "savedLocally": "Saved locally",
+    "@savedLocally": {},
+    "recorderNeedsAttention": "Recorder needs attention",
+    "@recorderNeedsAttention": {},
+    "noNotesAvailable": "No notes available",
+    "@noNotesAvailable": {},
+    "missionQuestionsTitle": "Mission Questions",
+    "@missionQuestionsTitle": {},
+    "untitledQuestion": "Untitled question",
+    "@untitledQuestion": {},
+    "editQuestionTooltip": "Edit question",
+    "@editQuestionTooltip": {},
+    "deleteQuestionTooltip": "Delete question",
+    "@deleteQuestionTooltip": {},
+    "queuedRecordings": "Queued recordings",
+    "@queuedRecordings": {},
+    "offlineRecordingNotice": "You are offline. The app will retry when you are back online. You can continue using the app.",
+    "@offlineRecordingNotice": {},
+    "backgroundRecording": "Recording continues in the background.",
+    "@backgroundRecording": {},
+    "confirmationMessageRequired": "Confirmation message is required",
+    "@confirmationMessageRequired": {},
+    "enterConfirmationHint": "Enter confirmation message or reference number",
+    "@enterConfirmationHint": {},
+    "addTokenTitle": "Add Token",
+    "@addTokenTitle": {},
+    "addTokenDesc": "Add funds as a credit entry to the allocation",
+    "@addTokenDesc": {},
+    "enterTokenAmount": "Enter token amount",
+    "@enterTokenAmount": {},
+    "editExpenseTitle": "Edit Expense",
+    "@editExpenseTitle": {},
+    "editExpenseDesc": "Update expense details and receipts",
+    "@editExpenseDesc": {},
+    "addNewExpenseTitle": "Add New Expense",
+    "@addNewExpenseTitle": {},
+    "addNewExpenseDesc": "Fill in the details below to record a new expense",
+    "@addNewExpenseDesc": {},
+    "addRefundEntryTitle": "Add Refund Entry",
+    "@addRefundEntryTitle": {},
+    "addRefundEntryDesc": "Record a new refund entry for this accounting event",
+    "@addRefundEntryDesc": {},
+    "enterRefundAmount": "Enter refund amount",
+    "@enterRefundAmount": {},
+    "refundAddedSuccessfully": "Refund entry added successfully",
+    "@refundAddedSuccessfully": {},
+    "downloadFailed": "Download failed",
+    "@downloadFailed": {},
+    "capturedAt": "Captured {date}",
+    "@capturedAt": {
+        "placeholders": {
+            "date": {}
+        }
+    },
+    "soulsTitle": "Souls",
+    "@soulsTitle": {},
+    "dayLabel": "Day {day}",
+    "@dayLabel": {
+        "placeholders": {
+            "day": {
+                "type": "int"
+            }
+        }
+    },
+    "loadingVideo": "Loading video...",
+    "@loadingVideo": {},
+    "errorLoadingVideo": "Error loading video",
+    "@errorLoadingVideo": {},
+    "unknownErrorOccurred": "Unknown error occurred",
+    "@unknownErrorOccurred": {},
+    "missionGroundTab": "Mission Ground",
+    "@missionGroundTab": {},
+    "failedToLoadImage": "Failed to load image",
+    "@failedToLoadImage": {},
+    "noFinancialDataForMission": "No financial data available for this mission.",
+    "@noFinancialDataForMission": {},
+    "noRequisitionsCreated": "No requisitions have been created for this mission.",
+    "@noRequisitionsCreated": {},
+    "noLineItems": "No line items",
+    "@noLineItems": {},
+    "subscribers": "Subscribers",
+    "@subscribers": {}
 }

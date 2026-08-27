@@ -1,5 +1,6 @@
 import 'package:app/enums/expense/prf_approval_status.dart';
 import 'package:app/features/missions/mission_details/widgets/requisitions/cubit/requisition_resource_cubit.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/expense/prf_requisition.dart';
 import 'package:app/models/remote/expense/prf_requisition_item.dart';
 import 'package:app/utils/crud/resource_state.dart';
@@ -42,9 +43,9 @@ class _RequisitionsViewState extends State<RequisitionsView> {
   @override
   Widget build(BuildContext context) {
     return widget.accountingEventUlid == null
-        ? const PRFEmptyView(
-            label: 'Requisitions',
-            description: 'No financial data available for this mission.',
+        ? PRFEmptyView(
+            label: context.l10n.requisitions,
+            description: context.l10n.noFinancialDataForMission,
             icon: Icons.receipt_long_outlined,
           )
         : BlocBuilder<RequisitionResourceCubit, ResourceState<PRFRequisition>>(
@@ -125,9 +126,9 @@ class _RequisitionsViewState extends State<RequisitionsView> {
 
         // Requisitions list
         if (requisitions.isEmpty)
-          const PRFEmptyView(
-            label: 'No Requisitions',
-            description: 'No requisitions have been created for this mission.',
+          PRFEmptyView(
+            label: context.l10n.noRequisitions,
+            description: context.l10n.noRequisitionsCreated,
             icon: Icons.receipt_long_outlined,
           )
         else
@@ -151,11 +152,13 @@ class _RequisitionsViewState extends State<RequisitionsView> {
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
           border: Border.all(
-            color: theme.colorScheme.outline.withValues(alpha: 0.2),
+            color: theme.colorScheme.outline.withValues(
+              alpha: PRFOpacities.muted,
+            ),
           ),
         ),
         child: Theme(
-          data: theme.copyWith(dividerColor: PRFColors.transparent),
+          data: theme.copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
             tilePadding: const EdgeInsets.symmetric(
               horizontal: PRFSpacingTokens.lg,
@@ -214,7 +217,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
                   decoration: BoxDecoration(
                     color: requisition.approvalStatus
                         .color(theme)
-                        .withValues(alpha: 0.1),
+                        .withValues(alpha: PRFOpacities.subtle),
                     borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                   ),
                   child: Text(
@@ -228,7 +231,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
               ],
               if (requisition.requisitionItems.isEmpty)
                 Text(
-                  'No line items',
+                  context.l10n.noLineItems,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),

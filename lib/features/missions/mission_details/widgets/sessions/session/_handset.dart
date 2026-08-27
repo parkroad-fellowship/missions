@@ -90,7 +90,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
         '${duration.inSeconds.remainder(60)}s';
     PRFSnackbar.success(
       context,
-      'Recording saved ($durationText)',
+      context.l10n.recordingSaved(durationText),
     );
   }
 
@@ -208,9 +208,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                             ),
                             padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                             decoration: BoxDecoration(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.primary.withValues(alpha: 0.1),
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withValues(
+                                    alpha: PRFOpacities.subtle,
+                                  ),
                               borderRadius: BorderRadius.circular(
                                 PRFRadiusTokens.smd,
                               ),
@@ -225,9 +228,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                             ),
                             padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                             decoration: BoxDecoration(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.error.withValues(alpha: 0.1),
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.error.withValues(
+                                    alpha: PRFOpacities.subtle,
+                                  ),
                               borderRadius: BorderRadius.circular(
                                 PRFRadiusTokens.smd,
                               ),
@@ -296,9 +302,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                   PRFSpacingTokens.lg,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.error.withValues(alpha: 0.1),
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.error.withValues(
+                                        alpha: PRFOpacities.subtle,
+                                      ),
                                   borderRadius: BorderRadius.circular(
                                     PRFRadiusTokens.smd,
                                   ),
@@ -322,9 +331,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                   PRFSpacingTokens.lg,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.error.withValues(alpha: 0.1),
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.error.withValues(
+                                        alpha: PRFOpacities.subtle,
+                                      ),
                                   borderRadius: BorderRadius.circular(
                                     PRFRadiusTokens.smd,
                                   ),
@@ -372,9 +384,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                               PRFRadiusTokens.md,
                             ),
                             border: Border.all(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.outline.withValues(alpha: 0.2),
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.outline.withValues(
+                                    alpha: PRFOpacities.muted,
+                                  ),
                             ),
                           ),
                           child: Row(
@@ -428,7 +443,9 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .onSurface
-                                                .withValues(alpha: 0.7),
+                                                .withValues(
+                                                  alpha: PRFOpacities.high,
+                                                ),
                                           ),
                                     ),
                                   ],
@@ -436,12 +453,11 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                               ),
                               SizedBox(
                                 width: 140,
-                                child: PRFPrimaryButton(
+                                child: PRFButton(
                                   onPressed: () async {
                                     await _showAddAudioSheet();
                                   },
-                                  title: 'Record',
-                                  disabled: false,
+                                  title: context.l10n.record,
                                 ),
                               ),
                             ],
@@ -485,9 +501,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                   PRFRadiusTokens.smd,
                                 ),
                                 border: Border.all(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.outline.withValues(alpha: 0.2),
+                                  color:
+                                      Theme.of(
+                                        context,
+                                      ).colorScheme.outline.withValues(
+                                        alpha: PRFOpacities.muted,
+                                      ),
                                 ),
                               ),
                               child: Column(
@@ -506,7 +525,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                       ),
                                       Expanded(
                                         child: Text(
-                                          'Queued recordings for this session',
+                                          l10n.queuedRecordingsForSession,
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleMedium
@@ -517,7 +536,8 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                       ),
                                       SizedBox(
                                         width: 120,
-                                        child: PRFSecondaryButton(
+                                        child: PRFButton(
+                                          variant: PRFButtonVariant.secondary,
                                           onPressed: () =>
                                               getIt<
                                                     FailedRecordingUploadService
@@ -525,8 +545,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                                   .retryAllUploadsForSession(
                                                     missionSessionUlid,
                                                   ),
-                                          title: 'Retry all',
-                                          disabled: false,
+                                          title: context.l10n.retryAll,
                                         ),
                                       ),
                                     ],
@@ -600,7 +619,9 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                           ),
                                           SizedBox(
                                             width: 90,
-                                            child: PRFSecondaryButton(
+                                            child: PRFButton(
+                                              variant:
+                                                  PRFButtonVariant.secondary,
                                               onPressed: () =>
                                                   getIt<
                                                         FailedRecordingUploadService
@@ -608,8 +629,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                                       .retrySpecificUpload(
                                                         upload,
                                                       ),
-                                              title: 'Retry',
-                                              disabled: false,
+                                              title: context.l10n.retry,
                                             ),
                                           ),
                                         ],
@@ -645,7 +665,9 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                           color: Theme.of(context)
                                               .colorScheme
                                               .onSurface
-                                              .withValues(alpha: 0.5),
+                                              .withValues(
+                                                alpha: PRFOpacities.half,
+                                              ),
                                         ),
                                         const SizedBox(
                                           height: PRFSpacingTokens.lg,
@@ -659,7 +681,10 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .onSurface
-                                                    .withValues(alpha: 0.6),
+                                                    .withValues(
+                                                      alpha: PRFOpacities
+                                                          .prominent,
+                                                    ),
                                               ),
                                         ),
                                       ],
@@ -710,7 +735,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
     const actionButtonHeight = PRFSpacingTokens.xxxl;
     final recordedAt = hasMedia
         ? DateFormatter.formatDateTime(media.createdAt, timezone)
-        : 'Syncing recording...';
+        : l10n.syncingRecording;
     final fileSize = hasMedia ? media.humanReadableSize : '--';
 
     return Container(
@@ -722,11 +747,15 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+          color: Theme.of(
+            context,
+          ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
         ),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
+            color: Theme.of(
+              context,
+            ).colorScheme.shadow.withValues(alpha: PRFOpacities.subtle),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -742,9 +771,12 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                 Container(
                   padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                   decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.1),
+                    color:
+                        Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(
+                          alpha: PRFOpacities.subtle,
+                        ),
                     borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                   ),
                   child: Icon(
@@ -833,7 +865,7 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                 decoration: BoxDecoration(
                   color: Theme.of(
                     context,
-                  ).colorScheme.primary.withValues(alpha: 0.05),
+                  ).colorScheme.primary.withValues(alpha: PRFOpacities.faint),
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                 ),
                 child: Text(
@@ -859,21 +891,20 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                                 },
                               );
                             },
-                            builder: (context, state) => PRFPrimaryButton(
+                            builder: (context, state) => PRFButton(
                               onPressed: () => context
                                   .read<DownloadFileCubit>()
                                   .downloadFile(media.temporaryURL),
-                              title: 'Download',
-                              disabled: false,
+                              title: context.l10n.download,
                               isLoading: state.maybeWhen(
                                 loading: () => true,
                                 orElse: () => false,
                               ),
                             ),
                           )
-                        : PRFPrimaryButton(
+                        : PRFButton(
                             onPressed: () {},
-                            title: 'Processing',
+                            title: context.l10n.processing,
                             disabled: true,
                           ),
                   ),
@@ -882,7 +913,8 @@ class _SessionPageHandsetState extends State<SessionPageHandset>
                 Expanded(
                   child: SizedBox(
                     height: actionButtonHeight,
-                    child: PRFSecondaryButton(
+                    child: PRFButton(
+                      variant: PRFButtonVariant.secondary,
                       onPressed: hasTranscript
                           ? () async {
                               await _viewTranscript(transcript);
@@ -941,13 +973,22 @@ class _RecordingStatusCard extends StatelessWidget {
     return BlocBuilder<AudioRecordingCubit, AudioRecordingState>(
       builder: (context, state) {
         final (label, duration, isRecording, isPaused) = state.map(
-          initial: (_) => ('Recorder idle', Duration.zero, false, false),
-          ready: (_) => ('Recorder ready', Duration.zero, false, false),
-          recording: (s) => ('Recording in progress', s.duration, true, false),
-          paused: (s) => ('Recording paused', s.duration, false, true),
-          completed: (s) => ('Saved locally', s.duration, false, false),
-          error: (_) =>
-              ('Recorder needs attention', Duration.zero, false, false),
+          initial: (_) =>
+              (context.l10n.recorderIdle, Duration.zero, false, false),
+          ready: (_) =>
+              (context.l10n.recorderReady, Duration.zero, false, false),
+          recording: (s) =>
+              (context.l10n.recordingInProgress, s.duration, true, false),
+          paused: (s) =>
+              (context.l10n.recordingPaused, s.duration, false, true),
+          completed: (s) =>
+              (context.l10n.savedLocally, s.duration, false, false),
+          error: (_) => (
+            context.l10n.recorderNeedsAttention,
+            Duration.zero,
+            false,
+            false,
+          ),
         );
 
         if (!isRecording && !isPaused) {
@@ -998,12 +1039,12 @@ class _RecordingStatusCard extends StatelessWidget {
               ),
               SizedBox(
                 width: 96,
-                child: PRFSecondaryButton(
+                child: PRFButton(
+                  variant: PRFButtonVariant.secondary,
                   onPressed: () async {
                     await onOpenRecorder();
                   },
-                  title: 'Open',
-                  disabled: false,
+                  title: context.l10n.open,
                 ),
               ),
               const SizedBox(width: PRFSpacingTokens.xs),
@@ -1109,7 +1150,7 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
         '- $endTime';
     final facilitator = missionSession.facilitator?.fullName ?? 'N/A';
     final notes = missionSession.notes.trim().isEmpty
-        ? 'No notes available'
+        ? l10n.noNotesAvailable
         : missionSession.notes.trim();
 
     return SliverToBoxAdapter(
@@ -1119,13 +1160,15 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
           color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           border: Border.all(
-            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+            color: Theme.of(
+              context,
+            ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
           ),
           boxShadow: [
             BoxShadow(
               color: Theme.of(
                 context,
-              ).colorScheme.shadow.withValues(alpha: 0.1),
+              ).colorScheme.shadow.withValues(alpha: PRFOpacities.subtle),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -1142,17 +1185,17 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                 children: [
                   Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: PRFSectionHeader(
-                          title: 'Session information',
+                          title: context.l10n.sessionInformation,
                         ),
                       ),
                       SizedBox(
                         width: 110,
-                        child: PRFSecondaryButton(
+                        child: PRFButton(
+                          variant: PRFButtonVariant.secondary,
                           onPressed: () => _showEditSessionSheet(context),
                           title: l10n.edit,
-                          disabled: false,
                         ),
                       ),
                     ],
@@ -1202,14 +1245,20 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                     width: double.infinity,
                     padding: const EdgeInsets.all(PRFSpacingTokens.md),
                     decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.05),
+                      color:
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(
+                            alpha: PRFOpacities.faint,
+                          ),
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       border: Border.all(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(alpha: 0.2),
+                        color:
+                            Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(
+                              alpha: PRFOpacities.muted,
+                            ),
                       ),
                     ),
                     child: Column(
@@ -1242,9 +1291,12 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color: notes == 'No notes available'
-                                    ? Theme.of(context).colorScheme.onSurface
-                                          .withValues(alpha: 0.6)
+                                color: notes == l10n.noNotesAvailable
+                                    ? Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface.withValues(
+                                        alpha: PRFOpacities.prominent,
+                                      )
                                     : Theme.of(context).colorScheme.onSurface,
                               ),
                         ),
@@ -1257,12 +1309,12 @@ class MissionSessionDataView extends StatelessWidget with TimezoneMixin {
                     alignment: Alignment.centerRight,
                     child: SizedBox(
                       width: 140,
-                      child: PRFDestroyButton(
+                      child: PRFButton(
+                        variant: PRFButtonVariant.destructive,
                         onPressed: () async {
                           await _deleteSession(context);
                         },
                         title: l10n.delete,
-                        disabled: false,
                       ),
                     ),
                   ),

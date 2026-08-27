@@ -2,6 +2,7 @@
 
 import 'package:app/di/di_container.dart';
 import 'package:app/enums/prf_media_model.dart';
+import 'package:app/l10n/l10n.dart';
 import 'package:app/models/local/prf_failed_recording_upload.dart';
 import 'package:app/models/local/upload_retry_progress.dart';
 import 'package:app/services/media/failed_recording_upload_service.dart';
@@ -70,7 +71,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                   border: Border.all(
                     color: Theme.of(
                       context,
-                    ).colorScheme.outline.withValues(alpha: 0.3),
+                    ).colorScheme.outline.withValues(alpha: PRFOpacities.glow),
                   ),
                 ),
                 child: Row(
@@ -85,9 +86,12 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       child: Text(
                         'No pending uploads',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withValues(alpha: 0.7),
+                          color:
+                              Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(
+                                alpha: PRFOpacities.high,
+                              ),
                         ),
                       ),
                     ),
@@ -107,14 +111,17 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
               margin: const EdgeInsets.all(PRFSpacingTokens.lg),
               padding: const EdgeInsets.all(PRFSpacingTokens.lg),
               decoration: BoxDecoration(
-                color: Theme.of(
-                  context,
-                ).colorScheme.errorContainer.withValues(alpha: 0.1),
+                color:
+                    Theme.of(
+                      context,
+                    ).colorScheme.errorContainer.withValues(
+                      alpha: PRFOpacities.subtle,
+                    ),
                 borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                 border: Border.all(
                   color: Theme.of(
                     context,
-                  ).colorScheme.error.withValues(alpha: 0.3),
+                  ).colorScheme.error.withValues(alpha: PRFOpacities.glow),
                 ),
               ),
               child: Column(
@@ -141,7 +148,8 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       ),
                       SizedBox(
                         width: 140,
-                        child: PRFSecondaryButton(
+                        child: PRFButton(
+                          variant: PRFButtonVariant.secondary,
                           onPressed: () => _showPendingUploadsDetails(
                             context,
                             filteredUploads,
@@ -150,7 +158,6 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                               '${filteredUploads.length} '
                               '${filteredUploads.length == 1 ? 'recording' : 'record'
                                         'ings'}',
-                          disabled: false,
                         ),
                       ),
                     ],
@@ -166,9 +173,12 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       'Recordings will retry automatically '
                       'when you come online',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSurface.withValues(alpha: 0.7),
+                        color:
+                            Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(
+                              alpha: PRFOpacities.high,
+                            ),
                       ),
                     ),
                     const SizedBox(height: PRFSpacingTokens.md),
@@ -177,7 +187,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                   Row(
                     children: [
                       Expanded(
-                        child: PRFPrimaryButton(
+                        child: PRFButton(
                           onPressed: () => _retryAllUploads(context),
                           title: progress.isRetrying
                               ? 'Uploading...'
@@ -189,12 +199,13 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       const SizedBox(width: PRFSpacingTokens.sm),
                       SizedBox(
                         width: 120,
-                        child: PRFSecondaryButton(
+                        child: PRFButton(
+                          variant: PRFButtonVariant.secondary,
                           onPressed: () => _showPendingUploadsDetails(
                             context,
                             filteredUploads,
                           ),
-                          title: 'View All',
+                          title: context.l10n.viewAll,
                           disabled: progress.isRetrying,
                         ),
                       ),
@@ -220,7 +231,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
         );
 
         if (pendingUploads.isEmpty) {
-          PRFSnackbar.info(context, 'No pending uploads');
+          PRFSnackbar.info(context, context.l10n.noPendingUploads);
           return;
         }
 
@@ -233,7 +244,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
 
       final pendingUploads = await service.getPendingUploads();
       if (pendingUploads.isEmpty) {
-        PRFSnackbar.info(context, 'No pending uploads');
+        PRFSnackbar.info(context, context.l10n.noPendingUploads);
         return;
       }
 
@@ -288,7 +299,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(
                 context,
-              ).colorScheme.onSurface.withValues(alpha: 0.6),
+              ).colorScheme.onSurface.withValues(alpha: PRFOpacities.prominent),
               fontStyle: FontStyle.italic,
             ),
             overflow: TextOverflow.ellipsis,
@@ -305,10 +316,12 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
       decoration: BoxDecoration(
         color: Theme.of(
           context,
-        ).colorScheme.primaryContainer.withValues(alpha: 0.3),
+        ).colorScheme.primaryContainer.withValues(alpha: PRFOpacities.glow),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+          color: Theme.of(
+            context,
+          ).colorScheme.primary.withValues(alpha: PRFOpacities.glow),
         ),
       ),
       child: Row(
@@ -339,7 +352,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
   ) {
     PRFBottomSheet.show<void>(
       context,
-      title: 'Pending Uploads',
+      title: context.l10n.pendingUploads_2,
       child: Container(
         padding: const EdgeInsets.all(PRFSpacingTokens.lg),
         child: Column(
@@ -363,7 +376,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
 
                     return SizedBox(
                       width: 120,
-                      child: PRFPrimaryButton(
+                      child: PRFButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                           _retryAllUploads(context);
@@ -434,23 +447,29 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
             borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             border: Border.all(
               color: isCurrentlyUploading
-                  ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.3)
+                  ? Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: PRFOpacities.glow)
                   : Theme.of(
                       context,
-                    ).colorScheme.outline.withValues(alpha: 0.2),
+                    ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
               width: isCurrentlyUploading ? 1.5 : 1,
             ),
             color: isCurrentlyUploading
                 ? Theme.of(
                     context,
-                  ).colorScheme.primaryContainer.withValues(alpha: 0.1)
+                  ).colorScheme.primaryContainer.withValues(
+                    alpha: PRFOpacities.subtle,
+                  )
                 : Theme.of(context).colorScheme.surface,
             boxShadow: [
               BoxShadow(
                 color: isCurrentlyUploading
                     ? Theme.of(
                         context,
-                      ).colorScheme.primary.withValues(alpha: 0.1)
+                      ).colorScheme.primary.withValues(
+                        alpha: PRFOpacities.subtle,
+                      )
                     : PRFColors.black.withValues(alpha: 0.03),
                 blurRadius: isCurrentlyUploading ? 8 : 4,
                 offset: const Offset(0, 2),
@@ -472,7 +491,7 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                                 context,
                               ).colorScheme.primary.withValues(alpha: 0.15)
                             : Theme.of(context).colorScheme.surfaceContainer
-                                  .withValues(alpha: 0.7),
+                                  .withValues(alpha: PRFOpacities.high),
                         borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                       ),
                       child: Icon(
@@ -540,14 +559,17 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       Container(
                         padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                         decoration: BoxDecoration(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.1),
+                          color:
+                              Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(
+                                alpha: PRFOpacities.subtle,
+                              ),
                           shape: BoxShape.circle,
                         ),
                         child: SizedBox(
                           width: PRFSpacingTokens.lg,
-                          height: 16,
+                          height: PRFSpacingTokens.lg,
                           child: PRFCircularProgressIndicator(
                             color: Theme.of(context).colorScheme.primary,
                           ),
@@ -588,9 +610,12 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                     vertical: PRFSpacingTokens.sm,
                   ),
                   decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.surfaceContainer.withValues(alpha: 0.5),
+                    color:
+                        Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainer.withValues(
+                          alpha: PRFOpacities.half,
+                        ),
                     borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                   ),
                   child: Row(
@@ -598,9 +623,12 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                       Icon(
                         Icons.schedule_outlined,
                         size: 14,
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSurface.withValues(alpha: 0.6),
+                        color:
+                            Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(
+                              alpha: PRFOpacities.prominent,
+                            ),
                       ),
                       const SizedBox(width: PRFSpacingTokens.xs),
                       Expanded(
@@ -608,9 +636,12 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                           'Failed on ${dateFormat.format(upload.failedAt)}',
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurface.withValues(alpha: 0.7),
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface.withValues(
+                                      alpha: PRFOpacities.high,
+                                    ),
                                 fontWeight: FontWeight.w500,
                               ),
                         ),
@@ -624,11 +655,17 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
                           color: upload.retryCount > 3
                               ? Theme.of(
                                   context,
-                                ).colorScheme.error.withValues(alpha: 0.1)
+                                ).colorScheme.error.withValues(
+                                  alpha: PRFOpacities.subtle,
+                                )
                               : Theme.of(
                                   context,
-                                ).colorScheme.primary.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(4),
+                                ).colorScheme.primary.withValues(
+                                  alpha: PRFOpacities.subtle,
+                                ),
+                          borderRadius: BorderRadius.circular(
+                            PRFRadiusTokens.xs,
+                          ),
                         ),
                         child: Text(
                           '${upload.retryCount} ${upload.retryCount == 1 ? 'retry' : 'retries'}',
@@ -658,9 +695,12 @@ class _PendingUploadsWidgetState extends State<PendingUploadsWidget> {
   ) async {
     try {
       await getIt<FailedRecordingUploadService>().retrySpecificUpload(upload);
-      PRFSnackbar.success(context, '${upload.name} uploaded successfully');
+      PRFSnackbar.success(
+        context,
+        context.l10n.uploadedSuccessfully(upload.name),
+      );
     } catch (e) {
-      PRFSnackbar.error(context, 'Retry failed');
+      PRFSnackbar.error(context, context.l10n.retryFailed);
     }
   }
 }

@@ -17,6 +17,7 @@ import 'package:app/models/remote/media/prf_media.dart';
 import 'package:app/shared/media_upload/cubit/select_media_cubit.dart';
 import 'package:app/shared/media_upload/cubit/upload_media_cubit.dart';
 import 'package:app/utils/crud/resource_state.dart';
+import 'package:app/utils/http/network.dart';
 import 'package:app/utils/mixins/timezone_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -82,12 +83,15 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             state.maybeWhen(
               orElse: () {},
               loaded: () {
-                PRFSnackbar.success(context, 'Receipt uploaded successfully');
+                PRFSnackbar.success(
+                  context,
+                  context.l10n.receiptUploadedSuccessfully,
+                );
               },
               error: (message) {
                 PRFSnackbar.error(
                   context,
-                  'Failed to upload receipt: $message',
+                  context.l10n.failedUploadReceipt(message),
                 );
               },
             );
@@ -121,13 +125,13 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 ),
                 listLoaded: (entries, _, _) {
                   if (entries.isEmpty) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: PRFSpacingTokens.lg,
                       ),
                       child: PRFEmptyView(
-                        label: 'No Expenses Yet',
-                        description: 'Start by adding your first expense',
+                        label: context.l10n.noExpensesYet,
+                        description: context.l10n.startAddingExpense,
                         icon: Icons.receipt_long_outlined,
                       ),
                     );
@@ -150,10 +154,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     horizontal: PRFSpacingTokens.lg,
                   ),
                   child: PRFEmptyView(
-                    label: 'Error',
+                    label: context.l10n.error,
                     description: message,
                     icon: Icons.error_outline,
-                    actionLabel: 'Retry',
+                    actionLabel: context.l10n.retry,
                     onActionPressed: _loadData,
                   ),
                 ),
@@ -162,10 +166,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     horizontal: PRFSpacingTokens.lg,
                   ),
                   child: PRFEmptyView(
-                    label: 'Error',
+                    label: context.l10n.error,
                     description: message,
                     icon: Icons.error_outline,
-                    actionLabel: 'Retry',
+                    actionLabel: context.l10n.retry,
                     onActionPressed: _loadData,
                   ),
                 ),
@@ -260,9 +264,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         // Empty state when breakdown is shown but no entries
         if (_showBreakdown && entries.isEmpty)
           SliverToBoxAdapter(
-            child: const PRFEmptyView(
-              label: 'No Expenses Yet',
-              description: 'Start by adding your first expense',
+            child: PRFEmptyView(
+              label: context.l10n.noExpensesYet,
+              description: context.l10n.startAddingExpense,
               icon: Icons.receipt_long_outlined,
             ).animate().fadeIn(duration: PRFMotionTokens.enterShort),
           ),
@@ -297,19 +301,15 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   gradient: LinearGradient(
                     colors: [
                       theme.colorScheme.primary,
-                      theme.colorScheme.primary.withValues(alpha: 0.8),
+                      theme.colorScheme.primary.withValues(
+                        alpha: PRFOpacities.stronger,
+                      ),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-                  boxShadow: [
-                    BoxShadow(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
+                  boxShadow: PRFShadowTokens.badge(theme.colorScheme.primary),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,7 +320,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                         Text(
                           l10n.currentBalance,
                           style: theme.textTheme.titleMedium?.copyWith(
-                            color: PRFColors.white.withValues(alpha: 0.9),
+                            color: PRFColors.white.withValues(
+                              alpha: PRFOpacities.nearOpaque,
+                            ),
                           ),
                         ),
                         Container(
@@ -329,7 +331,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                             vertical: PRFSpacingTokens.xs,
                           ),
                           decoration: BoxDecoration(
-                            color: PRFColors.white.withValues(alpha: 0.2),
+                            color: PRFColors.white.withValues(
+                              alpha: PRFOpacities.muted,
+                            ),
                             borderRadius: BorderRadius.circular(
                               PRFRadiusTokens.smd,
                             ),
@@ -360,8 +364,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     Container(
                       height: 6,
                       decoration: BoxDecoration(
-                        color: PRFColors.white.withValues(alpha: 0.3),
-                        borderRadius: BorderRadius.circular(3),
+                        color: PRFColors.white.withValues(
+                          alpha: PRFOpacities.glow,
+                        ),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
                       ),
                       child: FractionallySizedBox(
                         alignment: Alignment.centerLeft,
@@ -369,7 +375,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                         child: Container(
                           decoration: BoxDecoration(
                             color: PRFColors.white,
-                            borderRadius: BorderRadius.circular(3),
+                            borderRadius: BorderRadius.circular(
+                              PRFRadiusTokens.xs,
+                            ),
                           ),
                         ),
                       ),
@@ -448,7 +456,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             color: theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             border: Border.all(
-              color: theme.colorScheme.outline.withValues(alpha: 0.2),
+              color: theme.colorScheme.outline.withValues(
+                alpha: PRFOpacities.muted,
+              ),
             ),
           ),
           child: Column(
@@ -459,7 +469,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   Container(
                     padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                     decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.1),
+                      color: color.withValues(alpha: PRFOpacities.subtle),
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     ),
                     child: Icon(
@@ -505,18 +515,17 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
       child: Row(
         children: [
           Expanded(
-            child: PRFPrimaryButton(
+            child: PRFButton(
               onPressed: () => _showAddTokenModal(context, accountingEvent),
               title: l10n.addToken,
-              disabled: false,
             ),
           ),
           const SizedBox(width: PRFSpacingTokens.md),
           Expanded(
-            child: PRFSecondaryButton(
+            child: PRFButton(
+              variant: PRFButtonVariant.secondary,
               onPressed: () => _showAddExpenseModal(context),
               title: l10n.addExpense,
-              disabled: false,
             ),
           ),
         ],
@@ -535,7 +544,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
       child: Material(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
-        elevation: 1,
+        elevation: PRFElevationTokens.sm,
         child: InkWell(
           onTap: () => setState(() => _showBreakdown = !_showBreakdown),
           borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
@@ -554,15 +563,17 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Transaction Breakdown',
+                        context.l10n.transactionBreakdown,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
                         _showBreakdown
-                            ? 'Tap to hide details'
-                            : 'Tap to view ${entries.length} transactions',
+                            ? context.l10n.tapToHideDetails
+                            : context.l10n.tapToViewTransactions(
+                                entries.length,
+                              ),
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurface.withValues(
                             alpha: 0.6,
@@ -577,7 +588,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   turns: _showBreakdown ? 0.5 : 0,
                   child: Icon(
                     Icons.keyboard_arrow_down,
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                    color: theme.colorScheme.onSurface.withValues(
+                      alpha: PRFOpacities.prominent,
+                    ),
                   ),
                 ),
               ],
@@ -601,18 +614,14 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.shadow.withValues(alpha: 0.08),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
+          color: theme.colorScheme.outline.withValues(
+            alpha: PRFOpacities.muted,
           ),
-        ],
+        ),
+        boxShadow: PRFShadowTokens.card(theme.colorScheme.shadow),
       ),
       child: Material(
-        color: PRFColors.transparent,
+        color: Colors.transparent,
         child: Padding(
           padding: const EdgeInsets.all(PRFSpacingTokens.xl),
           child: Column(
@@ -708,7 +717,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   if (!isCredit && widget.canEdit) ...[
                     const SizedBox(width: PRFSpacingTokens.sm),
                     Material(
-                      color: PRFColors.transparent,
+                      color: Colors.transparent,
                       child: InkWell(
                         onTap: () => _showDeleteConfirmation(context, entry),
                         borderRadius: BorderRadius.circular(
@@ -742,7 +751,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   const SizedBox(width: PRFSpacingTokens.sm),
                   if (!isCredit && widget.canEdit) ...[
                     Material(
-                      color: PRFColors.transparent,
+                      color: Colors.transparent,
                       child: InkWell(
                         onTap: () => _showExpenseDetails(context, entry),
                         borderRadius: BorderRadius.circular(
@@ -816,7 +825,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           initial: () {},
           loading: (mediaUuid) {},
           loaded: (mediaUuid) {
-            PRFSnackbar.success(context, 'Receipt deleted successfully');
+            PRFSnackbar.success(
+              context,
+              context.l10n.receiptDeletedSuccessfully,
+            );
           },
           error: (message) {
             PRFSnackbar.error(context, message);
@@ -826,10 +838,14 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
       child: Container(
         padding: const EdgeInsets.all(PRFSpacingTokens.lg),
         decoration: BoxDecoration(
-          color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+          color: theme.colorScheme.primaryContainer.withValues(
+            alpha: PRFOpacities.glow,
+          ),
           borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
           border: Border.all(
-            color: theme.colorScheme.primary.withValues(alpha: 0.2),
+            color: theme.colorScheme.primary.withValues(
+              alpha: PRFOpacities.muted,
+            ),
           ),
         ),
         child: Column(
@@ -851,8 +867,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 ),
                 const SizedBox(width: PRFSpacingTokens.sm),
                 Text(
-                  '${receipts.length} '
-                  'Attachment${receipts.length == 1 ? '' : 's'}',
+                  context.l10n.attachmentsCount(receipts.length),
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurface,
                     fontWeight: FontWeight.w600,
@@ -956,7 +971,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                         ),
                                       )
                                     : ClipRRect(
-                                        borderRadius: BorderRadius.circular(14),
+                                        borderRadius: BorderRadius.circular(
+                                          PRFRadiusTokens.smd,
+                                        ),
                                         child: Stack(
                                           children: [
                                             Image.network(
@@ -1027,12 +1044,14 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                               child: Container(
                                                 decoration: BoxDecoration(
                                                   borderRadius:
-                                                      BorderRadius.circular(14),
+                                                      BorderRadius.circular(
+                                                        PRFRadiusTokens.smd,
+                                                      ),
                                                   gradient: LinearGradient(
                                                     begin: Alignment.topCenter,
                                                     end: Alignment.bottomCenter,
                                                     colors: [
-                                                      PRFColors.transparent,
+                                                      Colors.transparent,
                                                       PRFColors.black
                                                           .withValues(
                                                             alpha: 0.1,
@@ -1058,8 +1077,8 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                   receipt,
                                 ),
                                 child: Container(
-                                  width: 24,
-                                  height: 24,
+                                  width: PRFSpacingTokens.xl,
+                                  height: PRFSpacingTokens.xl,
                                   decoration: BoxDecoration(
                                     color: theme.colorScheme.error,
                                     shape: BoxShape.circle,
@@ -1070,7 +1089,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                     boxShadow: [
                                       BoxShadow(
                                         color: theme.colorScheme.shadow
-                                            .withValues(alpha: 0.2),
+                                            .withValues(
+                                              alpha: PRFOpacities.muted,
+                                            ),
                                         blurRadius: 4,
                                         offset: const Offset(0, 2),
                                       ),
@@ -1130,11 +1151,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   ) {
     PRFConfirmationDialog.show(
       context,
-      title: 'Delete Receipt',
-      message:
-          'Are you sure you want to delete this receipt? This action cannot '
-          'be undone.',
-      confirmLabel: 'Delete',
+      title: context.l10n.deleteReceipt,
+      message: context.l10n.deleteReceiptConfirm,
+      confirmLabel: context.l10n.delete,
       isDestructive: true,
       onConfirm: () {
         context.read<DeleteReceiptCubit>().deleteReceipt(
@@ -1154,10 +1173,12 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     return Container(
       padding: const EdgeInsets.all(PRFSpacingTokens.lg),
       decoration: BoxDecoration(
-        color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
+        color: theme.colorScheme.errorContainer.withValues(
+          alpha: PRFOpacities.glow,
+        ),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
         border: Border.all(
-          color: theme.colorScheme.error.withValues(alpha: 0.3),
+          color: theme.colorScheme.error.withValues(alpha: PRFOpacities.glow),
         ),
       ),
       child: LayoutBuilder(
@@ -1178,7 +1199,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 ),
                 loading: () => SizedBox(
                   width: PRFSpacingTokens.lg,
-                  height: 16,
+                  height: PRFSpacingTokens.lg,
                   child: PRFCircularProgressIndicator(
                     color: theme.colorScheme.primary,
                   ),
@@ -1190,7 +1211,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Receipt Missing',
+                      context.l10n.receiptMissing,
                       style: theme.textTheme.titleSmall?.copyWith(
                         color: theme.colorScheme.onSurface,
                         fontWeight: FontWeight.w600,
@@ -1198,7 +1219,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     ),
                     const SizedBox(height: PRFSpacingTokens.xs),
                     Text(
-                      'Attach receipt or documentation',
+                      context.l10n.attachReceiptOrDocumentation,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurface.withValues(
                           alpha: 0.7,
@@ -1301,7 +1322,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             if (context.mounted) {
               PRFSnackbar.error(
                 context,
-                'Failed to select image: $e',
+                context.l10n.failedSelectImage(e.toString()),
               );
             }
           }
@@ -1322,7 +1343,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               ),
               const SizedBox(width: PRFSpacingTokens.xs),
               Text(
-                'Image',
+                context.l10n.imageLabel,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onError,
                   fontWeight: FontWeight.w600,
@@ -1365,7 +1386,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             if (context.mounted) {
               PRFSnackbar.error(
                 context,
-                'Failed to select PDF: $e',
+                context.l10n.failedSelectPdf(e.toString()),
               );
             }
           }
@@ -1399,14 +1420,11 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     );
   }
 
-  void _openPdfDocument(BuildContext context, String pdfUrl) {
-    Navigator.of(context).push(
-      MaterialPageRoute<dynamic>(
-        builder: (context) => PDFViewerPage(
-          pdfUrl: pdfUrl,
-          title: 'Receipt PDF',
-        ),
-      ),
+  Future<void> _openPdfDocument(BuildContext context, String pdfUrl) async {
+    await PRFPdfViewer.show(
+      context,
+      bytes: await NetworkUtil().getBytes(pdfUrl),
+      title: context.l10n.receiptPdf,
     );
   }
 
@@ -1429,7 +1447,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     context.read<SelectMediaCubit>().clearMedia();
     PRFBottomSheet.show<void>(
       context,
-      title: 'Add Expense',
+      title: context.l10n.addExpense_2,
       child: accountingEventUlid != null
           ? AddExpenseViewHandset(
               accountingEventUlid: accountingEventUlid!,
@@ -1441,7 +1459,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   void _showExpenseDetails(BuildContext context, PRFAllocationEntry entry) {
     PRFBottomSheet.show<void>(
       context,
-      title: 'Edit Expense',
+      title: context.l10n.editExpense,
       child: EditExpenseViewHandset(
         allocationEntry: entry,
       ),
@@ -1454,9 +1472,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   ) async {
     final confirmed = await PRFConfirmationDialog.show(
       context,
-      title: 'Delete Expense',
-      message: 'Are you sure you want to delete this expense?',
-      confirmLabel: 'Delete',
+      title: context.l10n.deleteExpense,
+      message: context.l10n.deleteExpenseConfirm,
+      confirmLabel: context.l10n.delete,
       isDestructive: true,
     );
     if (confirmed != true) return;
@@ -1470,7 +1488,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   ) {
     PRFBottomSheet.show<void>(
       context,
-      title: 'Add Token',
+      title: context.l10n.addToken,
       child: AddTokenViewHandset(
         accountingEventUlid: accountingEvent.ulid,
       ),
@@ -1489,7 +1507,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   ) {
     PRFBottomSheet.show<void>(
       context,
-      title: 'Add Refund',
+      title: context.l10n.addRefund,
       child: AddRefundViewHandset(
         accountingEventUlid: accountingEvent.ulid,
       ),
@@ -1516,15 +1534,21 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      theme.colorScheme.tertiary.withValues(alpha: 0.1),
-                      theme.colorScheme.tertiary.withValues(alpha: 0.05),
+                      theme.colorScheme.tertiary.withValues(
+                        alpha: PRFOpacities.subtle,
+                      ),
+                      theme.colorScheme.tertiary.withValues(
+                        alpha: PRFOpacities.faint,
+                      ),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                   border: Border.all(
-                    color: theme.colorScheme.tertiary.withValues(alpha: 0.3),
+                    color: theme.colorScheme.tertiary.withValues(
+                      alpha: PRFOpacities.glow,
+                    ),
                   ),
                 ),
                 child: Column(
@@ -1675,11 +1699,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                     ),
                     const SizedBox(height: PRFSpacingTokens.md),
                     if (widget.canEdit)
-                      PRFPrimaryButton(
+                      PRFButton(
                         onPressed: () =>
                             _showAddRefundModal(context, accountingEvent),
-                        title: 'Add Refund',
-                        disabled: false,
+                        title: context.l10n.addRefund,
                       ),
                     const SizedBox(height: PRFSpacingTokens.md),
                     if (accountingEvent.refunds.isNotEmpty)
@@ -1710,7 +1733,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
         border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+          color: theme.colorScheme.outline.withValues(
+            alpha: PRFOpacities.muted,
+          ),
         ),
       ),
       child: Column(
@@ -1725,7 +1750,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               ),
               const SizedBox(width: PRFSpacingTokens.sm),
               Text(
-                'Refund Entries',
+                context.l10n.refundEntries,
                 style: theme.textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -1756,8 +1781,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
             physics: const NeverScrollableScrollPhysics(),
             itemCount: refunds.length,
             separatorBuilder: (context, index) => Divider(
-              color: theme.colorScheme.outline.withValues(alpha: 0.1),
-              height: 16,
+              color: theme.colorScheme.outline.withValues(
+                alpha: PRFOpacities.subtle,
+              ),
+              height: PRFSpacingTokens.lg,
             ),
             itemBuilder: (context, index) {
               final refund = refunds.reversed.elementAt(index);
@@ -1803,7 +1830,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Amount',
+                    context.l10n.amount,
                     style: theme.textTheme.labelSmall?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -1827,7 +1854,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         _buildRefundDetailValue(
           context,
           theme,
-          'Deficit Amount',
+          context.l10n.deficitAmount,
           NumberFormat.currency(locale: 'en_KE', symbol: 'KES ').format(
             refund.deficitAmount,
           ),
@@ -1836,7 +1863,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         _buildRefundDetailValue(
           context,
           theme,
-          'Confirmation',
+          context.l10n.confirmationLabel,
           refund.confirmationMessage,
           isCopyable: true,
         ),
@@ -1844,7 +1871,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         _buildRefundDetailValue(
           context,
           theme,
-          'Date',
+          context.l10n.date,
           DateFormatter.formatDateTime(refund.createdAt, timezone),
         ),
       ],
@@ -1886,7 +1913,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           IconButton(
             onPressed: () {
               Clipboard.setData(ClipboardData(text: value));
-              PRFSnackbar.info(context, 'Copied to clipboard');
+              PRFSnackbar.info(context, context.l10n.copiedToClipboard);
             },
             icon: Icon(
               Icons.copy,
@@ -1929,7 +1956,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
         GestureDetector(
           onTap: () {
             Clipboard.setData(ClipboardData(text: value));
-            PRFSnackbar.info(context, 'Copied "$value" to clipboard');
+            PRFSnackbar.info(context, context.l10n.copiedToClipboard_2(value));
           },
           child: Container(
             padding: const EdgeInsets.symmetric(
@@ -1940,7 +1967,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               color: theme.colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(PRFRadiusTokens.xs),
               border: Border.all(
-                color: theme.colorScheme.outline.withValues(alpha: 0.3),
+                color: theme.colorScheme.outline.withValues(
+                  alpha: PRFOpacities.glow,
+                ),
               ),
             ),
             child: Row(

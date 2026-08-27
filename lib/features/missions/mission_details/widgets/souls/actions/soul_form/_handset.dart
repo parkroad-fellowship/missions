@@ -1,3 +1,4 @@
+import 'package:app/enums/member/prf_institution_type.dart';
 import 'package:app/enums/mission/prf_soul_decision_type.dart';
 import 'package:app/features/missions/cubit/class_group_resource_cubit.dart';
 import 'package:app/features/missions/mission_details/widgets/souls/cubit/soul_resource_cubit.dart';
@@ -14,11 +15,13 @@ import 'package:prf_design/prf_design.dart';
 class SoulFormViewHandset extends StatefulWidget {
   const SoulFormViewHandset({
     required this.missionUlid,
+    this.institutionType,
     this.soul,
     super.key,
   });
 
   final String missionUlid;
+  final PRFInstitutionType? institutionType;
   final PRFSoul? soul;
 
   @override
@@ -66,7 +69,19 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
     _fullNameController.addListener(_onFormChanged);
     _admissionNumberController.addListener(_onFormChanged);
 
-    context.read<ClassGroupResourceCubit>().loadAll();
+    context.read<ClassGroupResourceCubit>().loadAll(
+      filters: {
+        'institution_type': widget.institutionType?.value,
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _admissionNumberController.dispose();
+    _notesController.dispose();
+    super.dispose();
   }
 
   void _onFormChanged() {
@@ -86,13 +101,15 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
     _clearErrors();
 
     if (_fullNameController.text.trim().isEmpty) {
-      _fullNameError = 'Full name is required';
+      _fullNameError = context.l10n.fieldRequired(context.l10n.fullName);
     }
     if (selectedClassGroup == null) {
-      _classGroupError = 'Class group is required';
+      _classGroupError = context.l10n.fieldRequired(context.l10n.classGroup);
     }
     if (selectedDecisionType == null) {
-      _decisionTypeError = 'Decision type is required';
+      _decisionTypeError = context.l10n.fieldRequired(
+        context.l10n.decisionType,
+      );
     }
 
     setState(() => _showValidation = true);
@@ -114,7 +131,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _isEditing ? 'Update Soul' : l10n.recordSoul,
+              _isEditing ? l10n.updateSoulTitle : l10n.recordSoul,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -178,7 +195,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
                             }),
                             selection: selectedClassGroup,
                             hintText: l10n.selectClass,
-                            emptyText: 'No class groups found',
+                            emptyText: l10n.noClassGroupsFound,
                           );
                         },
                       );
@@ -191,7 +208,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
               icon: Icons.person_outline,
               title: l10n.fullName,
               isRequired: true,
-              child: PRFTextInput(
+              child: PRFTextField(
                 hintText: l10n.enterName,
                 controller: _fullNameController,
                 enabled: !_isLoading,
@@ -203,7 +220,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
             PRFFormSection(
               icon: Icons.badge_outlined,
               title: l10n.admissionNumber,
-              child: PRFTextInput(
+              child: PRFTextField(
                 hintText: l10n.enterAdmissionNumber,
                 controller: _admissionNumberController,
                 enabled: !_isLoading,
@@ -214,7 +231,8 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
             PRFFormSection(
               icon: Icons.edit_note,
               title: l10n.note,
-              child: PRFTextAreaInput(
+              child: PRFTextField(
+                type: PRFTextFieldType.textArea,
                 hintText: l10n.addDecisionNote,
                 controller: _notesController,
                 enabled: !_isLoading,
@@ -252,9 +270,9 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
                 );
               },
               builder: (context, state) {
-                return PRFPrimaryButton(
+                return PRFButton(
                   onPressed: _submitForm,
-                  title: _isEditing ? 'Update' : l10n.record,
+                  title: _isEditing ? l10n.update : l10n.record,
                   disabled: !_isFormValid,
                   isLoading: _isLoading,
                 );
@@ -288,7 +306,9 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
               border: Border.all(
                 color: isSelected
                     ? theme.colorScheme.primary
-                    : theme.colorScheme.outline.withValues(alpha: 0.3),
+                    : theme.colorScheme.outline.withValues(
+                        alpha: PRFOpacities.glow,
+                      ),
               ),
             ),
             child: Text(
@@ -311,7 +331,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
       Gaimon.warning();
       PRFSnackbar.error(
         context,
-        'Please fix the highlighted fields and try again.',
+        context.l10n.fixHighlightedFields,
       );
       return;
     }

@@ -26,10 +26,10 @@ clean:
 		flutter clean && flutter pub get -v && make pods
 
 aab:
-		flutter build appbundle  --flavor production --target lib/main_production.dart --release --obfuscate --split-debug-info=debug-symbols -v
+		flutter build appbundle  --flavor production --target lib/main_debug.dart --release --obfuscate --split-debug-info=debug-symbols
 
 run:
-		flutter run --release  --flavor production --target lib/main_production.dart
+		flutter run  --flavor production --target lib/main_debug.dart
 	
 build: 	# Run the app on a new computer with Flutter 2.3 installed
 		flutter pub get && make gen && make run
@@ -62,7 +62,7 @@ sha1:
 		keytool -list -v -keystore ~/.android/debug.keystore
 
 pods:
-		cd ios && pod install --repo-update --verbose && cd ..
+		cd ios && pod install --verbose && cd ..
 
 gallery:
 		keytool -export -rfc -keystore upload-keystore.jks -alias [alias] -file upload_certificate.pem

@@ -62,10 +62,10 @@ class _AddPrayerRequestViewHandsetState
     _clearErrors();
 
     if (_titleController.text.trim().isEmpty) {
-      _titleError = 'Title is required';
+      _titleError = context.l10n.fieldRequired(context.l10n.title);
     }
     if (_requestController.text.trim().isEmpty) {
-      _requestError = 'Prayer request is required';
+      _requestError = context.l10n.prayerRequestRequired;
     }
 
     setState(() => _showValidation = true);
@@ -83,7 +83,9 @@ class _AddPrayerRequestViewHandsetState
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
+            Theme.of(
+              context,
+            ).colorScheme.primary.withValues(alpha: PRFOpacities.faint),
             Theme.of(context).colorScheme.surface,
           ],
         ),
@@ -105,15 +107,20 @@ class _AddPrayerRequestViewHandsetState
                           Theme.of(context).colorScheme.primary,
                           Theme.of(
                             context,
-                          ).colorScheme.primary.withValues(alpha: 0.8),
+                          ).colorScheme.primary.withValues(
+                            alpha: PRFOpacities.stronger,
+                          ),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.3),
+                          color:
+                              Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(
+                                alpha: PRFOpacities.glow,
+                              ),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -140,9 +147,12 @@ class _AddPrayerRequestViewHandsetState
                           l10n.submitPrayerRequestDesc,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onPrimary.withValues(alpha: 0.9),
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary.withValues(
+                                      alpha: PRFOpacities.nearOpaque,
+                                    ),
                               ),
                           textAlign: TextAlign.center,
                         ),
@@ -164,13 +174,16 @@ class _AddPrayerRequestViewHandsetState
                   border: Border.all(
                     color: Theme.of(
                       context,
-                    ).colorScheme.outline.withValues(alpha: 0.2),
+                    ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.shadow.withValues(alpha: 0.1),
+                      color:
+                          Theme.of(
+                            context,
+                          ).colorScheme.shadow.withValues(
+                            alpha: PRFOpacities.subtle,
+                          ),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -182,7 +195,7 @@ class _AddPrayerRequestViewHandsetState
                       icon: Icons.title_outlined,
                       title: l10n.title,
                       isRequired: true,
-                      child: PRFTextInput(
+                      child: PRFTextField(
                         hintText: l10n.title,
                         controller: _titleController,
                         errorText: _showValidation ? _titleError : null,
@@ -193,7 +206,8 @@ class _AddPrayerRequestViewHandsetState
                           icon: Icons.notes_outlined,
                           title: l10n.prayerRequest,
                           isRequired: true,
-                          child: PRFTextAreaInput(
+                          child: PRFTextField(
+                            type: PRFTextFieldType.textArea,
                             hintText: l10n.prayerRequest,
                             controller: _requestController,
                             errorText: _showValidation ? _requestError : null,
@@ -243,7 +257,7 @@ class _AddPrayerRequestViewHandsetState
                         curr is ResourceMutating<PRFPrayerRequest> ||
                         curr is ResourceError<PRFPrayerRequest>,
                     builder: (context, state) {
-                      return PRFPrimaryButton(
+                      return PRFButton(
                         onPressed: _submitForm,
                         title: l10n.submit,
                         disabled: !_isFormValid,
@@ -268,7 +282,7 @@ class _AddPrayerRequestViewHandsetState
       Gaimon.warning();
       PRFSnackbar.error(
         context,
-        'Please fix the highlighted fields and try again.',
+        context.l10n.fixHighlightedFields,
       );
       return;
     }

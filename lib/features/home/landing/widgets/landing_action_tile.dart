@@ -9,6 +9,7 @@ class LandingActionTile extends StatelessWidget {
     super.key,
     this.assetHeight = 56,
     this.isNeutralCard = false,
+    this.isAccent = false,
   });
 
   final String title;
@@ -16,6 +17,7 @@ class LandingActionTile extends StatelessWidget {
   final VoidCallback onTap;
   final double assetHeight;
   final bool isNeutralCard;
+  final bool isAccent;
 
   @override
   Widget build(_) {
@@ -25,6 +27,7 @@ class LandingActionTile extends StatelessWidget {
       onTap: onTap,
       assetHeight: assetHeight,
       isNeutralCard: isNeutralCard,
+      accent: isAccent,
     );
   }
 }

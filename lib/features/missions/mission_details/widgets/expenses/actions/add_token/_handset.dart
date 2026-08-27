@@ -60,10 +60,10 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
     _clearErrors();
 
     if (_amountController.text.trim().isEmpty) {
-      _amountError = 'Amount is required';
+      _amountError = context.l10n.fieldRequired(context.l10n.amount);
     }
     if (_confirmationController.text.trim().isEmpty) {
-      _confirmationError = 'Confirmation message is required';
+      _confirmationError = context.l10n.confirmationMessageRequired;
     }
 
     setState(() => _showValidation = true);
@@ -80,7 +80,9 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Theme.of(context).colorScheme.tertiary.withValues(alpha: 0.05),
+            Theme.of(
+              context,
+            ).colorScheme.tertiary.withValues(alpha: PRFOpacities.faint),
             Theme.of(context).colorScheme.surface,
           ],
         ),
@@ -102,15 +104,20 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                           Theme.of(context).colorScheme.tertiary,
                           Theme.of(
                             context,
-                          ).colorScheme.tertiary.withValues(alpha: 0.8),
+                          ).colorScheme.tertiary.withValues(
+                            alpha: PRFOpacities.stronger,
+                          ),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.tertiary.withValues(alpha: 0.3),
+                          color:
+                              Theme.of(
+                                context,
+                              ).colorScheme.tertiary.withValues(
+                                alpha: PRFOpacities.glow,
+                              ),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -125,7 +132,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.sm),
                         Text(
-                          'Add Token',
+                          l10n.addTokenTitle,
                           style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.onTertiary,
@@ -134,12 +141,15 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                         ),
                         const SizedBox(height: PRFSpacingTokens.xs),
                         Text(
-                          'Add funds as a credit entry to the allocation',
+                          l10n.addTokenDesc,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onTertiary.withValues(alpha: 0.9),
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onTertiary.withValues(
+                                      alpha: PRFOpacities.nearOpaque,
+                                    ),
                               ),
                           textAlign: TextAlign.center,
                         ),
@@ -161,13 +171,16 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                   border: Border.all(
                     color: Theme.of(
                       context,
-                    ).colorScheme.outline.withValues(alpha: 0.2),
+                    ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.shadow.withValues(alpha: 0.1),
+                      color:
+                          Theme.of(
+                            context,
+                          ).colorScheme.shadow.withValues(
+                            alpha: PRFOpacities.subtle,
+                          ),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -177,12 +190,12 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                   children: [
                     PRFFormSection(
                           icon: Icons.attach_money,
-                          title: 'Amount',
+                          title: context.l10n.amount,
                           isRequired: true,
                           child: _buildNumberField(
                             controller: _amountController,
-                            label: 'Token Amount',
-                            hint: 'Enter token amount',
+                            label: context.l10n.tokenAmount_2,
+                            hint: l10n.enterTokenAmount,
                             prefix: 'KES ',
                           ),
                         )
@@ -196,7 +209,8 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                           isRequired: true,
                           child: Column(
                             children: [
-                              PRFTextAreaInput(
+                              PRFTextField(
+                                type: PRFTextFieldType.textArea,
                                 hintText: l10n.confirmationMessage,
                                 controller: _confirmationController,
                                 maxLines: 3,
@@ -257,9 +271,9 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                       );
                     },
                     builder: (context, state) {
-                      return PRFPrimaryButton(
+                      return PRFButton(
                         onPressed: _submitForm,
-                        title: 'Add Token',
+                        title: context.l10n.addToken,
                         disabled: !_isFormValid,
                         isLoading: _isLoading,
                       );
@@ -295,7 +309,8 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
           ),
         ),
         const SizedBox(height: PRFSpacingTokens.sm),
-        PRFNumberInput(
+        PRFTextField(
+          type: PRFTextFieldType.number,
           controller: controller,
           hintText: hint,
           prefixText: prefix,
@@ -327,7 +342,9 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
               border: Border.all(
                 color: isSelected
                     ? theme.colorScheme.primary
-                    : theme.colorScheme.outline.withValues(alpha: 0.3),
+                    : theme.colorScheme.outline.withValues(
+                        alpha: PRFOpacities.glow,
+                      ),
               ),
             ),
             child: Row(

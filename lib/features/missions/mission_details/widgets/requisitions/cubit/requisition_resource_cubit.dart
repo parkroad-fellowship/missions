@@ -11,7 +11,10 @@ class RequisitionResourceCubit extends ResourceCubit<PRFRequisition> {
   }) : super(service: requisitionService, dbService: hiveService.requisitions);
 
   @override
-  List<String> get defaultIncludes => ['requisitionItems.expenseCategory'];
+  List<String> get defaultIncludes => [
+    'requisitionItems.expenseCategory',
+    'accountingEvent',
+  ];
 
   Future<void> loadForAccountingEvent({
     required String accountingEventUlid,

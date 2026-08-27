@@ -1,10 +1,11 @@
+import 'package:app/features/lms/_shared.dart';
 import 'package:app/features/lms/cubit/course_resource_cubit.dart';
 import 'package:app/features/lms/widgets/course_action_card.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:app/models/remote/course/prf_course.dart';
+import 'package:app/shared/widgets/build_animated_timeline_entry.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
@@ -16,23 +17,37 @@ class LMSPageHandset extends StatefulWidget {
 }
 
 class _LMSPageHandsetState extends State<LMSPageHandset> {
+  final _form = LMSFormState();
+
+  // The entrance cascade plays exactly once per screen instance.
+  bool _entrancePlayed = false;
+
   @override
   void initState() {
-    context.read<CourseResourceCubit>().loadAll();
     super.initState();
+    _form
+      ..attach(() => setState(() {}))
+      ..load(context);
+  }
+
+  @override
+  void dispose() {
+    _form.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
+    final animateEntrance = !_entrancePlayed;
+    _entrancePlayed = true;
 
     return BlocBuilder<CourseResourceCubit, ResourceState<PRFCourse>>(
       builder: (context, state) {
-        final courses = state.maybeWhen(
-          listLoaded: (values, _, _) => values,
-          orElse: List<PRFCourse>.empty,
-        );
+        // Same source as the list: pull-to-refresh keeps cards visible
+        // instead of flashing a full-screen spinner.
+        final courses = context.read<CourseResourceCubit>().currentItems;
         final completedCount = courses
             .where(
               (course) => (course.courseMember?.percentComplete ?? 0) >= 100,
@@ -43,80 +58,10 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
           backgroundColor: theme.colorScheme.surface,
           body: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      theme.colorScheme.primary,
-                      theme.colorScheme.primary.withValues(alpha: 0.88),
-                    ],
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    PRFBrandedNavBar(title: l10n.learn),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        PRFSpacingTokens.lg,
-                        PRFSpacingTokens.xs,
-                        PRFSpacingTokens.lg,
-                        PRFSpacingTokens.lg,
-                      ),
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(PRFSpacingTokens.md),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.onPrimary.withValues(
-                            alpha: 0.1,
-                          ),
-                          borderRadius: BorderRadius.circular(
-                            PRFRadiusTokens.lg,
-                          ),
-                          border: Border.all(
-                            color: theme.colorScheme.onPrimary.withValues(
-                              alpha: 0.15,
-                            ),
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              l10n.learnSomething,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.onPrimary.withValues(
-                                  alpha: 0.9,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: PRFSpacingTokens.md),
-                            Wrap(
-                              spacing: PRFSpacingTokens.xs,
-                              runSpacing: PRFSpacingTokens.xs,
-                              children: [
-                                _LmsStatPill(
-                                  label: l10n.total,
-                                  value: courses.length,
-                                ),
-                                _LmsStatPill(
-                                  label: l10n.completed,
-                                  value: completedCount,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              buildLmsHeader(context, theme, l10n, courses, completedCount),
               Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () =>
-                      context.read<CourseResourceCubit>().loadAll(),
+                  onRefresh: () async => _form.load(context),
                   child: CustomScrollView(
                     physics: const AlwaysScrollableScrollPhysics(
                       parent: BouncingScrollPhysics(),
@@ -136,12 +81,16 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                               child: PRFCircularProgressIndicator(),
                             ),
                           ),
-                          listLoading: (_) => const SliverFillRemaining(
-                            hasScrollBody: false,
-                            child: Center(
-                              child: PRFCircularProgressIndicator(),
-                            ),
-                          ),
+                          listLoading: (_) => courses.isEmpty
+                              ? const SliverFillRemaining(
+                                  hasScrollBody: false,
+                                  child: Center(
+                                    child: PRFCircularProgressIndicator(),
+                                  ),
+                                )
+                              : const SliverToBoxAdapter(
+                                  child: SizedBox.shrink(),
+                                ),
                           error: (message, _) => SliverFillRemaining(
                             hasScrollBody: false,
                             child: Align(
@@ -160,7 +109,7 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                                   alignment: Alignment.topCenter,
                                   child: PRFEmptyView(
                                     label: l10n.noCourses,
-                                    description: l10n.pleaseWait,
+                                    description: l10n.noCoursesDesc,
                                   ),
                                 ),
                               );
@@ -204,30 +153,21 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
                                 }
 
                                 final courseIndex = index - 1;
-                                return Padding(
-                                      padding: EdgeInsets.only(
-                                        bottom: courseIndex == values.length - 1
-                                            ? 0
-                                            : PRFSpacingTokens.lg,
-                                      ),
-                                      child: CourseActionCard(
-                                        course: values[courseIndex],
-                                      ),
-                                    )
-                                    .animate(
-                                      delay: Duration(
-                                        milliseconds: 70 * courseIndex,
-                                      ),
-                                    )
-                                    .fadeIn(
-                                      duration: PRFMotionTokens.enterShort,
-                                    )
-                                    .slideY(
-                                      begin: 0.22,
-                                      end: 0,
-                                      duration: PRFMotionTokens.enterMedium,
-                                      curve: Curves.easeOutCubic,
-                                    );
+                                return buildAnimatedTimelineEntry(
+                                  context: context,
+                                  index: courseIndex,
+                                  animate: animateEntrance,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: courseIndex == values.length - 1
+                                          ? 0
+                                          : PRFSpacingTokens.lg,
+                                    ),
+                                    child: CourseActionCard(
+                                      course: values[courseIndex],
+                                    ),
+                                  ),
+                                );
                               },
                             );
                           },
@@ -241,49 +181,6 @@ class _LMSPageHandsetState extends State<LMSPageHandset> {
           ),
         );
       },
-    );
-  }
-}
-
-class _LmsStatPill extends StatelessWidget {
-  const _LmsStatPill({required this.label, required this.value});
-
-  final String label;
-  final int value;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: PRFSpacingTokens.md,
-        vertical: PRFSpacingTokens.xs,
-      ),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.onPrimary.withValues(alpha: 0.16),
-        borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
-      ),
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: '$value ',
-              style: theme.textTheme.labelLarge?.copyWith(
-                color: theme.colorScheme.onPrimary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            TextSpan(
-              text: label,
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: theme.colorScheme.onPrimary.withValues(alpha: 0.85),
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
