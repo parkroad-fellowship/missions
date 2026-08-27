@@ -31,6 +31,9 @@ target 'Runner' do
   use_frameworks!
   use_modular_headers!  # Commented out - conflicts with Swift bridging header
 
+  # Explicitly add audio_session to ensure it builds before Runner compiles GeneratedPluginRegistrant.m
+  pod 'audio_session', :path => '.symlinks/plugins/audio_session/ios'
+
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
   target 'RunnerTests' do
     inherit! :search_paths
