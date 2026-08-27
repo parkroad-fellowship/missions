@@ -442,7 +442,7 @@ packages:
     source: hosted
     version: "12.1.1"
   file_picker_darwin:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: file_picker_darwin
       sha256: bdcba9c830f90ecba26020159e6bb90bce862ec58fabf1c41edb9db43e2f0eae
