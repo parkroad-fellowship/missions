@@ -73,7 +73,10 @@ FABConfig getFABConfig({
             onPressed: () => PRFBottomSheet.show<void>(
               context,
               title: l10n.addSoul,
-              child: SoulFormView(missionUlid: missionUlid),
+              child: SoulFormView(
+                missionUlid: missionUlid,
+                institutionType: mission.school?.institutionType,
+              ),
             ),
           );
         case 2: // Questions

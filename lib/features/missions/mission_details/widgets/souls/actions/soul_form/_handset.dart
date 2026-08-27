@@ -1,3 +1,4 @@
+import 'package:app/enums/member/prf_institution_type.dart';
 import 'package:app/enums/mission/prf_soul_decision_type.dart';
 import 'package:app/features/missions/cubit/class_group_resource_cubit.dart';
 import 'package:app/features/missions/mission_details/widgets/souls/cubit/soul_resource_cubit.dart';
@@ -14,11 +15,13 @@ import 'package:prf_design/prf_design.dart';
 class SoulFormViewHandset extends StatefulWidget {
   const SoulFormViewHandset({
     required this.missionUlid,
+    this.institutionType,
     this.soul,
     super.key,
   });
 
   final String missionUlid;
+  final PRFInstitutionType? institutionType;
   final PRFSoul? soul;
 
   @override
@@ -66,7 +69,11 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
     _fullNameController.addListener(_onFormChanged);
     _admissionNumberController.addListener(_onFormChanged);
 
-    context.read<ClassGroupResourceCubit>().loadAll();
+    context.read<ClassGroupResourceCubit>().loadAll(
+      filters: {
+        'institution_type': widget.institutionType?.value,
+      },
+    );
   }
 
   @override

@@ -28,7 +28,10 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
     return PRFBottomSheet.show<void>(
       context,
       title: context.l10n.recordSoul,
-      child: SoulFormView(missionUlid: mission.ulid),
+      child: SoulFormView(
+        missionUlid: mission.ulid,
+        institutionType: mission.school?.institutionType,
+      ),
     );
   }
 
@@ -38,6 +41,7 @@ class _SoulsViewHandsetState extends State<SoulsViewHandset>
       title: context.l10n.edit,
       child: SoulFormView(
         missionUlid: mission.ulid,
+        institutionType: mission.school?.institutionType,
         soul: soul,
       ),
     );
