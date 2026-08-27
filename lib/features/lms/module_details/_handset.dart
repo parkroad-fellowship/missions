@@ -62,8 +62,9 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
         return BlocBuilder<LessonResourceCubit, ResourceState<PRFLessonModule>>(
           builder: (context, lessonState) {
             final courseModule = moduleState.maybeWhen(
-              listLoaded: (items, _, _) =>
-                  items.isNotEmpty ? items.first : null,
+              listLoaded: (items, _, _) => items.firstWhereOrNull(
+                (m) => m.ulid == widget.courseModuleUlid,
+              ),
               orElse: () => null,
             );
             // Same source as the list: pull-to-refresh keeps cards visible

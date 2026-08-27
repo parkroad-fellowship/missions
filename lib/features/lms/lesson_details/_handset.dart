@@ -8,6 +8,7 @@ import 'package:app/models/remote/course/prf_lesson_module.dart';
 import 'package:app/utils/crud/resource_state.dart';
 import 'package:app/utils/router/router.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gaimon/gaimon.dart';
@@ -56,7 +57,9 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
         // Same source as the list: pull-to-refresh keeps content visible
         // instead of flashing a full-screen spinner.
         final lessonItems = context.read<LessonResourceCubit>().currentItems;
-        final lessonModule = lessonItems.isNotEmpty ? lessonItems.first : null;
+        final lessonModule = lessonItems.firstWhereOrNull(
+        (PRFLessonModule l) => l.ulid == widget.lessonModuleUlid,
+      );
         final lesson = lessonModule?.lesson;
         final mediaCount = [
           lesson?.videoUrl,
@@ -141,7 +144,9 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
                               );
                             }
 
-                            final resolvedLessonModule = items.first;
+                            final resolvedLessonModule = items.firstWhere(
+                              (PRFLessonModule l) => l.ulid == widget.lessonModuleUlid,
+                            );
                             final resolvedCourseModule = context
                                 .read<ModuleResourceCubit>()
                                 .state

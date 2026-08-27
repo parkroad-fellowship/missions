@@ -4,25 +4,31 @@ import 'package:app/features/lms/cubit/module_resource_cubit.dart';
 import 'package:app/l10n/arb/app_localizations.dart';
 import 'package:app/models/remote/course/prf_course_module.dart';
 import 'package:app/models/remote/course/prf_lesson_module.dart';
+import 'package:app/models/remote/course/prf_module.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:prf_design/prf_design.dart';
 
 class ModuleDetailsFormState {
   ModuleDetailsFormState({required this.courseModuleUlid});
 
   final String courseModuleUlid;
+  late PRFCourseModule? courseModule;
 
   void attach(VoidCallback rebuild) {}
 
   void load(BuildContext context) {
+    Logger().f('ABCD: ModuleDetailsFormState.load() called for courseModuleUlid: $courseModuleUlid');
     final moduleCubit = context.read<ModuleResourceCubit>();
     final existingModule = moduleCubit.currentItems.firstWhereOrNull(
       (m) => m.ulid == courseModuleUlid,
     );
+    Logger().f('ABCD: Existing module found: ${existingModule?.module?.name ?? 'None'}');
 
     if (existingModule != null) {
+      courseModule = existingModule;
       context.read<LessonResourceCubit>().loadAll(
         filters: {'module_ulid': existingModule.module?.ulid},
       );
