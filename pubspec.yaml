@@ -34,7 +34,7 @@ dependencies:
   flutter_downloader: ^1.12.1
   flutter_localizations:
     sdk: flutter
-  flutter_soloud: ^4.1.7
+  flutter_soloud: ^5.0.0
   flutter_web_plugins:
     sdk: flutter
   flutter_widget_from_html: ^0.17.3
