@@ -179,11 +179,11 @@ workflows:
             #!/usr/bin/env bash
             set -euo pipefail
             echo "$FIREBASE_SERVICE_ACCOUNT" > /tmp/firebase-service-account.json
+            export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-service-account.json
             curl -sL https://firebase.tools | bash
             firebase appdistribution:distribute build/app/outputs/flutter-apk/app-development-release.apk \
               --app "$FIREBASE_DEV_APP_ID" \
-              --groups dev-team \
-              --service-account /tmp/firebase-service-account.json
+              --groups dev-team
     - save-cache@1:
         inputs:
         - key: deps-{{ checksum "pubspec.lock" }}
@@ -251,11 +251,11 @@ workflows:
             #!/usr/bin/env bash
             set -euo pipefail
             echo "$FIREBASE_SERVICE_ACCOUNT" > /tmp/firebase-service-account.json
+            export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-service-account.json
             curl -sL https://firebase.tools | bash
             firebase appdistribution:distribute build/app/outputs/flutter-apk/app-staging-release.apk \
               --app "$FIREBASE_STG_APP_ID" \
-              --groups dev-team \
-              --service-account /tmp/firebase-service-account.json
+              --groups dev-team
     - save-cache@1:
         inputs:
         - key: deps-{{ checksum "pubspec.lock" }}
@@ -333,11 +333,11 @@ workflows:
             #!/usr/bin/env bash
             set -euo pipefail
             echo "$FIREBASE_SERVICE_ACCOUNT" > /tmp/firebase-service-account.json
+            export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-service-account.json
             curl -sL https://firebase.tools | bash
             firebase appdistribution:distribute build/app/outputs/bundle/productionRelease/app-production-release.aab \
               --app "$FIREBASE_PROD_APP_ID" \
-              --groups dev-team \
-              --service-account /tmp/firebase-service-account.json
+              --groups dev-team
     - script@1:
         title: Upload to Google Play via Fastlane
         inputs:
