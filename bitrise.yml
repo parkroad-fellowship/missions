@@ -344,6 +344,7 @@ workflows:
         - content: |
             #!/usr/bin/env bash
             set -euo pipefail
+            echo "$PLAY_STORE_CREDENTIALS" > /tmp/play-store-key.json
             gem install bundler:2.0.2
             bundle install
             bundle exec fastlane supply \
