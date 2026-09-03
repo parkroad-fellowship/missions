@@ -349,6 +349,7 @@ workflows:
             bundle install
             bundle exec fastlane supply \
               --aab build/app/outputs/bundle/productionRelease/app-production-release.aab \
+              --package_name "$ANDROID_PACKAGE_NAME" \
               --track production \
               --json_key /tmp/play-store-key.json
     - script@1:
