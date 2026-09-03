@@ -9,11 +9,6 @@ app:
     - JAVA_VERSION: "21"
 
 trigger_map:
-  - push_branch: main
-    workflow: deploy-production
-  # - push_branch: develop
-  - push_branch: improvements/ui-ux-review
-    workflow: deploy-staging
   - pull_request_source_branch: "*"
     workflow: check
 
@@ -57,8 +52,8 @@ workflows:
 
   build:
     description: >
-      Build APK or AAB for a given flavor.
-      Set BITRISE_FLAVOR env var before triggering (development|staging|production).
+      Build APK or AAB for a given flavor. Set BITRISE_FLAVOR env var before
+      triggering (development|staging|production).
     steps:
       - activate-ssh-key@4:
           run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
@@ -251,7 +246,8 @@ workflows:
 
   deploy-production:
     description: >
-      Build production AAB, deploy to Firebase, Google Play, and upload Crashlytics symbols.
+      Build production AAB, deploy to Firebase, Google Play, and upload
+      Crashlytics symbols.
     steps:
       - activate-ssh-key@4:
           run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
@@ -344,6 +340,9 @@ workflows:
                 .dart_tool
                 build
                 android/.gradle
+    triggers:
+      push:
+        - branch: main
 
 meta:
   bitrise.io:
