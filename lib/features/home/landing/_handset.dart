@@ -39,8 +39,6 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
-    final width = MediaQuery.sizeOf(context).width;
-    final columns = width >= 430 ? 3 : 2;
 
     // The entrance cascade plays exactly once per screen instance.
     final animateEntrance = !_state.entrancePlayed;
@@ -98,7 +96,7 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
               ...buildSectionSlivers(
                 context: context,
                 sections: sections,
-                columns: columns,
+                columns: 2,
                 animateEntrance: animateEntrance,
               ),
 
