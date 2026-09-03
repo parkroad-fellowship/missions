@@ -25,26 +25,35 @@ workflows:
       - activate-ssh-key@4:
           run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
       - git-clone@8: {}
-      - cache-pull@2: {}
+      - restore-cache@2:
+          inputs:
+            - key: |
+                deps-{{ checksum "pubspec.lock" }}
+                deps-
       - flutter-installer@0:
           inputs:
             - installation_method: version
             - flutter_version: $FLUTTER_VERSION
-      - flutter-analyze@1:
+      - script@1:
+          title: Format check
           inputs:
-            - project_location: .
-            - flutter_analyze_arguments: "--fatal-infos"
-      - flutter-format@1:
+            - content: |
+                #!/usr/bin/env bash
+                set -euo pipefail
+                dart format --set-exit-if-changed lib test
+      - script@1:
+          title: Analyze
           inputs:
-            - project_location: .
-            - flutter_format_arguments: ""
-      - cache-push@2:
+            - content: |
+                #!/usr/bin/env bash
+                set -euo pipefail
+                flutter analyze lib
+      - save-cache@1:
           inputs:
-            - cache_paths: |
+            - key: deps-{{ checksum "pubspec.lock" }}
+            - paths: |
                 $HOME/.pub-cache
                 .dart_tool
-                .packages
-                build
 
   build:
     description: >
@@ -54,7 +63,11 @@ workflows:
       - activate-ssh-key@4:
           run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
       - git-clone@8: {}
-      - cache-pull@2: {}
+      - restore-cache@2:
+          inputs:
+            - key: |
+                deps-{{ checksum "pubspec.lock" }}
+                deps-
       - flutter-installer@0:
           inputs:
             - installation_method: version
@@ -99,9 +112,10 @@ workflows:
                     --release
                 fi
       - deploy-to-bitrise-io@2: {}
-      - cache-push@2:
+      - save-cache@1:
           inputs:
-            - cache_paths: |
+            - key: deps-{{ checksum "pubspec.lock" }}
+            - paths: |
                 $HOME/.pub-cache
                 .dart_tool
                 build
@@ -114,7 +128,11 @@ workflows:
       - activate-ssh-key@4:
           run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
       - git-clone@8: {}
-      - cache-pull@2: {}
+      - restore-cache@2:
+          inputs:
+            - key: |
+                deps-{{ checksum "pubspec.lock" }}
+                deps-
       - flutter-installer@0:
           inputs:
             - installation_method: version
@@ -158,9 +176,10 @@ workflows:
             - app_id: $FIREBASE_DEV_APP_ID
             - groups: dev-team
             - file: build/app/outputs/flutter-apk/app-development-release.apk
-      - cache-push@2:
+      - save-cache@1:
           inputs:
-            - cache_paths: |
+            - key: deps-{{ checksum "pubspec.lock" }}
+            - paths: |
                 $HOME/.pub-cache
                 .dart_tool
                 build
@@ -173,7 +192,11 @@ workflows:
       - activate-ssh-key@4:
           run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
       - git-clone@8: {}
-      - cache-pull@2: {}
+      - restore-cache@2:
+          inputs:
+            - key: |
+                deps-{{ checksum "pubspec.lock" }}
+                deps-
       - flutter-installer@0:
           inputs:
             - installation_method: version
@@ -217,9 +240,10 @@ workflows:
             - app_id: $FIREBASE_STG_APP_ID
             - groups: dev-team
             - file: build/app/outputs/flutter-apk/app-staging-release.apk
-      - cache-push@2:
+      - save-cache@1:
           inputs:
-            - cache_paths: |
+            - key: deps-{{ checksum "pubspec.lock" }}
+            - paths: |
                 $HOME/.pub-cache
                 .dart_tool
                 build
@@ -232,7 +256,11 @@ workflows:
       - activate-ssh-key@4:
           run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
       - git-clone@8: {}
-      - cache-pull@2: {}
+      - restore-cache@2:
+          inputs:
+            - key: |
+                deps-{{ checksum "pubspec.lock" }}
+                deps-
       - flutter-installer@0:
           inputs:
             - installation_method: version
@@ -308,10 +336,16 @@ workflows:
                 zip -r debug-symbols.zip debug-symbols
                 curl -sL https://firebase.tools | bash
                 firebase crashlytics:symbols:upload --app="$FIREBASE_PROD_APP_ID" debug-symbols.zip
-      - cache-push@2:
+      - save-cache@1:
           inputs:
-            - cache_paths: |
+            - key: deps-{{ checksum "pubspec.lock" }}
+            - paths: |
                 $HOME/.pub-cache
                 .dart_tool
                 build
                 android/.gradle
+
+meta:
+  bitrise.io:
+    stack: osx-xcode-26.6.x
+    machine_type_id: g2.mac.large
