@@ -18,14 +18,9 @@ workflows:
     - activate-ssh-key@4:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone@8: {}
-    - script@1:
-        title: Install Java 21
+    - set-java-version@1:
         inputs:
-        - content: |
-            #!/usr/bin/env bash
-            set -euo pipefail
-            brew install openjdk@21
-            echo 'export JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home' >> "$BITRISE_ENVSTORE_PATH"
+        - set_java_version: '21'
     - restore-cache@2:
         inputs:
         - key: |
@@ -64,14 +59,9 @@ workflows:
     - activate-ssh-key@4:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone@8: {}
-    - script@1:
-        title: Install Java 21
+    - set-java-version@1:
         inputs:
-        - content: |
-            #!/usr/bin/env bash
-            set -euo pipefail
-            brew install openjdk@21
-            echo 'export JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home' >> "$BITRISE_ENVSTORE_PATH"
+        - set_java_version: '21'
     - restore-cache@2:
         inputs:
         - key: |
@@ -138,14 +128,9 @@ workflows:
     - activate-ssh-key@4:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone@8: {}
-    - script@1:
-        title: Install Java 21
+    - set-java-version@1:
         inputs:
-        - content: |
-            #!/usr/bin/env bash
-            set -euo pipefail
-            brew install openjdk@21
-            echo 'export JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home' >> "$BITRISE_ENVSTORE_PATH"
+        - set_java_version: '21'
     - restore-cache@2:
         inputs:
         - key: |
@@ -215,14 +200,9 @@ workflows:
     - activate-ssh-key@4:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone@8: {}
-    - script@1:
-        title: Install Java 21
+    - set-java-version@1:
         inputs:
-        - content: |
-            #!/usr/bin/env bash
-            set -euo pipefail
-            brew install openjdk@21
-            echo 'export JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home' >> "$BITRISE_ENVSTORE_PATH"
+        - set_java_version: '21'
     - restore-cache@2:
         inputs:
         - key: |
@@ -293,14 +273,9 @@ workflows:
     - activate-ssh-key@4:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone@8: {}
-    - script@1:
-        title: Install Java 21
+    - set-java-version@1:
         inputs:
-        - content: |
-            #!/usr/bin/env bash
-            set -euo pipefail
-            brew install openjdk@21
-            echo 'export JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home' >> "$BITRISE_ENVSTORE_PATH"
+        - set_java_version: '21'
     - restore-cache@3:
         inputs:
         - key: |
