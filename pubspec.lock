@@ -29,10 +29,10 @@ packages:
     dependency: transitive
     description:
       name: android_file_picker
-      sha256: "665a5a57dfca27f91a715d300e4852a784f9f98e503dcff281bec9afb55767be"
+      sha256: "0d84bb91fb78af33756107f00cf71ee084474169d481b882b335c3006077a913"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.1.0"
   ansicolor:
     dependency: transitive
     description:
@@ -437,42 +437,42 @@ packages:
     dependency: "direct main"
     description:
       name: file_picker
-      sha256: "70e04f5ef83360433ea0099dc18154126536d85ef3cb4f63c2573725e49f608c"
+      sha256: "0631f51bbc2e1184bdc9e79384db158dc7830e15b3001feeca700e86563f4d24"
       url: "https://pub.dev"
     source: hosted
-    version: "12.1.1"
+    version: "12.2.0"
   file_picker_darwin:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: file_picker_darwin
-      sha256: bdcba9c830f90ecba26020159e6bb90bce862ec58fabf1c41edb9db43e2f0eae
+      sha256: "5c32c9400f5c8976c9dd7aa34693c7d2f0c853c28704a1c1409029cb760f5251"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.3"
+    version: "1.1.0"
   file_picker_linux:
     dependency: transitive
     description:
       name: file_picker_linux
-      sha256: "93d3f62f97c657053e7b184fe0f5e22347d85067c053640a30b1ac8ad7844e3b"
+      sha256: bd52ff1e0048f29df95f913c55ad2991c72791d93e6c42241912c4bdee946cb9
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.1.0"
   file_picker_platform_interface:
     dependency: transitive
     description:
       name: file_picker_platform_interface
-      sha256: b1ddd7909853c9df0eb4dbc5b388837ff313e28d6d5a9a71a83794b70c4c86bd
+      sha256: d35d8cb68446fae921335bb61501d66cb2469d74c8f3103b8c6ccdbe3fe5afd8
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.3.0"
   file_picker_web:
     dependency: transitive
     description:
       name: file_picker_web
-      sha256: f1af38b3c91fafe0ca97f659b5c6818a057473ef09bb8b722f9f3f5364aa7eed
+      sha256: "935560a9d29fa6f006f2855addebb88e88d438e13627d4cc24187033c106f227"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "3.1.0"
   file_selector_linux:
     dependency: transitive
     description:
@@ -777,18 +777,18 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_widget_from_html
-      sha256: "4fa9a0d34df0a40ac8dd20765dc83bbd8f36ceecfffa2a72a7ab178548804a04"
+      sha256: "2a83cd1c9ae1985366fa99228cabcb6dd87007710e235585c5d54902b3d69a36"
       url: "https://pub.dev"
     source: hosted
-    version: "0.17.2"
+    version: "0.17.3"
   flutter_widget_from_html_core:
     dependency: transitive
     description:
       name: flutter_widget_from_html_core
-      sha256: "7ff010b116f6abc16429923e616fbc727f3f65ef4cee12ffdb280aeecbc21e7f"
+      sha256: "388f81dd21c2de547abf7071433297f8a3f2a308bc1eb12f099a93f4d71e5155"
       url: "https://pub.dev"
     source: hosted
-    version: "0.17.2"
+    version: "0.17.3"
   freezed:
     dependency: "direct dev"
     description:
@@ -825,10 +825,10 @@ packages:
     dependency: transitive
     description:
       name: fwfh_cached_network_image
-      sha256: "484cb5f8047f02cfac0654fca5832bfa91bb715fd7fc651c04eb7454187c4af8"
+      sha256: "84c9d909de99453e31201fbba6bdf9f3c927f86407b026973e9050b628d5389d"
       url: "https://pub.dev"
     source: hosted
-    version: "0.16.1"
+    version: "0.16.2"
   fwfh_chewie:
     dependency: transitive
     description:
@@ -873,10 +873,10 @@ packages:
     dependency: "direct main"
     description:
       name: gaimon
-      sha256: "2024da7b9642dc295ad7bcc69ff0be4ba4b0c9ab4134338ae95c3bd58dd16fb0"
+      sha256: cb70dfa678f4a0cdd6cf6ad0498d82c768fbcfe02eb61db6ea1230de82f6ac8b
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.3"
+    version: "1.5.0"
   get_it:
     dependency: "direct main"
     description:
@@ -1337,10 +1337,10 @@ packages:
     dependency: "direct main"
     description:
       name: mime
-      sha256: "41a20518f0cb1256669420fdba0cd90d21561e560ac240f26ef8322e45bb7ed6"
+      sha256: bd47de35f07e27267e69c8c8b22edf9473bfee170a60d60fcc93730c5144b7f6
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0"
+    version: "2.1.0"
   mocktail:
     dependency: "direct dev"
     description:
@@ -1601,10 +1601,10 @@ packages:
     dependency: "direct main"
     description:
       name: posthog_flutter
-      sha256: c130e08f07bad4a2a78dd75c3855fdfe5e3adc334734d1c400a430d757fef552
+      sha256: "7b61aca485bcef80ac5d76c4855da8c81a9d65872002562b9dce63ad97bd6260"
       url: "https://pub.dev"
     source: hosted
-    version: "5.38.0"
+    version: "5.39.0"
   pretty_dio_logger:
     dependency: "direct main"
     description:
@@ -2254,10 +2254,10 @@ packages:
     dependency: transitive
     description:
       name: windows_file_picker
-      sha256: "72cf23466e146f2c0f19e1d78be97ff6409dc15b0c090f8eb284f94f4a33de26"
+      sha256: d999c1c085374724668af0b674a9758d96255c50933faa2ac1cc51eff8308caf
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.2.0"
   xdg_directories:
     dependency: transitive
     description:
