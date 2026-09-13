@@ -189,7 +189,9 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
 
     return BlocBuilder<MissionResourceCubit, ResourceState<PRFMission>>(
       builder: (context, state) {
-        final missions = context.read<MissionResourceCubit>().currentItems;
+        final missions = List<PRFMission>.from(
+          context.read<MissionResourceCubit>().currentItems,
+        )..sort((a, b) => a.startDate.compareTo(b.startDate));
 
         final showInitialLoader =
             state is ResourceListLoading<PRFMission> && missions.isEmpty;
