@@ -19,13 +19,13 @@ dependencies:
   device_info_plus: ^13.2.0
   dio: ^5.11.1
   extended_image: ^10.1.0
-  file_picker: ^12.3.0 
-  firebase_analytics: ^12.5.0
-  firebase_auth: ^6.6.1
-  firebase_core: ^4.14.0
-  firebase_crashlytics: ^5.3.0
-  firebase_messaging: ^16.6.0
-  firebase_remote_config: ^6.6.0
+  file_picker: ^13.0.0 
+  firebase_analytics: ^12.6.0
+  firebase_auth: ^6.7.0
+  firebase_core: ^4.15.0 
+  firebase_crashlytics: ^5.4.0
+  firebase_messaging: ^16.7.0
+  firebase_remote_config: ^6.7.0
   flutter:
     sdk: flutter
   flutter_animate: ^4.5.2
@@ -58,7 +58,7 @@ dependencies:
   path_provider: ^2.1.6
   permission_handler: ^13.0.2
   phone_form_field: ^10.0.18
-  posthog_flutter: ^5.41.0
+  posthog_flutter: ^5.42.0
   pretty_dio_logger: ^1.4.0
   prf_design: ^1.0.8
     # path: ../../prf_design_system
