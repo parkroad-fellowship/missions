@@ -117,9 +117,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                             );
                         if (module != null) {
                           await context.read<LessonResourceCubit>().loadAll(
-                            filters: {
-                              'module_ulid': module.module?.ulid,
-                            },
+                            filters: {'module_ulid': module.module?.ulid},
                           );
                         }
                       },
@@ -215,21 +213,21 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                                         mainAxisSpacing: PRFSpacingTokens.lg,
                                         childAspectRatio: 1.4,
                                       ),
-                                  delegate: SliverChildBuilderDelegate(
-                                    (context, index) {
-                                      return buildAnimatedTimelineEntry(
-                                        context: context,
-                                        index: index,
-                                        animate: animateEntrance,
-                                        child: ModuleDetailsActionCard(
-                                          lessonModule: values[index],
-                                          courseModuleUlid:
-                                              widget.courseModuleUlid,
-                                        ),
-                                      );
-                                    },
-                                    childCount: values.length,
-                                  ),
+                                  delegate: SliverChildBuilderDelegate((
+                                    context,
+                                    index,
+                                  ) {
+                                    return buildAnimatedTimelineEntry(
+                                      context: context,
+                                      index: index,
+                                      animate: animateEntrance,
+                                      child: ModuleDetailsActionCard(
+                                        lessonModule: values[index],
+                                        courseModuleUlid:
+                                            widget.courseModuleUlid,
+                                      ),
+                                    );
+                                  }, childCount: values.length),
                                 );
                               },
                             ),
@@ -254,10 +252,7 @@ class _ModuleDetailsPageTabletState extends State<ModuleDetailsPageTablet> {
                         label: l10n.total,
                         value: lessonModules.length,
                       ),
-                      LmsStatPill(
-                        label: l10n.completed,
-                        value: completedCount,
-                      ),
+                      LmsStatPill(label: l10n.completed, value: completedCount),
                     ],
                   ),
                   const SizedBox(height: PRFSpacingTokens.xxl),

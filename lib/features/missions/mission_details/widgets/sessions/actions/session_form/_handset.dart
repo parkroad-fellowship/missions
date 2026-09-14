@@ -238,9 +238,8 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                     builder: (context, state) {
                       return state.maybeWhen(
                         orElse: () => const SizedBox.shrink(),
-                        listLoading: (_) => const Center(
-                          child: PRFLinearProgressIndicator(),
-                        ),
+                        listLoading: (_) =>
+                            const Center(child: PRFLinearProgressIndicator()),
                         listLoaded: (classes, _, _) =>
                             PRFSearchableList<String>(
                               entries: classes
@@ -333,9 +332,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
                     PRFSnackbar.success(context, l10n.sessionRecorded);
                     if (_isEditing) {
                       context.read<MissionSessionResourceCubit>().loadAll(
-                        filters: {
-                          'mission_ulid': widget.missionUlid,
-                        },
+                        filters: {'mission_ulid': widget.missionUlid},
                       );
                     }
                   },
@@ -366,10 +363,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
   Future<void> _submitForm() async {
     if (!_validateForm()) {
       Gaimon.warning();
-      PRFSnackbar.error(
-        context,
-        context.l10n.fixHighlightedFields,
-      );
+      PRFSnackbar.error(context, context.l10n.fixHighlightedFields);
       return;
     }
 
@@ -389,9 +383,7 @@ class _SessionFormViewHandsetState extends State<SessionFormViewHandset> {
         data: dto,
       );
     } else {
-      await context.read<MissionSessionResourceCubit>().addSession(
-        data: dto,
-      );
+      await context.read<MissionSessionResourceCubit>().addSession(data: dto);
     }
   }
 

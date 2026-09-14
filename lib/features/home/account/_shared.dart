@@ -53,11 +53,7 @@ Widget buildInfoField(
             ),
             borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
           ),
-          child: Icon(
-            icon,
-            color: theme.colorScheme.primary,
-            size: 20,
-          ),
+          child: Icon(icon, color: theme.colorScheme.primary, size: 20),
         ),
         const SizedBox(width: PRFSpacingTokens.md),
         Expanded(
@@ -570,9 +566,7 @@ Widget buildFooterSection(
         ),
         const SizedBox(height: PRFSpacingTokens.md),
         Text(
-          l10n.version(
-            AppVersionHelper.getAppVersion(),
-          ),
+          l10n.version(AppVersionHelper.getAppVersion()),
           style: theme.textTheme.labelMedium?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
           ),
@@ -638,10 +632,7 @@ class ChangeProfilePictureButton extends StatelessWidget {
                         },
                         error: (error) {
                           Gaimon.error();
-                          PRFSnackbar.error(
-                            context,
-                            error.message,
-                          );
+                          PRFSnackbar.error(context, error.message);
                         },
                       );
                     },

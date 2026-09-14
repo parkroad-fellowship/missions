@@ -125,19 +125,19 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                                     mainAxisSpacing: PRFSpacingTokens.lg,
                                     childAspectRatio: 1.4,
                                   ),
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  return buildAnimatedTimelineEntry(
-                                    context: context,
-                                    index: index,
-                                    animate: animateEntrance,
-                                    child: CourseActionCard(
-                                      course: values[index],
-                                    ),
-                                  );
-                                },
-                                childCount: values.length,
-                              ),
+                              delegate: SliverChildBuilderDelegate((
+                                context,
+                                index,
+                              ) {
+                                return buildAnimatedTimelineEntry(
+                                  context: context,
+                                  index: index,
+                                  animate: animateEntrance,
+                                  child: CourseActionCard(
+                                    course: values[index],
+                                  ),
+                                );
+                              }, childCount: values.length),
                             );
                           },
                         ),
@@ -163,14 +163,8 @@ class _LMSPageTabletState extends State<LMSPageTablet> {
                 spacing: PRFSpacingTokens.sm,
                 runSpacing: PRFSpacingTokens.sm,
                 children: [
-                  LmsStatPill(
-                    label: l10n.total,
-                    value: courses.length,
-                  ),
-                  LmsStatPill(
-                    label: l10n.completed,
-                    value: completedCount,
-                  ),
+                  LmsStatPill(label: l10n.total, value: courses.length),
+                  LmsStatPill(label: l10n.completed, value: completedCount),
                 ],
               ),
               const SizedBox(height: PRFSpacingTokens.xxl),

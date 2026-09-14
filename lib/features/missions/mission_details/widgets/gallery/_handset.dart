@@ -32,10 +32,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
   Future<void> _loadMedia() =>
       context.read<MissionMediaResourceCubit>().loadMedia(
         missionUlid: mission.ulid,
-        collections: [
-          PRFMediaModel.missionPhotos,
-          PRFMediaModel.missionVideos,
-        ],
+        collections: [PRFMediaModel.missionPhotos, PRFMediaModel.missionVideos],
       );
 
   void _openCarousel(List<PRFMedia> mediaItems, int index) {
@@ -312,9 +309,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                       height: index.isEven ? 180 : 160,
                       decoration: BoxDecoration(
                         color: theme.colorScheme.surfaceContainerHighest,
-                        borderRadius: BorderRadius.circular(
-                          PRFRadiusTokens.md,
-                        ),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                       ),
                     ),
                   ),
@@ -324,9 +319,7 @@ class _GalleryViewHandsetState extends State<GalleryViewHandset> {
                       height: index.isEven ? 160 : 200,
                       decoration: BoxDecoration(
                         color: theme.colorScheme.surfaceContainerHighest,
-                        borderRadius: BorderRadius.circular(
-                          PRFRadiusTokens.md,
-                        ),
+                        borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                       ),
                     ),
                   ),

@@ -52,9 +52,7 @@ void triggerAddMediaModal(
   PRFBottomSheet.show<void>(
     context,
     title: isAudioMode ? context.l10n.recordAudio : context.l10n.addPhotos,
-    child: AddEventMediaView(
-      eventUlid: eventUlid,
-    ),
+    child: AddEventMediaView(eventUlid: eventUlid),
   );
 }
 
@@ -104,11 +102,7 @@ Widget buildAddTile(
                   alpha: PRFOpacities.subtle,
                 ),
               ),
-              child: Icon(
-                icon,
-                size: 32,
-                color: theme.colorScheme.primary,
-              ),
+              child: Icon(icon, size: 32, color: theme.colorScheme.primary),
             ),
             const SizedBox(height: PRFSpacingTokens.md),
             Text(
@@ -132,10 +126,7 @@ Widget buildPhotoTile(BuildContext context, PRFMedia mediaItem, int index) {
     delay: Duration(milliseconds: 100 * (index + 1)),
     effects: const [
       FadeEffect(duration: PRFMotionTokens.slow),
-      SlideEffect(
-        begin: Offset(0, 0.3),
-        duration: PRFMotionTokens.slow,
-      ),
+      SlideEffect(begin: Offset(0, 0.3), duration: PRFMotionTokens.slow),
     ],
     child: FullScreenWidget(
       disposeLevel: DisposeLevel.High,

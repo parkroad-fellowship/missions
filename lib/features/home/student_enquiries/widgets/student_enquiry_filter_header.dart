@@ -99,11 +99,7 @@ class _StatPill extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            icon,
-            size: 18,
-            color: theme.colorScheme.onPrimaryContainer,
-          ),
+          Icon(icon, size: 18, color: theme.colorScheme.onPrimaryContainer),
           const SizedBox(width: PRFSpacingTokens.xs),
           Expanded(
             child: Text(

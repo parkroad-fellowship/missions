@@ -106,9 +106,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                               );
                             }
 
-                            final groupedEntries = _form.groupByDate(
-                              items,
-                            );
+                            final groupedEntries = _form.groupByDate(items);
 
                             return ListView.builder(
                               padding: const EdgeInsets.all(
@@ -137,9 +135,7 @@ class _AnnouncementsPageTabletState extends State<AnnouncementsPageTablet>
                                         timezone: timezone,
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: PRFSpacingTokens.xl,
-                                    ),
+                                    const SizedBox(height: PRFSpacingTokens.xl),
                                   ],
                                 );
                               },

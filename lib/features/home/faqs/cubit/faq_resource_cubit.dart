@@ -13,9 +13,7 @@ class FaqResourceCubit extends ResourceCubit<PRFFaq> {
   List<String> get defaultIncludes => ['missionFaqCategory'];
 
   @override
-  Future<List<PRFFaq>> loadCachedList({
-    Map<String, dynamic>? filters,
-  }) {
+  Future<List<PRFFaq>> loadCachedList({Map<String, dynamic>? filters}) {
     return dbService.filterBy(
       (faq) => [
         filters?['mission_faq_category_ulid'] == null ||

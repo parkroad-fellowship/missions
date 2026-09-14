@@ -348,9 +348,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
       decoration: BoxDecoration(
         color: color.withValues(alpha: PRFOpacities.subtle),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-        border: Border.all(
-          color: color.withValues(alpha: PRFOpacities.muted),
-        ),
+        border: Border.all(color: color.withValues(alpha: PRFOpacities.muted)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -432,9 +430,7 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
               const SizedBox(height: PRFSpacingTokens.lg),
               Text(
                 event.description,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  height: 1.5,
-                ),
+                style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
               ),
             ],
           ),
@@ -633,75 +629,68 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
                 ],
               ),
               const SizedBox(height: PRFSpacingTokens.lg),
-              ...event.weatherForecasts.asMap().entries.map(
-                (entry) {
-                  final index = entry.key;
-                  final forecast = entry.value;
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
-                    child: Container(
-                      padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.surface,
-                        borderRadius: BorderRadius.circular(
-                          PRFRadiusTokens.smd,
+              ...event.weatherForecasts.asMap().entries.map((entry) {
+                final index = entry.key;
+                final forecast = entry.value;
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
+                  child: Container(
+                    padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                      boxShadow: [
+                        BoxShadow(
+                          color: PRFColors.black.withValues(
+                            alpha: PRFOpacities.faint,
+                          ),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: PRFColors.black.withValues(
-                              alpha: PRFOpacities.faint,
-                            ),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.day(
-                              index + 1,
-                              forecast.weatherCodeDescription,
-                            ),
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: PRFSpacingTokens.sm),
-                          Text(
-                            l10n.visibility(
-                              forecast.visibility.min,
-                              forecast.visibility.max,
-                              forecast.visibility.avg,
-                            ),
-                            style: theme.textTheme.bodySmall,
-                          ),
-                          Text(
-                            l10n.precipitationProbability(
-                              forecast.precipitationProbability.min,
-                              forecast.precipitationProbability.max,
-                              forecast.precipitationProbability.avg,
-                            ),
-                            style: theme.textTheme.bodySmall,
-                          ),
-                          const SizedBox(height: PRFSpacingTokens.sm),
-                          Text(
-                            l10n.dressingRecommendations,
-                            style: theme.textTheme.labelLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                            forecast.dressingRecommendations,
-                            style: theme.textTheme.bodySmall,
-                          ),
-                        ],
-                      ),
+                      ],
                     ),
-                  );
-                },
-              ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.day(index + 1, forecast.weatherCodeDescription),
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: PRFSpacingTokens.sm),
+                        Text(
+                          l10n.visibility(
+                            forecast.visibility.min,
+                            forecast.visibility.max,
+                            forecast.visibility.avg,
+                          ),
+                          style: theme.textTheme.bodySmall,
+                        ),
+                        Text(
+                          l10n.precipitationProbability(
+                            forecast.precipitationProbability.min,
+                            forecast.precipitationProbability.max,
+                            forecast.precipitationProbability.avg,
+                          ),
+                          style: theme.textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: PRFSpacingTokens.sm),
+                        Text(
+                          l10n.dressingRecommendations,
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          forecast.dressingRecommendations,
+                          style: theme.textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
             ],
           ),
         )
@@ -715,16 +704,13 @@ class _EventDetailsViewHandsetState extends State<EventDetailsViewHandset>
       return;
     }
 
-    final maps =
-        await MapLauncher.marker(
-          LocationCoords(
-            event.latitude!,
-            event.longitude!,
-            title: event.venue ?? '',
-          ),
-        ).getSupportedMaps(
-          [MapApp.google, MapApp.googleGo, MapApp.apple],
-        );
+    final maps = await MapLauncher.marker(
+      LocationCoords(
+        event.latitude!,
+        event.longitude!,
+        title: event.venue ?? '',
+      ),
+    ).getSupportedMaps([MapApp.google, MapApp.googleGo, MapApp.apple]);
 
     await maps.first.show();
   }

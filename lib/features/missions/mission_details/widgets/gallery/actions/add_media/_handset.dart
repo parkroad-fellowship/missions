@@ -327,11 +327,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.add_rounded,
-              size: 32,
-              color: theme.colorScheme.primary,
-            ),
+            Icon(Icons.add_rounded, size: 32, color: theme.colorScheme.primary),
             const SizedBox(height: PRFSpacingTokens.sm),
             Text(
               context.l10n.addMore,
@@ -418,11 +414,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        Icons.play_arrow,
-                        color: PRFColors.white,
-                        size: 12,
-                      ),
+                      Icon(Icons.play_arrow, color: PRFColors.white, size: 12),
                       SizedBox(width: 2),
                       Text(
                         'Video',
@@ -444,10 +436,7 @@ class _AddMediaViewHandsetState extends State<AddMediaViewHandset> {
                 onTap: () {
                   // Remove image logic would go here
                   // For now, we'll just show a snackbar
-                  PRFSnackbar.info(
-                    context,
-                    context.l10n.removeNotImplemented,
-                  );
+                  PRFSnackbar.info(context, context.l10n.removeNotImplemented);
                 },
                 child: Container(
                   padding: const EdgeInsets.all(PRFSpacingTokens.xs),

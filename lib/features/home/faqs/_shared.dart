@@ -218,20 +218,12 @@ Widget buildFaqsHeader(
           ),
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(
-              PRFSpacingTokens.md,
-            ),
+            padding: const EdgeInsets.all(PRFSpacingTokens.md),
             decoration: BoxDecoration(
-              color: theme.colorScheme.onPrimary.withValues(
-                alpha: 0.1,
-              ),
-              borderRadius: BorderRadius.circular(
-                PRFRadiusTokens.lg,
-              ),
+              color: theme.colorScheme.onPrimary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
               border: Border.all(
-                color: theme.colorScheme.onPrimary.withValues(
-                  alpha: 0.15,
-                ),
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.15),
               ),
             ),
             child: Column(
@@ -250,14 +242,8 @@ Widget buildFaqsHeader(
                   spacing: PRFSpacingTokens.xs,
                   runSpacing: PRFSpacingTokens.xs,
                   children: [
-                    FaqStatPill(
-                      label: l10n.total,
-                      value: faqsCount,
-                    ),
-                    FaqStatPill(
-                      label: l10n.categories,
-                      value: categoriesCount,
-                    ),
+                    FaqStatPill(label: l10n.total, value: faqsCount),
+                    FaqStatPill(label: l10n.categories, value: categoriesCount),
                   ],
                 ),
               ],

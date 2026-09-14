@@ -85,10 +85,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
 
       context.read<MissionMediaResourceCubit>().loadMedia(
         missionUlid: missionUlid,
-        collections: [
-          PRFMediaModel.missionPhotos,
-          PRFMediaModel.missionVideos,
-        ],
+        collections: [PRFMediaModel.missionPhotos, PRFMediaModel.missionVideos],
       ),
     ]);
   }
@@ -129,10 +126,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                       message: state.message,
                       onRetry: () => context
                           .read<MissionDetailsResourceCubit>()
-                          .loadMission(
-                            missionUlid: missionUlid,
-                            refresh: true,
-                          ),
+                          .loadMission(missionUlid: missionUlid, refresh: true),
                     ),
                   ),
                 ],
@@ -211,29 +205,17 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
                       missionGround: MissionGroundView(
                         missionUlid: missionUlid,
                       ),
-                      subscribers: SubscribersView(
-                        missionUlid: missionUlid,
-                      ),
-                      sessions: SessionsView(
-                        mission: mission,
-                      ),
+                      subscribers: SubscribersView(missionUlid: missionUlid),
+                      sessions: SessionsView(mission: mission),
                       initialIndex: _subTabIndexes[0]!,
                       onTabChanged: (index) =>
                           setState(() => _subTabIndexes[0] = index),
                     ),
                     FeedbackDataSection(
-                      debriefNotesTab: DebriefNotesView(
-                        mission: mission,
-                      ),
-                      soulsTab: SoulsView(
-                        mission: mission,
-                      ),
-                      questionsTab: MissionQuestionsView(
-                        mission: mission,
-                      ),
-                      galleryTab: GalleryView(
-                        mission: mission,
-                      ),
+                      debriefNotesTab: DebriefNotesView(mission: mission),
+                      soulsTab: SoulsView(mission: mission),
+                      questionsTab: MissionQuestionsView(mission: mission),
+                      galleryTab: GalleryView(mission: mission),
                       initialIndex: _subTabIndexes[1]!,
                       onTabChanged: (index) =>
                           setState(() => _subTabIndexes[1] = index),
@@ -413,10 +395,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
             context.read<MissionSubscriptionResourceCubit>().loadAll(
               filters: {'mission_ulid': missionUlid},
             );
-            PRFSnackbar.success(
-              context,
-              l10n.successfullySubscribed,
-            );
+            PRFSnackbar.success(context, l10n.successfullySubscribed);
           },
           error: (error) {
             Gaimon.error();
@@ -429,7 +408,7 @@ class _MissionsDetailsPageTabletState extends State<MissionsDetailsPageTablet>
           heroTag: 'subscribe-tablet',
           backgroundColor: PRFColors.limeGreen,
           foregroundColor: PRFColors.navyBlue,
-          onPressed: () async => context.read<SubscribeCubit>().subscribe(
+          onPressed: () => context.read<SubscribeCubit>().subscribe(
             missionUlid: missionUlid,
           ),
           label: Text(

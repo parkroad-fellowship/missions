@@ -95,9 +95,7 @@ class _AddMissionQuestionViewHandsetState
                       gradient: LinearGradient(
                         colors: [
                           Theme.of(context).colorScheme.primary,
-                          Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(
+                          Theme.of(context).colorScheme.primary.withValues(
                             alpha: PRFOpacities.stronger,
                           ),
                         ],
@@ -105,12 +103,8 @@ class _AddMissionQuestionViewHandsetState
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                       boxShadow: [
                         BoxShadow(
-                          color:
-                              Theme.of(
-                                context,
-                              ).colorScheme.primary.withValues(
-                                alpha: PRFOpacities.glow,
-                              ),
+                          color: Theme.of(context).colorScheme.primary
+                              .withValues(alpha: PRFOpacities.glow),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -137,12 +131,8 @@ class _AddMissionQuestionViewHandsetState
                           l10n.addQuestionSubTitle,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color:
-                                    Theme.of(
-                                      context,
-                                    ).colorScheme.onPrimary.withValues(
-                                      alpha: PRFOpacities.nearOpaque,
-                                    ),
+                                color: Theme.of(context).colorScheme.onPrimary
+                                    .withValues(alpha: PRFOpacities.nearOpaque),
                               ),
                           textAlign: TextAlign.center,
                         ),
@@ -168,12 +158,9 @@ class _AddMissionQuestionViewHandsetState
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color:
-                          Theme.of(
-                            context,
-                          ).colorScheme.shadow.withValues(
-                            alpha: PRFOpacities.subtle,
-                          ),
+                      color: Theme.of(context).colorScheme.shadow.withValues(
+                        alpha: PRFOpacities.subtle,
+                      ),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -254,10 +241,7 @@ class _AddMissionQuestionViewHandsetState
   Future<void> _submitForm() async {
     if (!_validateForm()) {
       Gaimon.warning();
-      PRFSnackbar.error(
-        context,
-        context.l10n.fixHighlightedFields,
-      );
+      PRFSnackbar.error(context, context.l10n.fixHighlightedFields);
       return;
     }
 

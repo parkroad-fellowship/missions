@@ -81,18 +81,13 @@ Widget buildProfilePicture(
   final effectiveRingColor = ringColor ?? theme.colorScheme.primary;
 
   Widget avatar = GestureDetector(
-    onTap: () => context.router.pushPath(
-      PRFSuperAppRouter.accountRoute,
-    ),
+    onTap: () => context.router.pushPath(PRFSuperAppRouter.accountRoute),
     child: Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(
-          color: effectiveRingColor,
-          width: 2,
-        ),
+        border: Border.all(color: effectiveRingColor, width: 2),
         boxShadow: [
           BoxShadow(
             color: effectiveRingColor.withValues(alpha: PRFOpacities.glow),
@@ -143,11 +138,7 @@ Widget buildProfilePicture(
     ),
   );
 
-  avatar = Semantics(
-    button: true,
-    label: semanticsLabel,
-    child: avatar,
-  );
+  avatar = Semantics(button: true, label: semanticsLabel, child: avatar);
 
   if (reduceMotion) {
     return avatar;
@@ -222,10 +213,7 @@ Widget buildAnimatedCard({
 }
 
 class LandingActionSection {
-  const LandingActionSection({
-    required this.title,
-    required this.actions,
-  });
+  const LandingActionSection({required this.title, required this.actions});
 
   final String title;
   final List<LandingActionItem> actions;
@@ -248,9 +236,9 @@ List<Widget> buildSectionSlivers({
   // extent keeps every tile intact at any accessibility size.
   final titleStyle =
       theme.textTheme.titleSmall ?? const TextStyle(fontSize: 14, height: 1.4);
-  final titleLineExtent = MediaQuery.textScalerOf(context).scale(
-    (titleStyle.fontSize ?? 14) * (titleStyle.height ?? 1.4),
-  );
+  final titleLineExtent = MediaQuery.textScalerOf(
+    context,
+  ).scale((titleStyle.fontSize ?? 14) * (titleStyle.height ?? 1.4));
   final tileExtent =
       PRFSpacingTokens.md * 2 +
       assetHeight +
@@ -300,9 +288,7 @@ List<Widget> buildSectionSlivers({
       )
       ..add(
         SliverPadding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: PRFSpacingTokens.lg,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
           sliver: SliverGrid(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: columns,
@@ -310,25 +296,22 @@ List<Widget> buildSectionSlivers({
               mainAxisSpacing: PRFSpacingTokens.sm,
               mainAxisExtent: tileExtent,
             ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final action = section.actions[index];
-                return buildAnimatedCard(
-                  context: context,
-                  delay: action.animationDelay + ((sectionStart + index) * 40),
-                  animate: animateEntrance,
-                  child: LandingActionTile(
-                    title: action.title,
-                    assetPath: action.assetPath,
-                    onTap: action.onTap,
-                    assetHeight: assetHeight,
-                    isNeutralCard: action.isNeutralCard,
-                    isAccent: action.isAccent,
-                  ),
-                );
-              },
-              childCount: section.actions.length,
-            ),
+            delegate: SliverChildBuilderDelegate((context, index) {
+              final action = section.actions[index];
+              return buildAnimatedCard(
+                context: context,
+                delay: action.animationDelay + ((sectionStart + index) * 40),
+                animate: animateEntrance,
+                child: LandingActionTile(
+                  title: action.title,
+                  assetPath: action.assetPath,
+                  onTap: action.onTap,
+                  assetHeight: assetHeight,
+                  isNeutralCard: action.isNeutralCard,
+                  isAccent: action.isAccent,
+                ),
+              );
+            }, childCount: section.actions.length),
           ),
         ),
       );

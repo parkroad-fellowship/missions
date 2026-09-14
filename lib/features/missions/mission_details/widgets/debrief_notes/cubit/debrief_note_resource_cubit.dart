@@ -13,9 +13,7 @@ class DebriefNoteResourceCubit extends ResourceCubit<PRFDebriefNote> {
   }) : super(service: debriefNoteService, dbService: hiveService.debriefNotes);
 
   @override
-  Future<List<PRFDebriefNote>> loadCachedList({
-    Map<String, dynamic>? filters,
-  }) async {
+  Future<List<PRFDebriefNote>> loadCachedList({Map<String, dynamic>? filters}) {
     return dbService.filterBy(
       (debriefNote) => [
         filters?['mission_ulid'] == null ||

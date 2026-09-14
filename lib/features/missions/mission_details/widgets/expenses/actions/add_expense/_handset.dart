@@ -104,9 +104,7 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       gradient: LinearGradient(
                         colors: [
                           Theme.of(context).colorScheme.primary,
-                          Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(
+                          Theme.of(context).colorScheme.primary.withValues(
                             alpha: PRFOpacities.stronger,
                           ),
                         ],
@@ -114,12 +112,8 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                       boxShadow: [
                         BoxShadow(
-                          color:
-                              Theme.of(
-                                context,
-                              ).colorScheme.primary.withValues(
-                                alpha: PRFOpacities.glow,
-                              ),
+                          color: Theme.of(context).colorScheme.primary
+                              .withValues(alpha: PRFOpacities.glow),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -146,12 +140,8 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                           l10n.addNewExpenseDesc,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color:
-                                    Theme.of(
-                                      context,
-                                    ).colorScheme.onPrimary.withValues(
-                                      alpha: PRFOpacities.nearOpaque,
-                                    ),
+                                color: Theme.of(context).colorScheme.onPrimary
+                                    .withValues(alpha: PRFOpacities.nearOpaque),
                               ),
                           textAlign: TextAlign.center,
                         ),
@@ -163,10 +153,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                               vertical: PRFSpacingTokens.sm,
                             ),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.onPrimary
-                                  .withValues(
-                                    alpha: 0.2,
-                                  ),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onPrimary.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(
                                 PRFRadiusTokens.lg,
                               ),
@@ -205,12 +194,9 @@ class _AddExpenseViewHandsetState extends State<AddExpenseViewHandset> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color:
-                          Theme.of(
-                            context,
-                          ).colorScheme.shadow.withValues(
-                            alpha: PRFOpacities.subtle,
-                          ),
+                      color: Theme.of(context).colorScheme.shadow.withValues(
+                        alpha: PRFOpacities.subtle,
+                      ),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),

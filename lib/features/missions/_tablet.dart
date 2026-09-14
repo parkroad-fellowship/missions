@@ -234,9 +234,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
                           timezone,
                         ),
                         onTap: () => context.router.push(
-                          MissionsDetailsRoute(
-                            missionUlid: nextMission.ulid,
-                          ),
+                          MissionsDetailsRoute(missionUlid: nextMission.ulid),
                         ),
                       ),
                       const SizedBox(height: PRFSpacingTokens.xl),
@@ -315,7 +313,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
 
         if (missions.isEmpty) {
           return RefreshIndicator(
-            onRefresh: () async => _form.loadTabData(0, context, force: true),
+            onRefresh: () => _form.loadTabData(0, context, force: true),
             child: PRFEmptyView(
               label: l10n.noMissions,
               description: state.maybeWhen(
@@ -328,7 +326,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
         }
 
         return RefreshIndicator(
-          onRefresh: () async => _form.loadTabData(0, context, force: true),
+          onRefresh: () => _form.loadTabData(0, context, force: true),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(
@@ -396,7 +394,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
 
         if (copy.isEmpty) {
           return RefreshIndicator(
-            onRefresh: () async => _form.loadTabData(1, context),
+            onRefresh: () => _form.loadTabData(1, context),
             child: PRFEmptyView(
               label: l10n.noMissions,
               description: state.maybeWhen(
@@ -409,7 +407,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
         }
 
         return RefreshIndicator(
-          onRefresh: () async => _form.loadTabData(1, context),
+          onRefresh: () => _form.loadTabData(1, context),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(
@@ -459,7 +457,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
 
         if (schools.isEmpty) {
           return RefreshIndicator(
-            onRefresh: () async => _form.loadTabData(2, context, force: true),
+            onRefresh: () => _form.loadTabData(2, context, force: true),
             child: PRFEmptyView(
               label: l10n.noPastMissions,
               description: state.maybeWhen(
@@ -472,7 +470,7 @@ class _MissionsPageTabletState extends State<MissionsPageTablet>
         }
 
         return RefreshIndicator(
-          onRefresh: () async => _form.loadTabData(2, context, force: true),
+          onRefresh: () => _form.loadTabData(2, context, force: true),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(

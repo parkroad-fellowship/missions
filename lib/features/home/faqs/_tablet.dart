@@ -104,10 +104,7 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                         labelBuilder: (c) => c.name,
                         allLabel: l10n.all.toUpperCase(),
                         onCategorySelected: (newValue) {
-                          _form.setSelectedCategory(
-                            newValue,
-                            context,
-                          );
+                          _form.setSelectedCategory(newValue, context);
                         },
                       ),
                     ),
@@ -179,9 +176,7 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                                         padding: const EdgeInsets.only(
                                           bottom: PRFSpacingTokens.md,
                                         ),
-                                        child: FaqCard(
-                                          faq: values[index],
-                                        ),
+                                        child: FaqCard(faq: values[index]),
                                       ),
                                     );
                                   },
@@ -210,10 +205,7 @@ class _MemberFAQPageTabletState extends State<MemberFAQPageTablet> {
                     spacing: PRFSpacingTokens.sm,
                     runSpacing: PRFSpacingTokens.sm,
                     children: [
-                      FaqStatPill(
-                        label: l10n.total,
-                        value: faqs.length,
-                      ),
+                      FaqStatPill(label: l10n.total, value: faqs.length),
                       FaqStatPill(
                         label: l10n.categories,
                         value: categories.length,

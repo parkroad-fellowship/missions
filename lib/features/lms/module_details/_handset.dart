@@ -16,10 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
 class ModuleDetailsPageHandset extends StatefulWidget {
-  const ModuleDetailsPageHandset({
-    required this.courseModuleUlid,
-    super.key,
-  });
+  const ModuleDetailsPageHandset({required this.courseModuleUlid, super.key});
 
   final String courseModuleUlid;
 
@@ -100,9 +97,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                       onRefresh: () async {
                         await context
                             .read<ModuleResourceCubit>()
-                            .loadAll(
-                              filters: {'ulid': widget.courseModuleUlid},
-                            )
+                            .loadAll(filters: {'ulid': widget.courseModuleUlid})
                             .then((_) {
                               final module = context
                                   .read<ModuleResourceCubit>()
@@ -113,9 +108,7 @@ class _ModuleDetailsPageHandsetState extends State<ModuleDetailsPageHandset> {
                                   );
                               if (module != null) {
                                 context.read<LessonResourceCubit>().loadAll(
-                                  filters: {
-                                    'module_ulid': module.module?.ulid,
-                                  },
+                                  filters: {'module_ulid': module.module?.ulid},
                                 );
                               }
                             });

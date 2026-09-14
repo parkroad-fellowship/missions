@@ -131,9 +131,7 @@ class _SchoolMissionsTabletState extends State<SchoolMissionsTablet>
                             mission: mission,
                             isLast: isLast,
                             onTap: () => context.router.push(
-                              MissionsDetailsRoute(
-                                missionUlid: mission.ulid,
-                              ),
+                              MissionsDetailsRoute(missionUlid: mission.ulid),
                             ),
                           ),
                         );

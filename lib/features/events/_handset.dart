@@ -241,9 +241,8 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
                   event: event,
                   isLast: isLast,
                   index: index,
-                  onTap: () => context.router.push(
-                    EventDetailsRoute(event: event),
-                  ),
+                  onTap: () =>
+                      context.router.push(EventDetailsRoute(event: event)),
                 ),
               );
             },
@@ -349,9 +348,8 @@ class _EventsPageHandsetState extends State<EventsPageHandset>
                   isLast: isLast,
                   index: index,
                   isSubscribed: true,
-                  onTap: () => context.router.push(
-                    EventDetailsRoute(event: event),
-                  ),
+                  onTap: () =>
+                      context.router.push(EventDetailsRoute(event: event)),
                 ),
               );
             },

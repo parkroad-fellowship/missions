@@ -10,9 +10,7 @@ class AccountModule {
   static List<BlocProvider> registerCubits(GetIt getIt) {
     return [
       BlocProvider<SignOutCubit>(
-        create: (context) => SignOutCubit(
-          hiveService: getIt(),
-        ),
+        create: (context) => SignOutCubit(hiveService: getIt()),
       ),
       BlocProvider<ChangeProfilePictureCubit>(
         create: (context) => ChangeProfilePictureCubit(

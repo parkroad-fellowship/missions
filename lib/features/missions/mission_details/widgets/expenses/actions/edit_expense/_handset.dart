@@ -15,10 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
 class EditExpenseViewHandset extends StatefulWidget {
-  const EditExpenseViewHandset({
-    required this.allocationEntry,
-    super.key,
-  });
+  const EditExpenseViewHandset({required this.allocationEntry, super.key});
 
   final PRFAllocationEntry allocationEntry;
 
@@ -114,9 +111,7 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                       gradient: LinearGradient(
                         colors: [
                           Theme.of(context).colorScheme.primary,
-                          Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(
+                          Theme.of(context).colorScheme.primary.withValues(
                             alpha: PRFOpacities.stronger,
                           ),
                         ],
@@ -124,12 +119,8 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                       boxShadow: [
                         BoxShadow(
-                          color:
-                              Theme.of(
-                                context,
-                              ).colorScheme.primary.withValues(
-                                alpha: PRFOpacities.glow,
-                              ),
+                          color: Theme.of(context).colorScheme.primary
+                              .withValues(alpha: PRFOpacities.glow),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -156,12 +147,8 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                           l10n.editExpenseDesc,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color:
-                                    Theme.of(
-                                      context,
-                                    ).colorScheme.onPrimary.withValues(
-                                      alpha: PRFOpacities.nearOpaque,
-                                    ),
+                                color: Theme.of(context).colorScheme.onPrimary
+                                    .withValues(alpha: PRFOpacities.nearOpaque),
                               ),
                           textAlign: TextAlign.center,
                         ),
@@ -173,12 +160,8 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                               vertical: PRFSpacingTokens.sm,
                             ),
                             decoration: BoxDecoration(
-                              color:
-                                  Theme.of(
-                                    context,
-                                  ).colorScheme.onPrimary.withValues(
-                                    alpha: PRFOpacities.muted,
-                                  ),
+                              color: Theme.of(context).colorScheme.onPrimary
+                                  .withValues(alpha: PRFOpacities.muted),
                               borderRadius: BorderRadius.circular(
                                 PRFRadiusTokens.lg,
                               ),
@@ -217,12 +200,9 @@ class _EditExpenseViewHandsetState extends State<EditExpenseViewHandset> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color:
-                          Theme.of(
-                            context,
-                          ).colorScheme.shadow.withValues(
-                            alpha: PRFOpacities.subtle,
-                          ),
+                      color: Theme.of(context).colorScheme.shadow.withValues(
+                        alpha: PRFOpacities.subtle,
+                      ),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),

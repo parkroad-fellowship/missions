@@ -7,9 +7,8 @@ import 'package:bloc/bloc.dart';
 /// Manages event media. Uses custom API calls (listChildren)
 /// because media are child resources of an event.
 class EventMediaResourceCubit extends Cubit<ResourceState<PRFMedia>> {
-  EventMediaResourceCubit({
-    required this._eventService,
-  }) : super(const ResourceState.initial());
+  EventMediaResourceCubit({required this._eventService})
+    : super(const ResourceState.initial());
 
   final EventService _eventService;
 
@@ -23,9 +22,7 @@ class EventMediaResourceCubit extends Cubit<ResourceState<PRFMedia>> {
       final media = await _eventService.listChildren(
         parentId: eventUlid,
         childPath: 'media',
-        queryParameters: {
-          'collection': model.collection,
-        },
+        queryParameters: {'collection': model.collection},
         fromJson: (json) => PRFMediaResponse.fromJson(json).data,
       );
 

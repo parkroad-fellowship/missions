@@ -46,9 +46,7 @@ class _AnnouncementsPageHandsetState extends State<AnnouncementsPageHandset>
         children: [
           ColoredBox(
             color: theme.colorScheme.primary,
-            child: PRFBrandedNavBar(
-              title: l10n.announcements,
-            ),
+            child: PRFBrandedNavBar(title: l10n.announcements),
           ),
           Expanded(
             child: CustomScrollView(

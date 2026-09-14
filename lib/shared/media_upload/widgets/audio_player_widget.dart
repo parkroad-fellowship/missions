@@ -130,10 +130,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
         height: MediaQuery.sizeOf(context).height * 0.8,
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-          child: Text(
-            transcript,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
+          child: Text(transcript, style: Theme.of(context).textTheme.bodySmall),
         ),
       ),
     );
@@ -161,9 +158,9 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
           if (widget.title != null) ...[
             Text(
               widget.title!,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: PRFSpacingTokens.sm),
@@ -178,9 +175,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                         height: 18,
                         child: PRFCircularProgressIndicator(),
                       )
-                    : Icon(
-                        _isPlaying ? Icons.pause : Icons.play_arrow,
-                      ),
+                    : Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
               ),
               const SizedBox(width: PRFSpacingTokens.sm),
               Expanded(
@@ -229,9 +224,9 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
               width: double.infinity,
               padding: const EdgeInsets.all(PRFSpacingTokens.md),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary.withValues(
-                  alpha: 0.05,
-                ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.primary.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
               ),
               child: Text(

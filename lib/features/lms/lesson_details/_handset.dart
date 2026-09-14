@@ -49,10 +49,8 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
     final theme = Theme.of(context);
 
     return BlocBuilder<LessonResourceCubit, ResourceState<PRFLessonModule>>(
-      buildWhen: (previous, current) => current.maybeWhen(
-        mutating: (_, _) => false,
-        orElse: () => true,
-      ),
+      buildWhen: (previous, current) =>
+          current.maybeWhen(mutating: (_, _) => false, orElse: () => true),
       builder: (context, state) {
         // Same source as the list: pull-to-refresh keeps content visible
         // instead of flashing a full-screen spinner.
@@ -88,7 +86,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
               Expanded(
                 child: RefreshIndicator(
                   onRefresh: () async =>
-                      context.read<LessonResourceCubit>().loadAll(
+                      await context.read<LessonResourceCubit>().loadAll(
                         filters: {'lesson_module_id': widget.lessonModuleUlid},
                       ),
                   child: CustomScrollView(
@@ -209,9 +207,7 @@ class _LessonDetailsHandsetState extends State<LessonDetailsHandset> {
             lessonModule.lessonMember!.completionStatus !=
                 PRFCompletionStatus.complete)) {
       return Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: PRFSpacingTokens.xl,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.xl),
         child:
             BlocConsumer<LessonResourceCubit, ResourceState<PRFLessonModule>>(
               listener: (context, state) {

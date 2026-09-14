@@ -17,26 +17,15 @@ Future<void> openMap(PRFEvent event) async {
     return;
   }
 
-  final maps =
-      await MapLauncher.marker(
-        LocationCoords(
-          event.latitude!,
-          event.longitude!,
-          title: event.venue ?? '',
-        ),
-      ).getSupportedMaps(
-        [MapApp.google, MapApp.googleGo, MapApp.apple],
-      );
+  final maps = await MapLauncher.marker(
+    LocationCoords(event.latitude!, event.longitude!, title: event.venue ?? ''),
+  ).getSupportedMaps([MapApp.google, MapApp.googleGo, MapApp.apple]);
 
   await maps.first.show();
 }
 
 class DateTimeChip extends StatelessWidget {
-  const DateTimeChip({
-    required this.icon,
-    required this.text,
-    super.key,
-  });
+  const DateTimeChip({required this.icon, required this.text, super.key});
 
   final IconData icon;
   final String text;
@@ -130,9 +119,7 @@ class EventHeroCard extends StatelessWidget with TimezoneMixin {
                     color: PRFColors.white.withValues(
                       alpha: PRFOpacities.muted,
                     ),
-                    borderRadius: BorderRadius.circular(
-                      PRFRadiusTokens.smd,
-                    ),
+                    borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                   ),
                   child: const Icon(
                     Icons.event_rounded,
@@ -168,10 +155,7 @@ class EventHeroCard extends StatelessWidget with TimezoneMixin {
                 DateTimeChip(
                   icon: Icons.play_arrow_rounded,
                   text: l10n.missionStart(
-                    DateFormatter.formatMissionDate(
-                      event.startDate,
-                      timezone,
-                    ),
+                    DateFormatter.formatMissionDate(event.startDate, timezone),
                     DateFormatter.formatTime(event.startTime, timezone),
                   ),
                 ),
@@ -183,10 +167,7 @@ class EventHeroCard extends StatelessWidget with TimezoneMixin {
                 DateTimeChip(
                   icon: Icons.stop_rounded,
                   text: l10n.missionEnd(
-                    DateFormatter.formatMissionDate(
-                      event.endDate,
-                      timezone,
-                    ),
+                    DateFormatter.formatMissionDate(event.endDate, timezone),
                     DateFormatter.formatTime(event.endTime, timezone),
                   ),
                 ),
@@ -222,9 +203,7 @@ class EventStatCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.withValues(alpha: PRFOpacities.subtle),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-        border: Border.all(
-          color: color.withValues(alpha: PRFOpacities.muted),
-        ),
+        border: Border.all(color: color.withValues(alpha: PRFOpacities.muted)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -305,9 +284,7 @@ Widget buildEventDescriptionSection(
         const SizedBox(height: PRFSpacingTokens.lg),
         Text(
           event.description,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            height: 1.5,
-          ),
+          style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
         ),
       ],
     ),
@@ -448,9 +425,7 @@ Widget buildEventLocationHub(
               Container(
                 padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.tertiary.withValues(
-                    alpha: 0.1,
-                  ),
+                  color: theme.colorScheme.tertiary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                 ),
                 child: Icon(
@@ -530,75 +505,68 @@ Widget buildEventWeatherIntelligence(
           ],
         ),
         const SizedBox(height: PRFSpacingTokens.lg),
-        ...event.weatherForecasts.asMap().entries.map(
-          (entry) {
-            final index = entry.key;
-            final forecast = entry.value;
-            return Padding(
-              padding: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
-              child: Container(
-                padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surface,
-                  borderRadius: BorderRadius.circular(
-                    PRFRadiusTokens.smd,
+        ...event.weatherForecasts.asMap().entries.map((entry) {
+          final index = entry.key;
+          final forecast = entry.value;
+          return Padding(
+            padding: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
+            child: Container(
+              padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surface,
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                boxShadow: [
+                  BoxShadow(
+                    color: PRFColors.black.withValues(
+                      alpha: PRFOpacities.faint,
+                    ),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: PRFColors.black.withValues(
-                        alpha: PRFOpacities.faint,
-                      ),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.day(
-                        index + 1,
-                        forecast.weatherCodeDescription,
-                      ),
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.sm),
-                    Text(
-                      l10n.visibility(
-                        forecast.visibility.min,
-                        forecast.visibility.max,
-                        forecast.visibility.avg,
-                      ),
-                      style: theme.textTheme.bodySmall,
-                    ),
-                    Text(
-                      l10n.precipitationProbability(
-                        forecast.precipitationProbability.min,
-                        forecast.precipitationProbability.max,
-                        forecast.precipitationProbability.avg,
-                      ),
-                      style: theme.textTheme.bodySmall,
-                    ),
-                    const SizedBox(height: PRFSpacingTokens.sm),
-                    Text(
-                      l10n.dressingRecommendations,
-                      style: theme.textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      forecast.dressingRecommendations,
-                      style: theme.textTheme.bodySmall,
-                    ),
-                  ],
-                ),
+                ],
               ),
-            );
-          },
-        ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.day(index + 1, forecast.weatherCodeDescription),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: PRFSpacingTokens.sm),
+                  Text(
+                    l10n.visibility(
+                      forecast.visibility.min,
+                      forecast.visibility.max,
+                      forecast.visibility.avg,
+                    ),
+                    style: theme.textTheme.bodySmall,
+                  ),
+                  Text(
+                    l10n.precipitationProbability(
+                      forecast.precipitationProbability.min,
+                      forecast.precipitationProbability.max,
+                      forecast.precipitationProbability.avg,
+                    ),
+                    style: theme.textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: PRFSpacingTokens.sm),
+                  Text(
+                    l10n.dressingRecommendations,
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    forecast.dressingRecommendations,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ),
+          );
+        }),
       ],
     ),
   );

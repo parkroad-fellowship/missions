@@ -212,9 +212,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
 
     if (showInitialLoader) {
       return Center(
-        child: PRFCircularProgressIndicator(
-          color: theme.colorScheme.primary,
-        ),
+        child: PRFCircularProgressIndicator(color: theme.colorScheme.primary),
       );
     }
 
@@ -261,20 +259,15 @@ class _EventsPageTabletState extends State<EventsPageTablet>
                 event: event,
                 isLast: isLast,
                 index: index,
-                onTap: () => context.router.push(
-                  EventDetailsRoute(event: event),
-                ),
+                onTap: () =>
+                    context.router.push(EventDetailsRoute(event: event)),
               )
               .animate()
               .fadeIn(
                 delay: Duration(milliseconds: index * 100),
                 duration: PRFMotionTokens.enterShort,
               )
-              .slideX(
-                begin: 0.3,
-                end: 0,
-                curve: PRFMotionTokens.entering,
-              );
+              .slideX(begin: 0.3, end: 0, curve: PRFMotionTokens.entering);
         },
       ),
     );
@@ -303,9 +296,7 @@ class _EventsPageTabletState extends State<EventsPageTablet>
 
     if (showInitialLoader) {
       return Center(
-        child: PRFCircularProgressIndicator(
-          color: theme.colorScheme.primary,
-        ),
+        child: PRFCircularProgressIndicator(color: theme.colorScheme.primary),
       );
     }
 
@@ -354,20 +345,15 @@ class _EventsPageTabletState extends State<EventsPageTablet>
                 isLast: isLast,
                 index: index,
                 isSubscribed: true,
-                onTap: () => context.router.push(
-                  EventDetailsRoute(event: event),
-                ),
+                onTap: () =>
+                    context.router.push(EventDetailsRoute(event: event)),
               )
               .animate()
               .fadeIn(
                 delay: Duration(milliseconds: index * 100),
                 duration: PRFMotionTokens.enterShort,
               )
-              .slideX(
-                begin: 0.3,
-                end: 0,
-                curve: PRFMotionTokens.entering,
-              );
+              .slideX(begin: 0.3, end: 0, curve: PRFMotionTokens.entering);
         },
       ),
     );

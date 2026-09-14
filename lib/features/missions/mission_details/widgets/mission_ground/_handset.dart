@@ -417,9 +417,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
       decoration: BoxDecoration(
         color: color.withValues(alpha: PRFOpacities.subtle),
         borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
-        border: Border.all(
-          color: color.withValues(alpha: PRFOpacities.muted),
-        ),
+        border: Border.all(color: color.withValues(alpha: PRFOpacities.muted)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1073,9 +1071,7 @@ class _MissionGroundViewHandsetState extends State<MissionGroundViewHandset>
             ),
             child: Text(
               mission.missionPrepNotes!,
-              style: theme.textTheme.bodyLarge?.copyWith(
-                height: 1.5,
-              ),
+              style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
             ),
           ),
         ],

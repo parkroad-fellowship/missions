@@ -76,11 +76,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
       PlatformDispatcher.instance.onError = (error, stack) {
         unawaited(
-          getIt<ErrorReportingService>().recordError(
-            error,
-            stack,
-            fatal: true,
-          ),
+          getIt<ErrorReportingService>().recordError(error, stack, fatal: true),
         );
         return true;
       };
@@ -122,9 +118,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
             .retrieveFCMToken();
         if (fcmToken.isNotEmpty) {
           await getIt<AuthService>().updateProfile(
-            updateDTO: UserUpdateDTO(
-              fcmTokens: [fcmToken],
-            ),
+            updateDTO: UserUpdateDTO(fcmTokens: [fcmToken]),
           );
         }
       } catch (e) {

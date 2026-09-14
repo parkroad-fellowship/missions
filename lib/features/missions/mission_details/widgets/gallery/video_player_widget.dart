@@ -5,10 +5,7 @@ import 'package:prf_design/prf_design.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayerWidget extends StatefulWidget {
-  const VideoPlayerWidget({
-    required this.videoUrl,
-    super.key,
-  });
+  const VideoPlayerWidget({required this.videoUrl, super.key});
 
   final String videoUrl;
 
@@ -76,9 +73,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   }
 
   void _enterFullScreen() {
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.immersiveSticky,
-    );
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
@@ -150,9 +145,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
           ),
         ),
       ),
-      body: Center(
-        child: _buildVideoContent(theme),
-      ),
+      body: Center(child: _buildVideoContent(theme)),
     );
   }
 
@@ -177,11 +170,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline,
-              color: theme.colorScheme.error,
-              size: 64,
-            ),
+            Icon(Icons.error_outline, color: theme.colorScheme.error, size: 64),
             const SizedBox(height: PRFSpacingTokens.lg),
             Text(
               context.l10n.errorLoadingVideo,
@@ -428,12 +417,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 duration: PRFMotionTokens.slow,
                 child: Container(
                   decoration: BoxDecoration(
-                    color:
-                        Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(
-                          alpha: PRFOpacities.nearOpaque,
-                        ),
+                    color: Theme.of(context).colorScheme.primary.withValues(
+                      alpha: PRFOpacities.nearOpaque,
+                    ),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
@@ -535,17 +521,11 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                         ..seekTo(Duration.zero)
                         ..pause();
                     },
-                    icon: const Icon(
-                      Icons.replay,
-                      color: PRFColors.white,
-                    ),
+                    icon: const Icon(Icons.replay, color: PRFColors.white),
                   ),
                   IconButton(
                     onPressed: _toggleFullScreen,
-                    icon: const Icon(
-                      Icons.fullscreen,
-                      color: PRFColors.white,
-                    ),
+                    icon: const Icon(Icons.fullscreen, color: PRFColors.white),
                   ),
                 ],
               ),

@@ -23,9 +23,7 @@ class MissionSubscriptionResourceCubit
 
   @override
   Map<String, dynamic> get defaultFilters => {
-    'status_keys': [
-      PRFMissionSubscriptionStatus.approved.apiKey,
-    ].join(','),
+    'status_keys': [PRFMissionSubscriptionStatus.approved.apiKey].join(','),
   };
 
   @override

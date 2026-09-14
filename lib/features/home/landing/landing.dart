@@ -20,9 +20,7 @@ class LandingPage extends StatelessWidget {
       LandingActionItem(
         title: l10n.goToAMission,
         assetPath: 'assets/svgs/missions.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.missionsRoute,
-        ),
+        onTap: () => context.router.pushPath(PRFSuperAppRouter.missionsRoute),
         animationDelay: 0,
         deskGroup: 'Faith & Ministry',
         isAccent: true,
@@ -39,9 +37,7 @@ class LandingPage extends StatelessWidget {
       LandingActionItem(
         title: l10n.give,
         assetPath: 'assets/svgs/giving.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.givingRoute,
-        ),
+        onTap: () => context.router.pushPath(PRFSuperAppRouter.givingRoute),
         animationDelay: 0,
 
         deskGroup: 'Faith & Ministry',
@@ -49,18 +45,15 @@ class LandingPage extends StatelessWidget {
       LandingActionItem(
         title: l10n.answerFaqs,
         assetPath: 'assets/svgs/recording.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.answerFAQsRoute,
-        ),
+        onTap: () => context.router.pushPath(PRFSuperAppRouter.answerFAQsRoute),
         animationDelay: 0,
         deskGroup: 'Faith & Ministry',
       ),
       LandingActionItem(
         title: l10n.studentFaqs,
         assetPath: 'assets/svgs/explore.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.memberLearnerFaqs,
-        ),
+        onTap: () =>
+            context.router.pushPath(PRFSuperAppRouter.memberLearnerFaqs),
         animationDelay: 0,
         deskGroup: 'Learn & Grow',
       ),
@@ -68,27 +61,22 @@ class LandingPage extends StatelessWidget {
       LandingActionItem(
         title: l10n.learnSomething,
         assetPath: 'assets/svgs/lms.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.lmsRoute,
-        ),
+        onTap: () => context.router.pushPath(PRFSuperAppRouter.lmsRoute),
         animationDelay: 0,
         deskGroup: 'Learn & Grow',
       ),
       LandingActionItem(
         title: l10n.submitPrayerRequest,
         assetPath: 'assets/svgs/texting.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.prayerRequestRoute,
-        ),
+        onTap: () =>
+            context.router.pushPath(PRFSuperAppRouter.prayerRequestRoute),
         animationDelay: 0,
         deskGroup: 'Community',
       ),
       LandingActionItem(
         title: l10n.wrapped,
         assetPath: 'assets/svgs/wrapped.svg',
-        onTap: () => context.router.pushPath(
-          PRFSuperAppRouter.wrappedRoute,
-        ),
+        onTap: () => context.router.pushPath(PRFSuperAppRouter.wrappedRoute),
         animationDelay: 0,
         isNeutralCard: true,
         deskGroup: 'Extras',

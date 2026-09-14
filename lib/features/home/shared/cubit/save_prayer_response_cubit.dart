@@ -7,9 +7,8 @@ part 'save_prayer_response_state.dart';
 part 'save_prayer_response_cubit.freezed.dart';
 
 class SavePrayerResponseCubit extends Cubit<SavePrayerResponseState> {
-  SavePrayerResponseCubit({
-    required HiveService hiveService,
-  }) : super(const SavePrayerResponseState.initial()) {
+  SavePrayerResponseCubit({required HiveService hiveService})
+    : super(const SavePrayerResponseState.initial()) {
     _hiveService = hiveService;
   }
 
@@ -18,14 +17,12 @@ class SavePrayerResponseCubit extends Cubit<SavePrayerResponseState> {
   Future<void> savePrayerResponse({required String prayerPromptUlid}) async {
     final member = _hiveService.retrieveMember()!;
 
-    await _hiveService.prayerResponses.persistEntities(
-      [
-        PRFPrayerResponseDTO(
-          prayerPromptUlid: prayerPromptUlid,
-          memberUlid: member.ulid,
-        ),
-      ],
-    );
+    await _hiveService.prayerResponses.persistEntities([
+      PRFPrayerResponseDTO(
+        prayerPromptUlid: prayerPromptUlid,
+        memberUlid: member.ulid,
+      ),
+    ]);
 
     emit(const SavePrayerResponseState.loaded());
   }

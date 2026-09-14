@@ -9,9 +9,8 @@ part 'audio_recording_cubit.freezed.dart';
 part 'audio_recording_state.dart';
 
 class AudioRecordingCubit extends Cubit<AudioRecordingState> {
-  AudioRecordingCubit({
-    required AudioRecordingService recordingService,
-  }) : super(const AudioRecordingState.initial()) {
+  AudioRecordingCubit({required AudioRecordingService recordingService})
+    : super(const AudioRecordingState.initial()) {
     _recordingService = recordingService;
     _initialize();
   }
@@ -137,10 +136,7 @@ class AudioRecordingCubit extends Cubit<AudioRecordingState> {
     );
     if (!success) {
       // Check if service didn't already emit an error state
-      if (!state.maybeWhen(
-        error: (_) => true,
-        orElse: () => false,
-      )) {
+      if (!state.maybeWhen(error: (_) => true, orElse: () => false)) {
         emit(
           const AudioRecordingState.error(
             message:
@@ -156,9 +152,7 @@ class AudioRecordingCubit extends Cubit<AudioRecordingState> {
     final success = await _recordingService.pauseRecording();
     if (!success) {
       emit(
-        const AudioRecordingState.error(
-          message: 'Failed to pause recording.',
-        ),
+        const AudioRecordingState.error(message: 'Failed to pause recording.'),
       );
     }
   }
@@ -167,14 +161,12 @@ class AudioRecordingCubit extends Cubit<AudioRecordingState> {
     final success = await _recordingService.resumeRecording();
     if (!success) {
       emit(
-        const AudioRecordingState.error(
-          message: 'Failed to resume recording.',
-        ),
+        const AudioRecordingState.error(message: 'Failed to resume recording.'),
       );
     }
   }
 
-  Future<String?> stopRecording() async => _recordingService.stopRecording();
+  Future<String?> stopRecording() => _recordingService.stopRecording();
 
   Future<void> cancelRecording() async {
     final success = await _recordingService.cancelRecording();
@@ -182,9 +174,7 @@ class AudioRecordingCubit extends Cubit<AudioRecordingState> {
       emit(const AudioRecordingState.ready());
     } else {
       emit(
-        const AudioRecordingState.error(
-          message: 'Failed to cancel recording.',
-        ),
+        const AudioRecordingState.error(message: 'Failed to cancel recording.'),
       );
     }
   }

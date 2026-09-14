@@ -106,9 +106,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                       if (filtered.isEmpty) {
                         return Center(
                           child: Padding(
-                            padding: const EdgeInsets.all(
-                              PRFSpacingTokens.xxl,
-                            ),
+                            padding: const EdgeInsets.all(PRFSpacingTokens.xxl),
                             child: Semantics(
                               label: _form.query.isEmpty
                                   ? l10n.noQuestionsYet
@@ -122,9 +120,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                     color: theme.colorScheme.onSurface
                                         .withValues(alpha: PRFOpacities.muted),
                                   ),
-                                  const SizedBox(
-                                    height: PRFSpacingTokens.lg,
-                                  ),
+                                  const SizedBox(height: PRFSpacingTokens.lg),
                                   Text(
                                     _form.query.isEmpty
                                         ? l10n.noQuestionsYet
@@ -132,9 +128,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                     style: theme.textTheme.headlineSmall,
                                     textAlign: TextAlign.center,
                                   ),
-                                  const SizedBox(
-                                    height: PRFSpacingTokens.sm,
-                                  ),
+                                  const SizedBox(height: PRFSpacingTokens.sm),
                                   Text(
                                     _form.query.isEmpty
                                         ? l10n.questionsFromMissionsBody
@@ -197,9 +191,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                     ),
                                   ),
                                   if (item.mission?.theme != null) ...[
-                                    const SizedBox(
-                                      height: PRFSpacingTokens.xs,
-                                    ),
+                                    const SizedBox(height: PRFSpacingTokens.xs),
                                     Semantics(
                                       label: l10n.missionThemeLabel(
                                         item.mission!.theme!,
@@ -213,9 +205,7 @@ class _AnswerFAQsPageHandsetState extends State<AnswerFAQsPageHandset> {
                                       ),
                                     ),
                                   ],
-                                  const SizedBox(
-                                    height: PRFSpacingTokens.sm,
-                                  ),
+                                  const SizedBox(height: PRFSpacingTokens.sm),
                                   if (!item.hasAnswers)
                                     Padding(
                                       padding: const EdgeInsets.only(

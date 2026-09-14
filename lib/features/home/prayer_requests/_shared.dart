@@ -82,10 +82,7 @@ Widget buildPrayerHeader(
     ),
     child: Column(
       children: [
-        PRFBrandedNavBar(
-          title: l10n.prayerRequests,
-          onBack: onBack,
-        ),
+        PRFBrandedNavBar(title: l10n.prayerRequests, onBack: onBack),
         Padding(
           padding: const EdgeInsets.fromLTRB(
             PRFSpacingTokens.lg,
@@ -97,16 +94,10 @@ Widget buildPrayerHeader(
             width: double.infinity,
             padding: const EdgeInsets.all(PRFSpacingTokens.md),
             decoration: BoxDecoration(
-              color: theme.colorScheme.onPrimary.withValues(
-                alpha: 0.1,
-              ),
-              borderRadius: BorderRadius.circular(
-                PRFRadiusTokens.lg,
-              ),
+              color: theme.colorScheme.onPrimary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
               border: Border.all(
-                color: theme.colorScheme.onPrimary.withValues(
-                  alpha: 0.15,
-                ),
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.15),
               ),
             ),
             child: Column(
@@ -115,9 +106,7 @@ Widget buildPrayerHeader(
                 Text(
                   l10n.submitPrayerRequestDesc,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onPrimary.withValues(
-                      alpha: 0.9,
-                    ),
+                    color: theme.colorScheme.onPrimary.withValues(alpha: 0.9),
                   ),
                 ),
                 const SizedBox(height: PRFSpacingTokens.md),

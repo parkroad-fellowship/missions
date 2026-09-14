@@ -42,9 +42,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
           error: (_, items) => items,
           orElse: () => <PRFMissionSubscription>[],
         );
-        final error = state.mapOrNull(
-          error: (state) => state.message,
-        );
+        final error = state.mapOrNull(error: (state) => state.message);
         final isLoading = state.maybeWhen(
           listLoading: (_) => true,
           orElse: () => false,
@@ -127,10 +125,8 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
                         ),
                         child: Text(
                           error,
-                          style:
-                              Theme.of(
-                                context,
-                              ).textTheme.bodySmall?.copyWith(
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
                                 color: Theme.of(
                                   context,
                                 ).colorScheme.onErrorContainer,
@@ -164,10 +160,7 @@ class _SubscribersViewHandsetState extends State<SubscribersViewHandset>
 }
 
 class _SubscriptionCard extends StatelessWidget {
-  const _SubscriptionCard({
-    required this.subscription,
-    required this.subtitle,
-  });
+  const _SubscriptionCard({required this.subscription, required this.subtitle});
 
   final PRFMissionSubscription subscription;
   final String subtitle;
@@ -248,117 +241,105 @@ class _SubscriptionCard extends StatelessWidget {
   }
 
   Future<void> _makeCall(PRFMember? member) async {
-    final uri = Uri(
-      scheme: 'tel',
-      path: member?.phoneNumber,
-    );
+    final uri = Uri(scheme: 'tel', path: member?.phoneNumber);
     await UrlHelper.openUrl(uri);
   }
 
-  void _viewSubscriber(
-    BuildContext context,
-    PRFMember member,
-  ) => PRFBottomSheet.show<void>(
-    context,
-    title: member.fullName,
-    child: Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: PRFSpacingTokens.lg,
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).colorScheme.primary,
-                    Theme.of(context).colorScheme.secondary,
-                  ],
-                ),
-              ),
-              child: Container(
-                margin: const EdgeInsets.all(PRFSpacingTokens.xs),
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: PRFColors.white,
-                ),
-                child: ClipOval(
-                  child:
-                      member.profilePicture?.temporaryURL != null &&
-                          member.profilePicture!.temporaryURL.isNotEmpty
-                      ? Image.network(
-                          member.profilePicture!.temporaryURL,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              _buildProfileFallback(
-                                Theme.of(context),
-                                member,
-                              ),
-                        )
-                      : _buildProfileFallback(
-                          Theme.of(context),
-                          member,
-                        ),
-                ),
-              ),
-            ),
-            const SizedBox(height: PRFSpacingTokens.xl),
-
-            // Member Name
-            Text(
-              member.fullName,
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: PRFSpacingTokens.lg),
-
-            // Bio Section
-            if (member.bio != null && member.bio!.isNotEmpty) ...[
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(PRFSpacingTokens.lg),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(
-                    PRFRadiusTokens.smd,
+  void _viewSubscriber(BuildContext context, PRFMember member) =>
+      PRFBottomSheet.show<void>(
+        context,
+        title: member.fullName,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      colors: [
+                        Theme.of(context).colorScheme.primary,
+                        Theme.of(context).colorScheme.secondary,
+                      ],
+                    ),
                   ),
-                  border: Border.all(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.outline.withValues(alpha: PRFOpacities.muted),
+                  child: Container(
+                    margin: const EdgeInsets.all(PRFSpacingTokens.xs),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: PRFColors.white,
+                    ),
+                    child: ClipOval(
+                      child:
+                          member.profilePicture?.temporaryURL != null &&
+                              member.profilePicture!.temporaryURL.isNotEmpty
+                          ? Image.network(
+                              member.profilePicture!.temporaryURL,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  _buildProfileFallback(
+                                    Theme.of(context),
+                                    member,
+                                  ),
+                            )
+                          : _buildProfileFallback(Theme.of(context), member),
+                    ),
                   ),
                 ),
-                child: Text(
-                  member.bio!,
-                  style: Theme.of(context).textTheme.bodyLarge,
+                const SizedBox(height: PRFSpacingTokens.xl),
+
+                // Member Name
+                Text(
+                  member.fullName,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                   textAlign: TextAlign.center,
                 ),
-              ),
-              const SizedBox(height: PRFSpacingTokens.xl),
-            ],
+                const SizedBox(height: PRFSpacingTokens.lg),
 
-            // Contact Actions
-            Row(
-              children: [
-                Expanded(
-                  child: PRFButton(
-                    onPressed: () => _makeCall(member),
-                    title: context.l10n.callMember,
+                // Bio Section
+                if (member.bio != null && member.bio!.isNotEmpty) ...[
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(PRFSpacingTokens.lg),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.outline.withValues(
+                          alpha: PRFOpacities.muted,
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      member.bio!,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
+                  const SizedBox(height: PRFSpacingTokens.xl),
+                ],
+
+                // Contact Actions
+                Row(
+                  children: [
+                    Expanded(
+                      child: PRFButton(
+                        onPressed: () => _makeCall(member),
+                        title: context.l10n.callMember,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
-      ),
-    ),
-  );
+      );
 
   Widget _buildProfileFallback(ThemeData theme, PRFMember member) {
     return Container(

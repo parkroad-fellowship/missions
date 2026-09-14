@@ -82,9 +82,7 @@ abstract class NotificationService {
           return;
 
         case PRFNotificationType.prayerPrompt:
-          await getIt<PRFSuperAppRouter>().replaceAll([
-            const LandingRoute(),
-          ]);
+          await getIt<PRFSuperAppRouter>().replaceAll([const LandingRoute()]);
           await showDialog<dynamic>(
             // ignore: use_build_context_synchronously
             context: context,
@@ -139,15 +137,13 @@ abstract class NotificationService {
                                       if (member != null) {
                                         await getIt<HiveService>()
                                             .prayerResponses
-                                            .persistEntities(
-                                              [
-                                                PRFPrayerResponseDTO(
-                                                  prayerPromptUlid:
-                                                      payload['prayer_prompt_ulid']!,
-                                                  memberUlid: member.ulid,
-                                                ),
-                                              ],
-                                            );
+                                            .persistEntities([
+                                              PRFPrayerResponseDTO(
+                                                prayerPromptUlid:
+                                                    payload['prayer_prompt_ulid']!,
+                                                memberUlid: member.ulid,
+                                              ),
+                                            ]);
                                       }
 
                                       if (context.mounted) {
@@ -183,9 +179,7 @@ abstract class NotificationService {
           await getIt<PRFSuperAppRouter>().replaceAll([
             const LandingRoute(),
             const MissionsRoute(),
-            MissionsDetailsRoute(
-              missionUlid: payload['mission_ulid']!,
-            ),
+            MissionsDetailsRoute(missionUlid: payload['mission_ulid']!),
           ]);
 
         case PRFNotificationType.newEvent:

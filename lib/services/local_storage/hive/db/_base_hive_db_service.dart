@@ -121,10 +121,8 @@ abstract class BaseHiveDbService<TRemote> {
   dynamic _normalizeJsonValue(dynamic value) {
     if (value is Map) {
       return value.map<String, dynamic>(
-        (key, mapValue) => MapEntry(
-          key.toString(),
-          _normalizeJsonValue(mapValue),
-        ),
+        (key, mapValue) =>
+            MapEntry(key.toString(), _normalizeJsonValue(mapValue)),
       );
     }
 
@@ -141,9 +139,9 @@ abstract class BaseHiveDbService<TRemote> {
 
   Future<bool> exists(String key) async => _box.containsKey(key);
 
-  Future<void> clearAll() async => _box.clear();
+  Future<void> clearAll() => _box.clear();
 
-  Future<int> count() async => _box.length;
+  int count() => _box.length;
 
   /// Returns all entities matching [predicate].
   Future<List<TRemote>> filterBy(List<bool> Function(TRemote) predicate) async {

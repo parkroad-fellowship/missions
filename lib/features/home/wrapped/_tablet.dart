@@ -20,9 +20,7 @@ class MissionsWrappedTablet extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: _stageWidth),
           child: const AspectRatio(
             aspectRatio: 9 / 16,
-            child: ClipRect(
-              child: MissionsWrappedHandset(),
-            ),
+            child: ClipRect(child: MissionsWrappedHandset()),
           ),
         ),
       ),

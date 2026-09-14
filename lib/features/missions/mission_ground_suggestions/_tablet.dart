@@ -152,36 +152,36 @@ class _MissionGroundSuggestionsPageTabletState
                                     mainAxisSpacing: PRFSpacingTokens.lg,
                                     childAspectRatio: 1.4,
                                   ),
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  final suggestion = suggestions[index];
-                                  return buildAnimatedTimelineEntry(
-                                    context: context,
-                                    index: index,
-                                    animate: animateEntrance,
-                                    child: Material(
-                                      color: Colors.transparent,
+                              delegate: SliverChildBuilderDelegate((
+                                context,
+                                index,
+                              ) {
+                                final suggestion = suggestions[index];
+                                return buildAnimatedTimelineEntry(
+                                  context: context,
+                                  index: index,
+                                  animate: animateEntrance,
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(
+                                      PRFRadiusTokens.xl,
+                                    ),
+                                    child: InkWell(
+                                      onLongPress: () =>
+                                          triggerUpdateSuggestion(
+                                            context,
+                                            suggestion,
+                                          ),
                                       borderRadius: BorderRadius.circular(
                                         PRFRadiusTokens.xl,
                                       ),
-                                      child: InkWell(
-                                        onLongPress: () =>
-                                            triggerUpdateSuggestion(
-                                              context,
-                                              suggestion,
-                                            ),
-                                        borderRadius: BorderRadius.circular(
-                                          PRFRadiusTokens.xl,
-                                        ),
-                                        child: MissionGroundSuggestionCard(
-                                          missionGroundSuggestion: suggestion,
-                                        ),
+                                      child: MissionGroundSuggestionCard(
+                                        missionGroundSuggestion: suggestion,
                                       ),
                                     ),
-                                  );
-                                },
-                                childCount: suggestions.length,
-                              ),
+                                  ),
+                                );
+                              }, childCount: suggestions.length),
                             );
                           },
                         ),
@@ -198,9 +198,9 @@ class _MissionGroundSuggestionsPageTabletState
               const SizedBox(height: PRFSpacingTokens.md),
               Text(
                 l10n.suggestMissionSubTitle,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: PRFColors.navy100,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: PRFColors.navy100),
               ),
               const SizedBox(height: PRFSpacingTokens.lg),
               Wrap(

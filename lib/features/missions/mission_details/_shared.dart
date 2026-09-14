@@ -120,9 +120,7 @@ FABConfig getFABConfig({
               PRFBottomSheet.show<void>(
                 context,
                 title: l10n.addExpense,
-                child: AddExpenseView(
-                  accountingEventUlid: accountingEventUlid,
-                ),
+                child: AddExpenseView(accountingEventUlid: accountingEventUlid),
               );
             }
           },

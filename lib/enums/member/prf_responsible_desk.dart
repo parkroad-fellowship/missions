@@ -23,9 +23,7 @@ enum PRFResponsibleDesk {
   final int apiKey;
   final String name;
 
-  static PRFResponsibleDesk fromRole(
-    String role,
-  ) {
+  static PRFResponsibleDesk fromRole(String role) {
     switch (role) {
       case 'chairperson':
         return PRFResponsibleDesk.chairperson;

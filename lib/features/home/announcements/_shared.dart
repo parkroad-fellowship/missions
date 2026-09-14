@@ -72,10 +72,7 @@ class AnnouncementCard extends StatelessWidget {
                       padding: const EdgeInsets.all(PRFSpacingTokens.md),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [
-                            colorScheme.primary,
-                            colorScheme.secondary,
-                          ],
+                          colors: [colorScheme.primary, colorScheme.secondary],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
@@ -118,10 +115,7 @@ class AnnouncementCard extends StatelessWidget {
           padding: const EdgeInsets.all(PRFSpacingTokens.sm),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                colorScheme.primary,
-                colorScheme.secondary,
-              ],
+              colors: [colorScheme.primary, colorScheme.secondary],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

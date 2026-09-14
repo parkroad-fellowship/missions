@@ -200,30 +200,27 @@ class _EventGalleryViewHandsetState extends State<EventGalleryViewHandset> {
                             crossAxisSpacing: PRFSpacingTokens.md,
                             mainAxisSpacing: PRFSpacingTokens.md,
                           ),
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          if (index == 0) {
-                            return buildAddTile(
-                              context,
-                              theme,
-                              _form.isAudioMode,
-                              () => triggerAddMediaModal(
-                                context,
-                                widget.eventUlid,
-                                _form.isAudioMode,
-                              ),
-                            );
-                          }
-
-                          final mediaIndex = index - 1;
-                          return buildPhotoTile(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        if (index == 0) {
+                          return buildAddTile(
                             context,
-                            mediaItems[mediaIndex],
-                            mediaIndex,
+                            theme,
+                            _form.isAudioMode,
+                            () => triggerAddMediaModal(
+                              context,
+                              widget.eventUlid,
+                              _form.isAudioMode,
+                            ),
                           );
-                        },
-                        childCount: mediaItems.length + 1,
-                      ),
+                        }
+
+                        final mediaIndex = index - 1;
+                        return buildPhotoTile(
+                          context,
+                          mediaItems[mediaIndex],
+                          mediaIndex,
+                        );
+                      }, childCount: mediaItems.length + 1),
                     ),
                   );
                 },

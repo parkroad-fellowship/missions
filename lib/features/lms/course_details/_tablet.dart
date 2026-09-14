@@ -111,9 +111,7 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                         ),
                         slivers: [
                           SliverPadding(
-                            padding: const EdgeInsets.all(
-                              PRFSpacingTokens.lg,
-                            ),
+                            padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                             sliver: moduleState.maybeWhen(
                               orElse: () => const SliverFillRemaining(
                                 hasScrollBody: false,
@@ -163,19 +161,19 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                                         mainAxisSpacing: PRFSpacingTokens.lg,
                                         childAspectRatio: 1.4,
                                       ),
-                                  delegate: SliverChildBuilderDelegate(
-                                    (context, index) {
-                                      return buildAnimatedTimelineEntry(
-                                        context: context,
-                                        index: index,
-                                        animate: animateEntrance,
-                                        child: CourseDetailsActionCard(
-                                          courseModule: values[index],
-                                        ),
-                                      );
-                                    },
-                                    childCount: values.length,
-                                  ),
+                                  delegate: SliverChildBuilderDelegate((
+                                    context,
+                                    index,
+                                  ) {
+                                    return buildAnimatedTimelineEntry(
+                                      context: context,
+                                      index: index,
+                                      animate: animateEntrance,
+                                      child: CourseDetailsActionCard(
+                                        courseModule: values[index],
+                                      ),
+                                    );
+                                  }, childCount: values.length),
                                 );
                               },
                             ),
@@ -194,14 +192,8 @@ class _CourseDetailsPageTabletState extends State<CourseDetailsPageTablet> {
                     spacing: PRFSpacingTokens.sm,
                     runSpacing: PRFSpacingTokens.sm,
                     children: [
-                      LmsStatPill(
-                        label: l10n.total,
-                        value: modules.length,
-                      ),
-                      LmsStatPill(
-                        label: l10n.completed,
-                        value: completedCount,
-                      ),
+                      LmsStatPill(label: l10n.total, value: modules.length),
+                      LmsStatPill(label: l10n.completed, value: completedCount),
                     ],
                   ),
                   const SizedBox(height: PRFSpacingTokens.xxl),

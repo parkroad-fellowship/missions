@@ -148,21 +148,21 @@ class _StudentEnquiriesPageTabletState extends State<StudentEnquiriesPageTablet>
                                     mainAxisSpacing: PRFSpacingTokens.lg,
                                     childAspectRatio: 1.4,
                                   ),
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  final enquiry = enquiries[index];
-                                  return StudentEnquiryPreviewCard(
-                                    enquiry: enquiry,
-                                    timezone: timezone,
-                                    onTap: () => context.router.push(
-                                      StudentEnquiryRepliesRoute(
-                                        enquiryUlid: enquiry.ulid,
-                                      ),
+                              delegate: SliverChildBuilderDelegate((
+                                context,
+                                index,
+                              ) {
+                                final enquiry = enquiries[index];
+                                return StudentEnquiryPreviewCard(
+                                  enquiry: enquiry,
+                                  timezone: timezone,
+                                  onTap: () => context.router.push(
+                                    StudentEnquiryRepliesRoute(
+                                      enquiryUlid: enquiry.ulid,
                                     ),
-                                  );
-                                },
-                                childCount: enquiries.length,
-                              ),
+                                  ),
+                                );
+                              }, childCount: enquiries.length),
                             );
                           },
                           orElse: () => const SliverToBoxAdapter(

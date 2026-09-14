@@ -197,14 +197,12 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
             state is ResourceListLoading<PRFMission> && missions.isEmpty;
 
         if (showInitialLoader) {
-          return const Center(
-            child: PRFCircularProgressIndicator(),
-          );
+          return const Center(child: PRFCircularProgressIndicator());
         }
 
         if (missions.isEmpty) {
           return RefreshIndicator(
-            onRefresh: () async => _form.loadTabData(0, context, force: true),
+            onRefresh: () => _form.loadTabData(0, context, force: true),
             child: PRFEmptyView(
               label: l10n.noMissions,
               description: state.maybeWhen(
@@ -217,7 +215,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
         }
 
         return RefreshIndicator(
-          onRefresh: () async => _form.loadTabData(0, context, force: true),
+          onRefresh: () => _form.loadTabData(0, context, force: true),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(
@@ -277,14 +275,12 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
             missions.isEmpty;
 
         if (showInitialLoader) {
-          return const Center(
-            child: PRFCircularProgressIndicator(),
-          );
+          return const Center(child: PRFCircularProgressIndicator());
         }
 
         if (missions.isEmpty) {
           return RefreshIndicator(
-            onRefresh: () async => _form.loadTabData(1, context),
+            onRefresh: () => _form.loadTabData(1, context),
             child: PRFEmptyView(
               label: l10n.noMissions,
               description: state.maybeWhen(
@@ -297,7 +293,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
         }
 
         return RefreshIndicator(
-          onRefresh: () async => _form.loadTabData(1, context),
+          onRefresh: () => _form.loadTabData(1, context),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(
@@ -342,14 +338,12 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
             state is ResourceListLoading<PRFSchool> && schools.isEmpty;
 
         if (showInitialLoader) {
-          return const Center(
-            child: PRFCircularProgressIndicator(),
-          );
+          return const Center(child: PRFCircularProgressIndicator());
         }
 
         if (schools.isEmpty) {
           return RefreshIndicator(
-            onRefresh: () async => _form.loadTabData(2, context, force: true),
+            onRefresh: () => _form.loadTabData(2, context, force: true),
             child: PRFEmptyView(
               label: l10n.noPastMissions,
               description: state.maybeWhen(
@@ -362,7 +356,7 @@ class _MissionsPageHandsetState extends State<MissionsPageHandset>
         }
 
         return RefreshIndicator(
-          onRefresh: () async => _form.loadTabData(2, context, force: true),
+          onRefresh: () => _form.loadTabData(2, context, force: true),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(

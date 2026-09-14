@@ -320,11 +320,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.add_rounded,
-              size: 32,
-              color: theme.colorScheme.primary,
-            ),
+            Icon(Icons.add_rounded, size: 32, color: theme.colorScheme.primary),
             const SizedBox(height: PRFSpacingTokens.sm),
             Text(
               context.l10n.addMore,
@@ -361,10 +357,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.file(
-              File(image.path),
-              fit: BoxFit.cover,
-            ),
+            Image.file(File(image.path), fit: BoxFit.cover),
             // Gradient overlay
             Container(
               decoration: BoxDecoration(
@@ -386,10 +379,7 @@ class _AddEventMediaViewHandsetState extends State<AddEventMediaViewHandset> {
                 onTap: () {
                   // Remove image logic would go here
                   // For now, we'll just show a snackbar
-                  PRFSnackbar.info(
-                    context,
-                    context.l10n.removeNotImplemented,
-                  );
+                  PRFSnackbar.info(context, context.l10n.removeNotImplemented);
                 },
                 child: Container(
                   padding: const EdgeInsets.all(PRFSpacingTokens.xs),

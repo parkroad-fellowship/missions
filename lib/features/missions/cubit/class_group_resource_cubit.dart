@@ -25,9 +25,7 @@ class ClassGroupResourceCubit extends ResourceCubit<PRFClassGroup> {
   }
 
   @override
-  Future<List<PRFClassGroup>> loadCachedList({
-    Map<String, dynamic>? filters,
-  }) {
+  Future<List<PRFClassGroup>> loadCachedList({Map<String, dynamic>? filters}) {
     return dbService.filterBy(
       (classGroup) => [
         if (filters?['institution_type'] != null)

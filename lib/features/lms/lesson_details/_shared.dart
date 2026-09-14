@@ -51,10 +51,7 @@ Widget buildLessonDetailsHeader(
     ),
     child: Column(
       children: [
-        PRFBrandedNavBar(
-          title: l10n.lessonDetails,
-          onBack: onBack,
-        ),
+        PRFBrandedNavBar(title: l10n.lessonDetails, onBack: onBack),
         Padding(
           padding: const EdgeInsets.fromLTRB(
             PRFSpacingTokens.lg,
@@ -66,16 +63,10 @@ Widget buildLessonDetailsHeader(
             width: double.infinity,
             padding: const EdgeInsets.all(PRFSpacingTokens.md),
             decoration: BoxDecoration(
-              color: theme.colorScheme.onPrimary.withValues(
-                alpha: 0.1,
-              ),
-              borderRadius: BorderRadius.circular(
-                PRFRadiusTokens.lg,
-              ),
+              color: theme.colorScheme.onPrimary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
               border: Border.all(
-                color: theme.colorScheme.onPrimary.withValues(
-                  alpha: 0.15,
-                ),
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.15),
               ),
             ),
             child: Column(
@@ -86,9 +77,7 @@ Widget buildLessonDetailsHeader(
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onPrimary.withValues(
-                      alpha: 0.9,
-                    ),
+                    color: theme.colorScheme.onPrimary.withValues(alpha: 0.9),
                   ),
                 ),
                 const SizedBox(height: PRFSpacingTokens.md),
@@ -96,10 +85,7 @@ Widget buildLessonDetailsHeader(
                   spacing: PRFSpacingTokens.xs,
                   runSpacing: PRFSpacingTokens.xs,
                   children: [
-                    LmsStatPill(
-                      label: l10n.total,
-                      value: mediaCount,
-                    ),
+                    LmsStatPill(label: l10n.total, value: mediaCount),
                     LmsStatPill(
                       label: l10n.completed,
                       value: isCompleted ? 1 : 0,
@@ -199,17 +185,10 @@ class LessonResourceTile extends StatelessWidget {
                 color: theme.colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
               ),
-              child: Icon(
-                icon,
-                color: theme.colorScheme.onPrimaryContainer,
-              ),
+              child: Icon(icon, color: theme.colorScheme.onPrimaryContainer),
             ),
             title: Text(title),
-            subtitle: Text(
-              value,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+            subtitle: Text(value, maxLines: 1, overflow: TextOverflow.ellipsis),
             trailing: Icon(
               Icons.open_in_new_rounded,
               color: theme.colorScheme.primary,
@@ -281,9 +260,9 @@ Widget buildLessonMedia({
           Expanded(
             child: Text(
               context.l10n.lessonResources,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
             ),
           ),
         ],

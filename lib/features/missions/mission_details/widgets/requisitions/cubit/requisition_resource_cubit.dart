@@ -28,9 +28,7 @@ class RequisitionResourceCubit extends ResourceCubit<PRFRequisition> {
   }
 
   @override
-  Future<List<PRFRequisition>> loadCachedList({
-    Map<String, dynamic>? filters,
-  }) {
+  Future<List<PRFRequisition>> loadCachedList({Map<String, dynamic>? filters}) {
     return dbService.filterBy(
       (requisition) => [
         if (filters?['accounting_event_ulid'] != null)

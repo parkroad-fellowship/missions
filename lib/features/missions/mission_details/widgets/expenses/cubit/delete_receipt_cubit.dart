@@ -7,9 +7,8 @@ part 'delete_receipt_state.dart';
 part 'delete_receipt_cubit.freezed.dart';
 
 class DeleteReceiptCubit extends Cubit<DeleteReceiptState> {
-  DeleteReceiptCubit({
-    required AllocationEntryService allocationEntryService,
-  }) : super(const DeleteReceiptState.initial()) {
+  DeleteReceiptCubit({required AllocationEntryService allocationEntryService})
+    : super(const DeleteReceiptState.initial()) {
     _allocationEntryService = allocationEntryService;
   }
 

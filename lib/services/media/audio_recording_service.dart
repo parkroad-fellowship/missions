@@ -7,12 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 
-enum RecordingState {
-  stopped,
-  recording,
-  paused,
-  error,
-}
+enum RecordingState { stopped, recording, paused, error }
 
 class AudioRecordingService {
   final AudioRecorder _audioRecorder = AudioRecorder();
@@ -36,11 +31,11 @@ class AudioRecordingService {
   String? get currentRecordingPath => _currentRecordingPath;
 
   /// Check current permission status
-  Future<PermissionStatus> getPermissionStatus() async =>
+  Future<PermissionStatus> getPermissionStatus() =>
       Permission.microphone.status;
 
   /// Request microphone permission
-  Future<PermissionStatus> requestPermission() async =>
+  Future<PermissionStatus> requestPermission() =>
       Permission.microphone.request();
 
   /// Initialize the service and request permissions

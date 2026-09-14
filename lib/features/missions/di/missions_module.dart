@@ -112,9 +112,7 @@ class MissionsModule {
         ),
       ),
       BlocProvider<MissionMediaResourceCubit>(
-        create: (context) => MissionMediaResourceCubit(
-          missionService: getIt(),
-        ),
+        create: (context) => MissionMediaResourceCubit(missionService: getIt()),
       ),
       BlocProvider<GroundSuggestionResourceCubit>(
         create: (context) => GroundSuggestionResourceCubit(

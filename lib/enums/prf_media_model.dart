@@ -8,8 +8,7 @@ enum PRFMediaModel {
   eventAudios('event-audios'),
   memberProfilePictures('profile-pictures'),
   allocationEntryReceipts('allocation-entry-receipts'),
-  missionQuestions('question-answers'),
-  ;
+  missionQuestions('question-answers');
 
   const PRFMediaModel(this.collection);
   final String collection;

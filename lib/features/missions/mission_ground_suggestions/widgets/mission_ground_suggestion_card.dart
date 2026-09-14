@@ -18,9 +18,7 @@ class MissionGroundSuggestionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final canCall = PermissionHelper.userCan(
-      'edit mission ground suggestion',
-    );
+    final canCall = PermissionHelper.userCan('edit mission ground suggestion');
 
     return Container(
       decoration: BoxDecoration(

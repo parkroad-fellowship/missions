@@ -13,9 +13,7 @@ class CourseResourceCubit extends ResourceCubit<PRFCourse> {
   List<String> get defaultIncludes => ['thumbnail', 'courseMember'];
 
   @override
-  Future<List<PRFCourse>> loadCachedList({
-    Map<String, dynamic>? filters,
-  }) {
+  Future<List<PRFCourse>> loadCachedList({Map<String, dynamic>? filters}) {
     return dbService.list();
   }
 }

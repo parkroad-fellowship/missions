@@ -28,10 +28,7 @@ class FinanceSection extends StatelessWidget {
         Tab(text: 'Expenses'),
         Tab(text: 'Requisitions'),
       ],
-      children: [
-        expensesTab,
-        requisitionsTab,
-      ],
+      children: [expensesTab, requisitionsTab],
     );
   }
 }

@@ -35,9 +35,7 @@ class PaymentResourceCubit extends ResourceCubit<PRFPayment> {
   }
 
   @override
-  Future<List<PRFPayment>> loadCachedList({
-    Map<String, dynamic>? filters,
-  }) {
+  Future<List<PRFPayment>> loadCachedList({Map<String, dynamic>? filters}) {
     return dbService.list();
   }
 }

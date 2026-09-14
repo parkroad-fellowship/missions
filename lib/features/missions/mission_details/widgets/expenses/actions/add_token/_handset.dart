@@ -9,10 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
 class AddTokenViewHandset extends StatefulWidget {
-  const AddTokenViewHandset({
-    required this.accountingEventUlid,
-    super.key,
-  });
+  const AddTokenViewHandset({required this.accountingEventUlid, super.key});
 
   final String accountingEventUlid;
 
@@ -102,9 +99,7 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                       gradient: LinearGradient(
                         colors: [
                           Theme.of(context).colorScheme.tertiary,
-                          Theme.of(
-                            context,
-                          ).colorScheme.tertiary.withValues(
+                          Theme.of(context).colorScheme.tertiary.withValues(
                             alpha: PRFOpacities.stronger,
                           ),
                         ],
@@ -112,12 +107,8 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                       boxShadow: [
                         BoxShadow(
-                          color:
-                              Theme.of(
-                                context,
-                              ).colorScheme.tertiary.withValues(
-                                alpha: PRFOpacities.glow,
-                              ),
+                          color: Theme.of(context).colorScheme.tertiary
+                              .withValues(alpha: PRFOpacities.glow),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -144,12 +135,8 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                           l10n.addTokenDesc,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color:
-                                    Theme.of(
-                                      context,
-                                    ).colorScheme.onTertiary.withValues(
-                                      alpha: PRFOpacities.nearOpaque,
-                                    ),
+                                color: Theme.of(context).colorScheme.onTertiary
+                                    .withValues(alpha: PRFOpacities.nearOpaque),
                               ),
                           textAlign: TextAlign.center,
                         ),
@@ -175,12 +162,9 @@ class _AddTokenViewHandsetState extends State<AddTokenViewHandset> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color:
-                          Theme.of(
-                            context,
-                          ).colorScheme.shadow.withValues(
-                            alpha: PRFOpacities.subtle,
-                          ),
+                      color: Theme.of(context).colorScheme.shadow.withValues(
+                        alpha: PRFOpacities.subtle,
+                      ),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),

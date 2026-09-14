@@ -31,9 +31,8 @@ class CourseActionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
         child: InkWell(
           borderRadius: BorderRadius.circular(PRFRadiusTokens.xl),
-          onTap: () => context.router.push(
-            CourseDetailsRoute(courseUlid: course.ulid),
-          ),
+          onTap: () =>
+              context.router.push(CourseDetailsRoute(courseUlid: course.ulid)),
           child: Padding(
             padding: const EdgeInsets.all(PRFSpacingTokens.md),
             child: Column(

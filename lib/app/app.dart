@@ -39,9 +39,7 @@ class PRFSuperApp extends StatelessWidget {
                 fit: StackFit.expand,
                 children: [
                   child,
-                  const Positioned.fill(
-                    child: GlobalRecordingUploadsBar(),
-                  ),
+                  const Positioned.fill(child: GlobalRecordingUploadsBar()),
                 ],
               );
             },

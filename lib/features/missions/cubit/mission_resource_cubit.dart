@@ -34,9 +34,7 @@ class MissionResourceCubit extends ResourceCubit<PRFMission> {
   String? get defaultSortBy => 'start_date';
 
   @override
-  Future<List<PRFMission>> loadCachedList({
-    Map<String, dynamic>? filters,
-  }) {
+  Future<List<PRFMission>> loadCachedList({Map<String, dynamic>? filters}) {
     return dbService.filterBy(
       (mission) => [
         filters?['upcoming'] == null || mission.endDate.isAfter(DateTime.now()),

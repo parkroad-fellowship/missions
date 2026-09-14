@@ -156,10 +156,7 @@ class _DebriefNoteFormViewHandsetState
   Future<void> _submitForm() async {
     if (!_validateForm()) {
       Gaimon.warning();
-      PRFSnackbar.error(
-        context,
-        context.l10n.fixHighlightedFields,
-      );
+      PRFSnackbar.error(context, context.l10n.fixHighlightedFields);
       return;
     }
 

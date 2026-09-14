@@ -138,11 +138,8 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                   }
                   return _buildLoadedView(context, l10n, entries);
                 },
-                itemLoaded: (_, entries) => _buildLoadedView(
-                  context,
-                  l10n,
-                  entries,
-                ),
+                itemLoaded: (_, entries) =>
+                    _buildLoadedView(context, l10n, entries),
                 mutating: (_, _) => const Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: PRFSpacingTokens.lg,
@@ -191,46 +188,28 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
-          child: _buildHeader(
-            context,
-            l10n,
-            accountingEvent!,
-          ),
+          child: _buildHeader(context, l10n, accountingEvent!),
         ),
         // Financial Overview Header
         SliverToBoxAdapter(
-          child:
-              _buildFinancialOverview(
-                    context,
-                    l10n,
-                    accountingEvent,
-                  )
-                  .animate()
-                  .slideY(begin: -0.3)
-                  .fadeIn(duration: PRFMotionTokens.enterShort),
+          child: _buildFinancialOverview(context, l10n, accountingEvent)
+              .animate()
+              .slideY(begin: -0.3)
+              .fadeIn(duration: PRFMotionTokens.enterShort),
         ),
 
         // Quick Actions
         if (widget.canEdit)
           SliverToBoxAdapter(
-            child:
-                _buildQuickActions(
-                      context,
-                      l10n,
-                      accountingEvent,
-                    )
-                    .animate(delay: PRFMotionTokens.standard)
-                    .slideY(begin: 0.3)
-                    .fadeIn(),
+            child: _buildQuickActions(context, l10n, accountingEvent)
+                .animate(delay: PRFMotionTokens.standard)
+                .slideY(begin: 0.3)
+                .fadeIn(),
           ),
 
         // Refund Information (show when balance > 0)
         SliverToBoxAdapter(
-          child: _buildRefundInformation(
-            context,
-            l10n,
-            accountingEvent,
-          ),
+          child: _buildRefundInformation(context, l10n, accountingEvent),
         ),
 
         // Breakdown Toggle
@@ -246,18 +225,15 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           SliverPadding(
             padding: const EdgeInsets.all(PRFSpacingTokens.lg),
             sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return _buildExpenseCard(context, entries[index])
-                      .animate()
-                      .fadeIn(
-                        duration: PRFMotionTokens.slow,
-                        delay: (index * 50).ms,
-                      )
-                      .slideX(begin: 0.2, end: 0);
-                },
-                childCount: entries.length,
-              ),
+              delegate: SliverChildBuilderDelegate((context, index) {
+                return _buildExpenseCard(context, entries[index])
+                    .animate()
+                    .fadeIn(
+                      duration: PRFMotionTokens.slow,
+                      delay: (index * 50).ms,
+                    )
+                    .slideX(begin: 0.2, end: 0);
+              }, childCount: entries.length),
             ),
           ),
 
@@ -272,9 +248,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           ),
 
         // Bottom spacing
-        const SliverToBoxAdapter(
-          child: SizedBox(height: 100),
-        ),
+        const SliverToBoxAdapter(child: SizedBox(height: 100)),
       ],
     );
   }
@@ -424,10 +398,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                 child: _buildStatCard(
                   context,
                   l10n.amountToRefund,
-                  NumberFormat.currency(
-                    locale: 'en_KE',
-                    symbol: 'KES ',
-                  ).format(
+                  NumberFormat.currency(locale: 'en_KE', symbol: 'KES ').format(
                     accountingEvent.latestRefund?.deficitAmount ??
                         accountingEvent.amountToRefund,
                   ),
@@ -472,11 +443,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                       color: color.withValues(alpha: PRFOpacities.subtle),
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
                     ),
-                    child: Icon(
-                      icon,
-                      size: 16,
-                      color: color,
-                    ),
+                    child: Icon(icon, size: 16, color: color),
                   ),
                   const Spacer(),
                 ],
@@ -761,9 +728,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                           padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                           decoration: BoxDecoration(
                             color: theme.colorScheme.primaryContainer
-                                .withValues(
-                                  alpha: 0.5,
-                                ),
+                                .withValues(alpha: 0.5),
                             borderRadius: BorderRadius.circular(
                               PRFRadiusTokens.smd,
                             ),
@@ -928,9 +893,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                   boxShadow: [
                                     BoxShadow(
                                       color: theme.colorScheme.primary
-                                          .withValues(
-                                            alpha: 0.1,
-                                          ),
+                                          .withValues(alpha: 0.1),
                                       blurRadius: 8,
                                       offset: const Offset(0, 2),
                                     ),
@@ -940,9 +903,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                     ? Container(
                                         decoration: BoxDecoration(
                                           color: theme.colorScheme.tertiary
-                                              .withValues(
-                                                alpha: 0.2,
-                                              ),
+                                              .withValues(alpha: 0.2),
                                           borderRadius: BorderRadius.circular(
                                             14,
                                           ),
@@ -1000,44 +961,37 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
                                                       ),
                                                     );
                                                   },
-                                              loadingBuilder:
-                                                  (
-                                                    context,
-                                                    child,
-                                                    loadingProgress,
-                                                  ) {
-                                                    if (loadingProgress ==
-                                                        null) {
-                                                      return child;
-                                                    }
-                                                    return ColoredBox(
-                                                      color: theme
-                                                          .colorScheme
-                                                          .surfaceContainerHighest,
-                                                      child: Center(
-                                                        child: SizedBox(
-                                                          width:
-                                                              PRFSpacingTokens
-                                                                  .xl,
-                                                          height: 20,
-                                                          child: PRFCircularProgressIndicator(
-                                                            color: theme
-                                                                .colorScheme
-                                                                .primary,
-                                                            value:
-                                                                loadingProgress
-                                                                        .expectedTotalBytes !=
-                                                                    null
-                                                                ? loadingProgress
-                                                                          .cumulativeBytesLoaded /
-                                                                      loadingProgress
-                                                                          .expectedTotalBytes!
-                                                                : null,
-                                                          ),
-                                                        ),
+                                              loadingBuilder: (context, child, loadingProgress) {
+                                                if (loadingProgress == null) {
+                                                  return child;
+                                                }
+                                                return ColoredBox(
+                                                  color: theme
+                                                      .colorScheme
+                                                      .surfaceContainerHighest,
+                                                  child: Center(
+                                                    child: SizedBox(
+                                                      width:
+                                                          PRFSpacingTokens.xl,
+                                                      height: 20,
+                                                      child: PRFCircularProgressIndicator(
+                                                        color: theme
+                                                            .colorScheme
+                                                            .primary,
+                                                        value:
+                                                            loadingProgress
+                                                                    .expectedTotalBytes !=
+                                                                null
+                                                            ? loadingProgress
+                                                                      .cumulativeBytesLoaded /
+                                                                  loadingProgress
+                                                                      .expectedTotalBytes!
+                                                            : null,
                                                       ),
-                                                    );
-                                                  },
+                                                    ),
+                                                  ),
+                                                );
+                                              },
                                             ),
                                             // Overlay for better tap indication
                                             Positioned.fill(
@@ -1435,10 +1389,8 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
   ) {
     Navigator.of(context).push(
       MaterialPageRoute<dynamic>(
-        builder: (context) => ReceiptPreviewPage(
-          receipts: receipts,
-          initialIndex: initialIndex,
-        ),
+        builder: (context) =>
+            ReceiptPreviewPage(receipts: receipts, initialIndex: initialIndex),
       ),
     );
   }
@@ -1449,9 +1401,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
       context,
       title: context.l10n.addExpense_2,
       child: accountingEventUlid != null
-          ? AddExpenseViewHandset(
-              accountingEventUlid: accountingEventUlid!,
-            )
+          ? AddExpenseViewHandset(accountingEventUlid: accountingEventUlid!)
           : const SizedBox.shrink(),
     );
   }
@@ -1460,9 +1410,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     PRFBottomSheet.show<void>(
       context,
       title: context.l10n.editExpense,
-      child: EditExpenseViewHandset(
-        allocationEntry: entry,
-      ),
+      child: EditExpenseViewHandset(allocationEntry: entry),
     );
   }
 
@@ -1489,9 +1437,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     PRFBottomSheet.show<void>(
       context,
       title: context.l10n.addToken,
-      child: AddTokenViewHandset(
-        accountingEventUlid: accountingEvent.ulid,
-      ),
+      child: AddTokenViewHandset(accountingEventUlid: accountingEvent.ulid),
     ).then((_) {
       if (context.mounted) {
         context.read<AllocationEntryResourceCubit>().loadAll(
@@ -1508,9 +1454,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     PRFBottomSheet.show<void>(
       context,
       title: context.l10n.addRefund,
-      child: AddRefundViewHandset(
-        accountingEventUlid: accountingEvent.ulid,
-      ),
+      child: AddRefundViewHandset(accountingEventUlid: accountingEvent.ulid),
     ).then((_) {
       if (context.mounted) {
         context.read<AllocationEntryResourceCubit>().loadAll(
@@ -1855,9 +1799,10 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
           context,
           theme,
           context.l10n.deficitAmount,
-          NumberFormat.currency(locale: 'en_KE', symbol: 'KES ').format(
-            refund.deficitAmount,
-          ),
+          NumberFormat.currency(
+            locale: 'en_KE',
+            symbol: 'KES ',
+          ).format(refund.deficitAmount),
         ),
         const SizedBox(height: PRFSpacingTokens.sm),
         _buildRefundDetailValue(
@@ -1915,16 +1860,9 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               Clipboard.setData(ClipboardData(text: value));
               PRFSnackbar.info(context, context.l10n.copiedToClipboard);
             },
-            icon: Icon(
-              Icons.copy,
-              size: 16,
-              color: theme.colorScheme.primary,
-            ),
+            icon: Icon(Icons.copy, size: 16, color: theme.colorScheme.primary),
             padding: const EdgeInsets.all(PRFSpacingTokens.xs),
-            constraints: const BoxConstraints(
-              minWidth: 24,
-              minHeight: 24,
-            ),
+            constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
           ),
       ],
     );
@@ -1939,11 +1877,7 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
     final theme = Theme.of(context);
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 16,
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
+        Icon(icon, size: 16, color: theme.colorScheme.onSurfaceVariant),
         const SizedBox(width: PRFSpacingTokens.sm),
         Expanded(
           child: Text(
@@ -2036,24 +1970,18 @@ class _ExpensesViewHandsetState extends State<ExpensesViewHandset>
               return IconButton.filled(
                 onPressed: () =>
                     context.read<AllocationEntryResourceCubit>().loadAll(
-                      filters: {
-                        'accounting_event_ulid': accountingEvent.ulid,
-                      },
+                      filters: {'accounting_event_ulid': accountingEvent.ulid},
                     ),
                 icon: state.maybeWhen(
-                  orElse: () => const Icon(
-                    Icons.refresh,
-                    color: PRFColors.white,
-                  ),
+                  orElse: () =>
+                      const Icon(Icons.refresh, color: PRFColors.white),
                   listLoading: (_) => const SizedBox(
                     width: PRFSpacingTokens.xl,
                     height: 20,
                     child: PRFCircularProgressIndicator(),
                   ),
-                  listLoaded: (_, _, _) => const Icon(
-                    Icons.refresh,
-                    color: PRFColors.white,
-                  ),
+                  listLoaded: (_, _, _) =>
+                      const Icon(Icons.refresh, color: PRFColors.white),
                 ),
                 style: IconButton.styleFrom(
                   backgroundColor: theme.colorScheme.primaryContainer,

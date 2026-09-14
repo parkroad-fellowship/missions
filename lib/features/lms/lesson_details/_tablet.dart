@@ -48,10 +48,8 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
     final theme = Theme.of(context);
 
     return BlocBuilder<LessonResourceCubit, ResourceState<PRFLessonModule>>(
-      buildWhen: (previous, current) => current.maybeWhen(
-        mutating: (_, _) => false,
-        orElse: () => true,
-      ),
+      buildWhen: (previous, current) =>
+          current.maybeWhen(mutating: (_, _) => false, orElse: () => true),
       builder: (context, state) {
         final lessonModule = state.maybeWhen(
           listLoaded: (items, _, _) => items.isNotEmpty ? items.first : null,
@@ -73,21 +71,16 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
               ),
               Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () async =>
-                      context.read<LessonResourceCubit>().loadAll(
-                        filters: {
-                          'lesson_module_id': widget.lessonModuleUlid,
-                        },
-                      ),
+                  onRefresh: () => context.read<LessonResourceCubit>().loadAll(
+                    filters: {'lesson_module_id': widget.lessonModuleUlid},
+                  ),
                   child: CustomScrollView(
                     physics: const AlwaysScrollableScrollPhysics(
                       parent: BouncingScrollPhysics(),
                     ),
                     slivers: [
                       SliverPadding(
-                        padding: const EdgeInsets.all(
-                          PRFSpacingTokens.lg,
-                        ),
+                        padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                         sliver: state.maybeWhen(
                           orElse: () => const SliverFillRemaining(
                             hasScrollBody: false,
@@ -206,14 +199,8 @@ class _LessonDetailsTabletState extends State<LessonDetailsTablet> {
               spacing: PRFSpacingTokens.sm,
               runSpacing: PRFSpacingTokens.sm,
               children: [
-                LmsStatPill(
-                  label: l10n.total,
-                  value: mediaCount,
-                ),
-                LmsStatPill(
-                  label: l10n.completed,
-                  value: isCompleted ? 1 : 0,
-                ),
+                LmsStatPill(label: l10n.total, value: mediaCount),
+                LmsStatPill(label: l10n.completed, value: isCompleted ? 1 : 0),
               ],
             ),
             const SizedBox(height: PRFSpacingTokens.xl),

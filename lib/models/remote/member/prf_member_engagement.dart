@@ -42,10 +42,8 @@ abstract class MissionStats with _$MissionStats {
 
 @freezed
 abstract class FavoriteMissionType with _$FavoriteMissionType {
-  factory FavoriteMissionType({
-    required String ulid,
-    required String name,
-  }) = _FavoriteMissionType;
+  factory FavoriteMissionType({required String ulid, required String name}) =
+      _FavoriteMissionType;
 
   factory FavoriteMissionType.fromJson(Map<String, dynamic> json) =>
       _$FavoriteMissionTypeFromJson(json);
@@ -53,10 +51,8 @@ abstract class FavoriteMissionType with _$FavoriteMissionType {
 
 @freezed
 abstract class MissionRole with _$MissionRole {
-  factory MissionRole({
-    required String role,
-    required int count,
-  }) = _MissionRole;
+  factory MissionRole({required String role, required int count}) =
+      _MissionRole;
 
   factory MissionRole.fromJson(Map<String, dynamic> json) =>
       _$MissionRoleFromJson(json);
@@ -77,10 +73,8 @@ abstract class ImpactStats with _$ImpactStats {
 
 @freezed
 abstract class DecisionType with _$DecisionType {
-  factory DecisionType({
-    required String type,
-    required int count,
-  }) = _DecisionType;
+  factory DecisionType({required String type, required int count}) =
+      _DecisionType;
 
   factory DecisionType.fromJson(Map<String, dynamic> json) =>
       _$DecisionTypeFromJson(json);
@@ -177,9 +171,8 @@ abstract class ComparativeStats with _$ComparativeStats {
 
 @freezed
 abstract class PRFMemberEngagementResponse with _$PRFMemberEngagementResponse {
-  factory PRFMemberEngagementResponse({
-    required PRFMemberEngagement data,
-  }) = _PRFMemberEngagementResponse;
+  factory PRFMemberEngagementResponse({required PRFMemberEngagement data}) =
+      _PRFMemberEngagementResponse;
 
   factory PRFMemberEngagementResponse.fromJson(Map<String, dynamic> json) =>
       _$PRFMemberEngagementResponseFromJson(json);

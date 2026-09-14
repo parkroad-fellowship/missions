@@ -146,10 +146,7 @@ class NetworkUtil {
           statusCode: statusCode,
         );
       case 404:
-        throw Failure(
-          message: 'Resource not found',
-          statusCode: statusCode,
-        );
+        throw Failure(message: 'Resource not found', statusCode: statusCode);
       case 422:
         throw Failure(
           message: _extractErrorMessage(responseData) ?? 'Validation failed',
@@ -254,9 +251,7 @@ class NetworkUtil {
       throw Failure(message: 'Empty response from server');
     }
 
-    Logger().d(
-      'Response data: ${response.data}',
-    );
+    Logger().d('Response data: ${response.data}');
 
     if (response.data is! Map<String, dynamic>) {
       throw Failure(message: 'Invalid response format');
@@ -508,11 +503,9 @@ class NetworkUtil {
     ProgressCallback? onDownloadProgress,
   }) async {
     try {
-      final response = await _getHttpClient(apiVersion: apiVersion)
-          .get<List<int>>(
-            url,
-            options: Options(responseType: ResponseType.bytes),
-          );
+      final response = await _getHttpClient(
+        apiVersion: apiVersion,
+      ).get<List<int>>(url, options: Options(responseType: ResponseType.bytes));
       return Uint8List.fromList(response.data!);
     } on SocketException catch (_) {
       throw Failure(message: 'No internet connection');

@@ -8,9 +8,8 @@ import 'package:bloc/bloc.dart';
 /// Manages mission media. Uses custom API calls (listChildren/deleteChild)
 /// instead of standard CRUD because media are child resources of a mission.
 class MissionMediaResourceCubit extends Cubit<ResourceState<PRFMedia>> {
-  MissionMediaResourceCubit({
-    required this._missionService,
-  }) : super(const ResourceState.initial());
+  MissionMediaResourceCubit({required this._missionService})
+    : super(const ResourceState.initial());
 
   final MissionService _missionService;
 

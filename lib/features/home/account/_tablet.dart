@@ -33,9 +33,8 @@ class _AccountPageTabletState extends State<AccountPageTablet> {
     return BlocListener<SignOutCubit, SignOutState>(
       listener: (context, state) {
         state.maybeWhen(
-          loaded: () => context.router.pushPath(
-            PRFSuperAppRouter.decisionRoute,
-          ),
+          loaded: () =>
+              context.router.pushPath(PRFSuperAppRouter.decisionRoute),
           orElse: () {},
         );
       },

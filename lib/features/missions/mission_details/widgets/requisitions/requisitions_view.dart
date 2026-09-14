@@ -64,21 +64,12 @@ class _RequisitionsViewState extends State<RequisitionsView> {
                     child: PRFCircularProgressIndicator(),
                   ),
                 ),
-                listLoaded: (requisitions, _, _) => _buildContent(
-                  context,
-
-                  requisitions: requisitions,
-                ),
-                itemLoaded: (_, requisitions) => _buildContent(
-                  context,
-
-                  requisitions: requisitions,
-                ),
-                mutating: (requisitions, _) => _buildContent(
-                  context,
-
-                  requisitions: requisitions,
-                ),
+                listLoaded: (requisitions, _, _) =>
+                    _buildContent(context, requisitions: requisitions),
+                itemLoaded: (_, requisitions) =>
+                    _buildContent(context, requisitions: requisitions),
+                mutating: (requisitions, _) =>
+                    _buildContent(context, requisitions: requisitions),
                 error: (message, requisitions) => _buildContent(
                   context,
 
@@ -247,10 +238,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
     );
   }
 
-  Widget _buildLineItem(
-    BuildContext context,
-    PRFRequisitionItem item,
-  ) {
+  Widget _buildLineItem(BuildContext context, PRFRequisitionItem item) {
     final theme = Theme.of(context);
 
     return Padding(
@@ -326,10 +314,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
     );
   }
 
-  Widget _buildStatusBadge(
-    BuildContext context,
-    PRFApprovalStatus status,
-  ) {
+  Widget _buildStatusBadge(BuildContext context, PRFApprovalStatus status) {
     final theme = Theme.of(context);
 
     return Container(
@@ -344,11 +329,7 @@ class _RequisitionsViewState extends State<RequisitionsView> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            status.icon,
-            size: 14,
-            color: status.color(theme),
-          ),
+          Icon(status.icon, size: 14, color: status.color(theme)),
           const SizedBox(width: PRFSpacingTokens.xs),
           Text(
             status.name,

@@ -175,10 +175,7 @@ class _AppPaymentHandsetState extends State<AppPaymentHandset> {
                   onPressed: () async {
                     if (!_validateForm()) {
                       Gaimon.warning();
-                      PRFSnackbar.error(
-                        context,
-                        l10n.fixHighlightedFields,
-                      );
+                      PRFSnackbar.error(context, l10n.fixHighlightedFields);
                       return;
                     }
 

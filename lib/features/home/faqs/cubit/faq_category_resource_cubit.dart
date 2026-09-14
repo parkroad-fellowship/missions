@@ -13,9 +13,7 @@ class FaqCategoryResourceCubit extends ResourceCubit<PRFFaqCategory> {
        );
 
   @override
-  Future<List<PRFFaqCategory>> loadCachedList({
-    Map<String, dynamic>? filters,
-  }) {
+  Future<List<PRFFaqCategory>> loadCachedList({Map<String, dynamic>? filters}) {
     return dbService.list();
   }
 }

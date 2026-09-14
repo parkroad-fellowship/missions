@@ -13,15 +13,12 @@ class ModuleDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PRFAdaptive(
-      builder: (context, _) => ModuleDetailsPageTablet(
-        courseModuleUlid: courseModuleUlid,
-      ),
-      handset: (context) => ModuleDetailsPageHandset(
-        courseModuleUlid: courseModuleUlid,
-      ),
-      tablet: (context) => ModuleDetailsPageTablet(
-        courseModuleUlid: courseModuleUlid,
-      ),
+      builder: (context, _) =>
+          ModuleDetailsPageTablet(courseModuleUlid: courseModuleUlid),
+      handset: (context) =>
+          ModuleDetailsPageHandset(courseModuleUlid: courseModuleUlid),
+      tablet: (context) =>
+          ModuleDetailsPageTablet(courseModuleUlid: courseModuleUlid),
     );
   }
 }

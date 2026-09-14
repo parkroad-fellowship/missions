@@ -88,9 +88,7 @@ class _DebriefNotesViewHandsetState extends State<DebriefNotesViewHandset>
           error: (_, items) => items,
           orElse: () => <PRFDebriefNote>[],
         );
-        final error = state.mapOrNull(
-          error: (state) => state.message,
-        );
+        final error = state.mapOrNull(error: (state) => state.message);
         final isLoading = state.maybeWhen(
           listLoading: (_) => true,
           orElse: () => false,

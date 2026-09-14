@@ -12,9 +12,7 @@ class MemberService extends BaseAPIService<PRFMember> {
   }
 
   @override
-  List<PRFMember> createListFromResponse(
-    Map<String, dynamic> response,
-  ) {
+  List<PRFMember> createListFromResponse(Map<String, dynamic> response) {
     throw UnimplementedError();
   }
 

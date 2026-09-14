@@ -6,11 +6,7 @@ import 'package:flutter/material.dart' show BuildContext, MediaQuery;
 import 'package:logger/logger.dart';
 
 /// Device type enumeration
-enum DeviceType {
-  phone,
-  tablet,
-  desktop,
-}
+enum DeviceType { phone, tablet, desktop }
 
 /// Device-related utilities.
 class DeviceHelper {

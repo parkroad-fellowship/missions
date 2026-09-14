@@ -30,9 +30,7 @@ class PrayerRequestCard extends StatelessWidget {
                     padding: const EdgeInsets.all(PRFSpacingTokens.md),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primaryContainer,
-                      borderRadius: BorderRadius.circular(
-                        PRFRadiusTokens.md,
-                      ),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                     ),
                     child: Icon(
                       Icons.hail_rounded,

@@ -139,20 +139,20 @@ class _PrayerRequestTabletState extends State<PrayerRequestTablet> {
                                     mainAxisSpacing: PRFSpacingTokens.lg,
                                     childAspectRatio: 1.4,
                                   ),
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  final prayerRequest = requests[index];
-                                  return buildAnimatedTimelineEntry(
-                                    context: context,
-                                    index: index,
-                                    animate: animateEntrance,
-                                    child: PrayerRequestCard(
-                                      prayerRequest: prayerRequest,
-                                    ),
-                                  );
-                                },
-                                childCount: requests.length,
-                              ),
+                              delegate: SliverChildBuilderDelegate((
+                                context,
+                                index,
+                              ) {
+                                final prayerRequest = requests[index];
+                                return buildAnimatedTimelineEntry(
+                                  context: context,
+                                  index: index,
+                                  animate: animateEntrance,
+                                  child: PrayerRequestCard(
+                                    prayerRequest: prayerRequest,
+                                  ),
+                                );
+                              }, childCount: requests.length),
                             );
                           },
                         ),

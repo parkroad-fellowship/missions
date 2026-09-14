@@ -232,22 +232,20 @@ class SocketServiceImpl implements SocketService {
     });
   }
 
-  void _bindResubscribeOnReconnect({
-    required PusherChannelsClient client,
-  }) {
+  void _bindResubscribeOnReconnect({required PusherChannelsClient client}) {
     _connectionEstablishedSubscription?.cancel();
-    _connectionEstablishedSubscription = client.onConnectionEstablished.listen(
-      (_) {
-        for (final channel in _privateChannels.values) {
-          channel.subscribeIfNotUnsubscribed();
-          Logger().i('Subscribed to private channel: ${channel.name}');
-        }
-        for (final channel in _presenceChannels.values) {
-          channel.subscribeIfNotUnsubscribed();
-          Logger().i('Subscribed to presence channel: ${channel.name}');
-        }
-      },
-    );
+    _connectionEstablishedSubscription = client.onConnectionEstablished.listen((
+      _,
+    ) {
+      for (final channel in _privateChannels.values) {
+        channel.subscribeIfNotUnsubscribed();
+        Logger().i('Subscribed to private channel: ${channel.name}');
+      }
+      for (final channel in _presenceChannels.values) {
+        channel.subscribeIfNotUnsubscribed();
+        Logger().i('Subscribed to presence channel: ${channel.name}');
+      }
+    });
   }
 
   @override

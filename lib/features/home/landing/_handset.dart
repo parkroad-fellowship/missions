@@ -59,10 +59,8 @@ class _LandingPageHandsetState extends State<LandingPageHandset> {
     final sections = deskGroups.entries
         .where((entry) => entry.value.isNotEmpty)
         .map(
-          (entry) => LandingActionSection(
-            title: entry.key,
-            actions: entry.value,
-          ),
+          (entry) =>
+              LandingActionSection(title: entry.key, actions: entry.value),
         )
         .toList();
 

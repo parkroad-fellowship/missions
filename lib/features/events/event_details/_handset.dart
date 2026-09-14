@@ -27,9 +27,7 @@ class _EventDetailsPageHandsetState extends State<EventDetailsPageHandset>
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
-      appBar: PRFAppBar(
-        title: l10n.eventDetails,
-      ),
+      appBar: PRFAppBar(title: l10n.eventDetails),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(PRFSpacingTokens.lg),

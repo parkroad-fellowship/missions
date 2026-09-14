@@ -68,10 +68,8 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
     final sections = deskGroups.entries
         .where((entry) => entry.value.isNotEmpty)
         .map(
-          (entry) => LandingActionSection(
-            title: entry.key,
-            actions: entry.value,
-          ),
+          (entry) =>
+              LandingActionSection(title: entry.key, actions: entry.value),
         )
         .toList();
 
@@ -87,9 +85,7 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
                 child: SizedBox(height: PRFSpacingTokens.lg),
               ),
               if (sections.isEmpty)
-                SliverToBoxAdapter(
-                  child: _buildEmptyActions(theme, l10n),
-                )
+                SliverToBoxAdapter(child: _buildEmptyActions(theme, l10n))
               else
                 ...buildSectionSlivers(
                   context: context,
@@ -314,11 +310,7 @@ class _LandingPageTabletState extends State<LandingPageTablet> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
-              Icons.explore_outlined,
-              size: 72,
-              color: Colors.white,
-            ),
+            const Icon(Icons.explore_outlined, size: 72, color: Colors.white),
             const SizedBox(height: PRFSpacingTokens.lg),
             Text(
               l10n.dashboardTitle,
@@ -398,10 +390,7 @@ class _AnnouncementRow extends StatelessWidget {
 }
 
 class _PrayerPromptCard extends StatelessWidget {
-  const _PrayerPromptCard({
-    required this.description,
-    required this.onTap,
-  });
+  const _PrayerPromptCard({required this.description, required this.onTap});
 
   final String description;
   final VoidCallback onTap;

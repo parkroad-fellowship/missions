@@ -29,10 +29,8 @@ class AuthModule {
         ),
       ),
       BlocProvider<SocialLoginCubit>(
-        create: (context) => SocialLoginCubit(
-          authService: getIt(),
-          hiveService: getIt(),
-        ),
+        create: (context) =>
+            SocialLoginCubit(authService: getIt(), hiveService: getIt()),
       ),
     ];
   }

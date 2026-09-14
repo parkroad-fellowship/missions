@@ -146,35 +146,31 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                                     mainAxisSpacing: PRFSpacingTokens.lg,
                                     childAspectRatio: 1.5,
                                   ),
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  final payment = values[index];
-                                  return buildAnimatedTimelineEntry(
-                                    context: context,
-                                    index: index,
-                                    animate: animateEntrance,
-                                    child: Material(
-                                      color: Colors.transparent,
+                              delegate: SliverChildBuilderDelegate((
+                                context,
+                                index,
+                              ) {
+                                final payment = values[index];
+                                return buildAnimatedTimelineEntry(
+                                  context: context,
+                                  index: index,
+                                  animate: animateEntrance,
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(
+                                      PRFRadiusTokens.xl,
+                                    ),
+                                    child: InkWell(
+                                      onTap: () =>
+                                          showPaymentActions(context, payment),
                                       borderRadius: BorderRadius.circular(
                                         PRFRadiusTokens.xl,
                                       ),
-                                      child: InkWell(
-                                        onTap: () => showPaymentActions(
-                                          context,
-                                          payment,
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          PRFRadiusTokens.xl,
-                                        ),
-                                        child: PaymentCard(
-                                          payment: payment,
-                                        ),
-                                      ),
+                                      child: PaymentCard(payment: payment),
                                     ),
-                                  );
-                                },
-                                childCount: values.length,
-                              ),
+                                  ),
+                                );
+                              }, childCount: values.length),
                             );
                           },
                         ),
@@ -200,18 +196,12 @@ class _GivingPageTabletState extends State<GivingPageTablet> {
                 spacing: PRFSpacingTokens.sm,
                 runSpacing: PRFSpacingTokens.sm,
                 children: [
-                  GivingStatPill(
-                    label: l10n.total,
-                    value: payments.length,
-                  ),
+                  GivingStatPill(label: l10n.total, value: payments.length),
                   GivingStatPill(
                     label: l10n.pendingStatus,
                     value: pendingCount,
                   ),
-                  GivingStatPill(
-                    label: l10n.complete,
-                    value: successfulCount,
-                  ),
+                  GivingStatPill(label: l10n.complete, value: successfulCount),
                 ],
               ),
               const SizedBox(height: PRFSpacingTokens.xxl),

@@ -12,9 +12,8 @@ import 'package:logger/logger.dart';
 
 /// Unified error reporting service that fans out to all enabled platforms.
 class UnifiedErrorReportingService implements ErrorReportingService {
-  UnifiedErrorReportingService({
-    required this._analyticsService,
-  }) : _crashlytics = FirebaseCrashlytics.instance;
+  UnifiedErrorReportingService({required this._analyticsService})
+    : _crashlytics = FirebaseCrashlytics.instance;
 
   final AnalyticsService _analyticsService;
   final FirebaseCrashlytics _crashlytics;
@@ -97,9 +96,7 @@ class UnifiedErrorReportingService implements ErrorReportingService {
     await _analyticsService.logException(
       description: reason ?? error.toString(),
       fatal: fatal,
-      parameters: {
-        'error_type': error.runtimeType.toString(),
-      },
+      parameters: {'error_type': error.runtimeType.toString()},
     );
 
     await _crashlytics.recordError(
@@ -123,9 +120,7 @@ class UnifiedErrorReportingService implements ErrorReportingService {
     await _analyticsService.logException(
       description: errorDetails.exceptionAsString(),
       fatal: true,
-      parameters: {
-        'error_type': errorDetails.exception.runtimeType.toString(),
-      },
+      parameters: {'error_type': errorDetails.exception.runtimeType.toString()},
     );
 
     await _crashlytics.recordFlutterFatalError(errorDetails);

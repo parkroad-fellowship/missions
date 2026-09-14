@@ -14,10 +14,7 @@ class MissionQuestionResourceCubit extends ResourceCubit<PRFMissionQuestion> {
        );
 
   @override
-  List<String> get defaultIncludes => [
-    'mission',
-    'transcripts.media',
-  ];
+  List<String> get defaultIncludes => ['mission', 'transcripts.media'];
 
   /// Create a mission question.
   Future<void> addMissionQuestion({

@@ -156,12 +156,9 @@ class _StudentEnquiryRepliesPageHandsetState
             boxShadow: [
               if (_focusNode.hasFocus)
                 BoxShadow(
-                  color:
-                      Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(
-                        alpha: PRFOpacities.hairline,
-                      ),
+                  color: Theme.of(context).colorScheme.primary.withValues(
+                    alpha: PRFOpacities.hairline,
+                  ),
                   blurRadius: 18,
                   offset: const Offset(0, -2),
                 ),
@@ -174,10 +171,7 @@ class _StudentEnquiryRepliesPageHandsetState
             isLoading: loading,
             hasFocus: _focusNode.hasFocus,
             bottomInset: MediaQuery.of(context).viewInsets.bottom,
-            onSend: () => _sendReply(
-              context,
-              _enquiryReplyController.text,
-            ),
+            onSend: () => _sendReply(context, _enquiryReplyController.text),
           ),
         );
       },
@@ -202,9 +196,7 @@ class _StudentEnquiryRepliesPageHandsetState
               if (enquiry == null) {
                 return enquiryState.maybeWhen(
                   listLoading: (_) => const Scaffold(
-                    body: Center(
-                      child: PRFCircularProgressIndicator(),
-                    ),
+                    body: Center(child: PRFCircularProgressIndicator()),
                   ),
                   orElse: () => Scaffold(
                     body: Center(

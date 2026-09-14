@@ -108,9 +108,7 @@ class _AnswerFAQsPageTabletState extends State<AnswerFAQsPageTablet> {
               .where(
                 (q) =>
                     q.question.toLowerCase().contains(_form.query) ||
-                    (q.mission?.theme?.toLowerCase().contains(
-                          _form.query,
-                        ) ??
+                    (q.mission?.theme?.toLowerCase().contains(_form.query) ??
                         false),
               )
               .toList();
@@ -314,10 +312,7 @@ class _AnswerFAQsPageTabletState extends State<AnswerFAQsPageTablet> {
         Row(
           children: [
             Expanded(
-              child: _FaqStatChip(
-                label: l10n.total,
-                value: questions,
-              ),
+              child: _FaqStatChip(label: l10n.total, value: questions),
             ),
             const SizedBox(width: PRFSpacingTokens.sm),
             Expanded(

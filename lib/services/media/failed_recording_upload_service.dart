@@ -85,13 +85,13 @@ class FailedRecordingUploadService {
     _notifyPendingUploadsChanged();
   }
 
-  Future<List<PRFFailedRecordingUpload>> getPendingUploads() async {
+  Future<List<PRFFailedRecordingUpload>> getPendingUploads() {
     return _hiveService.failedRecordingUploads.list();
   }
 
   Future<List<PRFFailedRecordingUpload>> getPendingUploadsForSession(
     String missionSessionUlid,
-  ) async {
+  ) {
     return _hiveService.failedRecordingUploads.getByModelUlid(
       missionSessionUlid,
     );
@@ -100,7 +100,7 @@ class FailedRecordingUploadService {
   Future<List<PRFFailedRecordingUpload>> getPendingUploadsForTarget({
     required String modelUlid,
     PRFMediaModel? model,
-  }) async {
+  }) {
     return _hiveService.failedRecordingUploads.getByTarget(
       modelUlid: modelUlid,
       modelName: model?.name,

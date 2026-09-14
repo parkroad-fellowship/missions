@@ -115,10 +115,7 @@ class UnifiedAnalyticsService implements AnalyticsService {
   }
 
   @override
-  Future<void> captureEvent(
-    String eventName, [
-    Map<String, Object>? props,
-  ]) {
+  Future<void> captureEvent(String eventName, [Map<String, Object>? props]) {
     final parameters = props?.map<String, Object?>((key, value) {
       return MapEntry(key, value);
     });

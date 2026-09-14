@@ -50,12 +50,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet> {
                   const SizedBox(height: PRFSpacingTokens.xl),
 
                   // Description Section
-                  buildEventDescriptionSection(
-                        context,
-                        theme,
-                        l10n,
-                        event,
-                      )
+                  buildEventDescriptionSection(context, theme, l10n, event)
                       .animate(delay: PRFMotionTokens.standard)
                       .fadeIn(duration: PRFMotionTokens.enterShort)
                       .slideY(begin: 0.15, end: 0),
@@ -63,12 +58,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet> {
 
                   // Weather Intelligence Section
                   if (event.weatherForecasts.isNotEmpty) ...[
-                    buildEventWeatherIntelligence(
-                          context,
-                          theme,
-                          l10n,
-                          event,
-                        )
+                    buildEventWeatherIntelligence(context, theme, l10n, event)
                         .animate(delay: PRFMotionTokens.slow)
                         .fadeIn(duration: PRFMotionTokens.enterShort)
                         .slideY(begin: 0.15, end: 0),
@@ -95,12 +85,7 @@ class _EventDetailsPageTabletState extends State<EventDetailsPageTablet> {
                   borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
                   child: Padding(
                     padding: const EdgeInsets.all(PRFSpacingTokens.md),
-                    child: buildEventLocationHub(
-                      context,
-                      theme,
-                      l10n,
-                      event,
-                    ),
+                    child: buildEventLocationHub(context, theme, l10n, event),
                   ),
                 ),
               ],

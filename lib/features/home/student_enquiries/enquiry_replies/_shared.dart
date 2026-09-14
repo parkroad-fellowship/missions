@@ -44,10 +44,7 @@ Widget buildMessageBubble(
     builder: (context, value, child) {
       return Transform.translate(
         offset: Offset(0, 20 * (1 - value)),
-        child: Opacity(
-          opacity: value.clamp(0.0, 1.0),
-          child: child,
-        ),
+        child: Opacity(opacity: value.clamp(0.0, 1.0), child: child),
       );
     },
     child: Semantics(

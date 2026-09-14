@@ -45,11 +45,7 @@ class MissionResourceTabView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline,
-              size: 48,
-              color: theme.colorScheme.error,
-            ),
+            Icon(Icons.error_outline, size: 48, color: theme.colorScheme.error),
             const SizedBox(height: PRFSpacingTokens.lg),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -102,15 +98,11 @@ class MissionResourceTabView extends StatelessWidget {
                 if (error != null)
                   Container(
                     width: double.infinity,
-                    margin: const EdgeInsets.only(
-                      bottom: PRFSpacingTokens.md,
-                    ),
+                    margin: const EdgeInsets.only(bottom: PRFSpacingTokens.md),
                     padding: const EdgeInsets.all(PRFSpacingTokens.md),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.errorContainer,
-                      borderRadius: BorderRadius.circular(
-                        PRFRadiusTokens.md,
-                      ),
+                      borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
                     ),
                     child: Text(
                       error!,
@@ -120,10 +112,7 @@ class MissionResourceTabView extends StatelessWidget {
                     ),
                   ),
                 if (isEmpty)
-                  PRFEmptyView(
-                    label: emptyLabel,
-                    description: emptyDescription,
-                  )
+                  PRFEmptyView(label: emptyLabel, description: emptyDescription)
                 else
                   ...items,
               ],

@@ -50,9 +50,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
     return Column(
       children: [
         // Pending uploads widget
-        PendingUploadsWidget(
-          modelUlid: widget.missionSessionUlid,
-        ),
+        PendingUploadsWidget(modelUlid: widget.missionSessionUlid),
 
         // Local queued recordings preview
         StreamBuilder<List<PRFFailedRecordingUpload>>(
@@ -110,12 +108,8 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                           'more',
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(
-                                color:
-                                    Theme.of(
-                                      context,
-                                    ).colorScheme.onSurface.withValues(
-                                      alpha: PRFOpacities.prominent,
-                                    ),
+                                color: Theme.of(context).colorScheme.onSurface
+                                    .withValues(alpha: PRFOpacities.prominent),
                               ),
                         ),
                     ],
@@ -131,12 +125,8 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                           Container(
                             padding: const EdgeInsets.all(PRFSpacingTokens.sm),
                             decoration: BoxDecoration(
-                              color:
-                                  Theme.of(
-                                    context,
-                                  ).colorScheme.primary.withValues(
-                                    alpha: PRFOpacities.subtle,
-                                  ),
+                              color: Theme.of(context).colorScheme.primary
+                                  .withValues(alpha: PRFOpacities.subtle),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -194,10 +184,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                 Navigator.of(context).pop();
               },
               error: (message) {
-                PRFSnackbar.info(
-                  context,
-                  l10n.offlineRecordingNotice,
-                );
+                PRFSnackbar.info(context, l10n.offlineRecordingNotice);
               },
             );
           },
@@ -248,10 +235,7 @@ class _AddAudioViewHandsetState extends State<AddAudioViewHandset>
                   child: LiveRecordingWidget(
                     onMinimize: () {
                       Navigator.of(context).pop();
-                      PRFSnackbar.info(
-                        context,
-                        l10n.backgroundRecording,
-                      );
+                      PRFSnackbar.info(context, l10n.backgroundRecording);
                     },
                     onRecordingCompleted: (_, _) {},
                   ),

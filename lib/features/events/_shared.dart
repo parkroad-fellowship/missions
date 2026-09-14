@@ -95,10 +95,7 @@ class TimelineEventCard extends StatelessWidget with TimezoneMixin {
             subtitle: event.description.isNotEmpty
                 ? event.description.split('\n').first
                 : 'Tap to view event details',
-            trailing: PRFStatusBadge(
-              label: statusText,
-              color: statusColor,
-            ),
+            trailing: PRFStatusBadge(label: statusText, color: statusColor),
             footer: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

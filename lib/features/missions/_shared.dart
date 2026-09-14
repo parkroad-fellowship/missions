@@ -70,9 +70,7 @@ class MissionsFormState {
     switch (index) {
       case 0:
         await context.read<MissionResourceCubit>().loadAll(
-          filters: {
-            if (searchQuery.isNotEmpty) 'search': searchQuery,
-          },
+          filters: {if (searchQuery.isNotEmpty) 'search': searchQuery},
         );
       case 1:
         await context.read<SubscriptionResourceCubit>().loadAll(
@@ -83,9 +81,7 @@ class MissionsFormState {
         );
       case 2:
         await context.read<PastMissionResourceCubit>().loadAll(
-          filters: {
-            if (searchQuery.isNotEmpty) 'search': searchQuery,
-          },
+          filters: {if (searchQuery.isNotEmpty) 'search': searchQuery},
         );
     }
 

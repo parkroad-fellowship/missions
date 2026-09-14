@@ -18,10 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prf_design/prf_design.dart';
 
 class StudentEnquiryRepliesPageTablet extends StatefulWidget {
-  const StudentEnquiryRepliesPageTablet({
-    required this.enquiryUlid,
-    super.key,
-  });
+  const StudentEnquiryRepliesPageTablet({required this.enquiryUlid, super.key});
 
   final String enquiryUlid;
 
@@ -156,12 +153,9 @@ class _StudentEnquiryRepliesPageTabletState
             boxShadow: [
               if (_focusNode.hasFocus)
                 BoxShadow(
-                  color:
-                      Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(
-                        alpha: PRFOpacities.hairline,
-                      ),
+                  color: Theme.of(context).colorScheme.primary.withValues(
+                    alpha: PRFOpacities.hairline,
+                  ),
                   blurRadius: 18,
                   offset: const Offset(0, -2),
                 ),
@@ -174,10 +168,7 @@ class _StudentEnquiryRepliesPageTabletState
             isLoading: loading,
             hasFocus: _focusNode.hasFocus,
             bottomInset: MediaQuery.of(context).viewInsets.bottom,
-            onSend: () => _sendReply(
-              context,
-              _enquiryReplyController.text,
-            ),
+            onSend: () => _sendReply(context, _enquiryReplyController.text),
           ),
         );
       },
@@ -208,9 +199,7 @@ class _StudentEnquiryRepliesPageTabletState
                   if (enquiry == null) {
                     return enquiryState.maybeWhen(
                       listLoading: (_) => const Scaffold(
-                        body: Center(
-                          child: PRFCircularProgressIndicator(),
-                        ),
+                        body: Center(child: PRFCircularProgressIndicator()),
                       ),
                       orElse: () => Scaffold(
                         body: Center(

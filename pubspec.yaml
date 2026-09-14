@@ -1,6 +1,6 @@
 name: app
 description: The PRF Missions app
-version: 3.02.05+30205
+version: 3.02.06+30206
 publish_to: none
 
 environment:

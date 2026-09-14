@@ -238,12 +238,8 @@ Widget buildGivingHeader(
           actions: [
             Container(
               decoration: BoxDecoration(
-                color: theme.colorScheme.onPrimary.withValues(
-                  alpha: 0.14,
-                ),
-                borderRadius: BorderRadius.circular(
-                  PRFRadiusTokens.smd,
-                ),
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.14),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               ),
               child: IconButton(
                 onPressed: onRefresh,
@@ -267,16 +263,10 @@ Widget buildGivingHeader(
             width: double.infinity,
             padding: const EdgeInsets.all(PRFSpacingTokens.md),
             decoration: BoxDecoration(
-              color: theme.colorScheme.onPrimary.withValues(
-                alpha: 0.1,
-              ),
-              borderRadius: BorderRadius.circular(
-                PRFRadiusTokens.lg,
-              ),
+              color: theme.colorScheme.onPrimary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
               border: Border.all(
-                color: theme.colorScheme.onPrimary.withValues(
-                  alpha: 0.15,
-                ),
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.15),
               ),
             ),
             child: Column(
@@ -285,9 +275,7 @@ Widget buildGivingHeader(
                 Text(
                   l10n.startGiving,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onPrimary.withValues(
-                      alpha: 0.9,
-                    ),
+                    color: theme.colorScheme.onPrimary.withValues(alpha: 0.9),
                   ),
                 ),
                 const SizedBox(height: PRFSpacingTokens.md),
@@ -295,10 +283,7 @@ Widget buildGivingHeader(
                   spacing: PRFSpacingTokens.xs,
                   runSpacing: PRFSpacingTokens.xs,
                   children: [
-                    GivingStatPill(
-                      label: l10n.total,
-                      value: payments.length,
-                    ),
+                    GivingStatPill(label: l10n.total, value: payments.length),
                     GivingStatPill(
                       label: PRFPaymentStatus.pending.name,
                       value: pendingCount,
@@ -337,9 +322,7 @@ void showPaymentActions(BuildContext context, PRFPayment payment) {
     context,
     title: l10n.paymentActions,
     child: Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: PRFSpacingTokens.lg,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -349,9 +332,7 @@ void showPaymentActions(BuildContext context, PRFPayment payment) {
                 padding: const EdgeInsets.all(PRFSpacingTokens.md),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(
-                    PRFRadiusTokens.smd,
-                  ),
+                  borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                 ),
                 child: Icon(
                   Icons.open_in_browser_rounded,
@@ -381,19 +362,14 @@ void showPaymentActions(BuildContext context, PRFPayment payment) {
               padding: const EdgeInsets.all(PRFSpacingTokens.md),
               decoration: BoxDecoration(
                 color: theme.colorScheme.secondaryContainer,
-                borderRadius: BorderRadius.circular(
-                  PRFRadiusTokens.smd,
-                ),
+                borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
               ),
               child: Icon(
                 Icons.refresh_rounded,
                 color: theme.colorScheme.onSecondaryContainer,
               ),
             ),
-            title: Text(
-              l10n.refreshStatus,
-              style: theme.textTheme.titleMedium,
-            ),
+            title: Text(l10n.refreshStatus, style: theme.textTheme.titleMedium),
             subtitle: Text(
               l10n.checkPaymentStatus,
               style: theme.textTheme.bodyMedium,

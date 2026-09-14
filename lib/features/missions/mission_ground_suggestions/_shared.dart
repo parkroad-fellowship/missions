@@ -91,10 +91,7 @@ Widget buildSuggestionsHeader(
     ),
     child: Column(
       children: [
-        PRFBrandedNavBar(
-          title: l10n.suggestAMission,
-          onBack: onBack,
-        ),
+        PRFBrandedNavBar(title: l10n.suggestAMission, onBack: onBack),
         Padding(
           padding: const EdgeInsets.fromLTRB(
             PRFSpacingTokens.lg,
@@ -106,16 +103,10 @@ Widget buildSuggestionsHeader(
             width: double.infinity,
             padding: const EdgeInsets.all(PRFSpacingTokens.md),
             decoration: BoxDecoration(
-              color: theme.colorScheme.onPrimary.withValues(
-                alpha: 0.1,
-              ),
-              borderRadius: BorderRadius.circular(
-                PRFRadiusTokens.lg,
-              ),
+              color: theme.colorScheme.onPrimary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
               border: Border.all(
-                color: theme.colorScheme.onPrimary.withValues(
-                  alpha: 0.15,
-                ),
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.15),
               ),
             ),
             child: Column(
@@ -124,9 +115,7 @@ Widget buildSuggestionsHeader(
                 Text(
                   l10n.suggestMissionSubTitle,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onPrimary.withValues(
-                      alpha: 0.9,
-                    ),
+                    color: theme.colorScheme.onPrimary.withValues(alpha: 0.9),
                   ),
                 ),
                 const SizedBox(height: PRFSpacingTokens.md),
@@ -134,18 +123,12 @@ Widget buildSuggestionsHeader(
                   spacing: PRFSpacingTokens.xs,
                   runSpacing: PRFSpacingTokens.xs,
                   children: [
-                    SuggestionStatPill(
-                      label: l10n.total,
-                      value: total,
-                    ),
+                    SuggestionStatPill(label: l10n.total, value: total),
                     SuggestionStatPill(
                       label: PRFMissionGroundSuggestionStatus.pending.name,
                       value: pending,
                     ),
-                    SuggestionStatPill(
-                      label: l10n.completed,
-                      value: completed,
-                    ),
+                    SuggestionStatPill(label: l10n.completed, value: completed),
                   ],
                 ),
               ],

@@ -114,9 +114,7 @@ class _MissionQuestionsViewHandsetState
           listLoading: (_) => true,
           orElse: () => false,
         );
-        final error = state.mapOrNull(
-          error: (s) => s.message,
-        );
+        final error = state.mapOrNull(error: (s) => s.message);
         final questions = state.maybeWhen(
           listLoaded: (items, _, _) => items,
           mutating: (items, _) => items,
@@ -209,10 +207,7 @@ class _MissionQuestionFormBodyState extends State<_MissionQuestionFormBody> {
             errorText: _error,
           ),
           const SizedBox(height: PRFSpacingTokens.lg),
-          PRFButton(
-            onPressed: _submit,
-            title: widget.submitLabel,
-          ),
+          PRFButton(onPressed: _submit, title: widget.submitLabel),
         ],
       ),
     );

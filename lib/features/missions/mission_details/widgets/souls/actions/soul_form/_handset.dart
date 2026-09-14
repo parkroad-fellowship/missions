@@ -70,9 +70,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
     _admissionNumberController.addListener(_onFormChanged);
 
     context.read<ClassGroupResourceCubit>().loadAll(
-      filters: {
-        'institution_type': widget.institutionType?.value,
-      },
+      filters: {'institution_type': widget.institutionType?.value},
     );
   }
 
@@ -159,17 +157,14 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
                     builder: (context, state) {
                       return state.maybeWhen(
                         orElse: () => const SizedBox.shrink(),
-                        listLoading: (_) => const Center(
-                          child: PRFLinearProgressIndicator(),
-                        ),
+                        listLoading: (_) =>
+                            const Center(child: PRFLinearProgressIndicator()),
                         listLoaded: (classes, _, _) {
                           // Match initial class group by ulid when editing
                           if (selectedClassGroup == null &&
                               _initialClassGroupUlid != null) {
                             final match = classes
-                                .where(
-                                  (c) => c.ulid == _initialClassGroupUlid,
-                                )
+                                .where((c) => c.ulid == _initialClassGroupUlid)
                                 .firstOrNull;
                             if (match != null) {
                               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -329,10 +324,7 @@ class _SoulFormViewHandsetState extends State<SoulFormViewHandset> {
   Future<void> _submitForm() async {
     if (!_validateForm()) {
       Gaimon.warning();
-      PRFSnackbar.error(
-        context,
-        context.l10n.fixHighlightedFields,
-      );
+      PRFSnackbar.error(context, context.l10n.fixHighlightedFields);
       return;
     }
 

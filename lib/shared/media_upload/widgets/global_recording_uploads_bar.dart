@@ -42,12 +42,9 @@ class GlobalRecordingUploadsBar extends StatelessWidget {
                       color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                       border: Border.all(
-                        color:
-                            Theme.of(
-                              context,
-                            ).colorScheme.outline.withValues(
-                              alpha: PRFOpacities.muted,
-                            ),
+                        color: Theme.of(context).colorScheme.outline.withValues(
+                          alpha: PRFOpacities.muted,
+                        ),
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -107,12 +104,10 @@ class GlobalRecordingUploadsBar extends StatelessWidget {
                               progress.currentFileName!,
                               style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(
-                                    color:
-                                        Theme.of(
-                                          context,
-                                        ).colorScheme.onSurface.withValues(
-                                          alpha: 0.6,
-                                        ),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.6),
                                   ),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -218,9 +213,8 @@ class _PendingUploadsDetails extends StatelessWidget {
                         itemCount: uploads.length,
                         separatorBuilder: (_, _) =>
                             const SizedBox(height: PRFSpacingTokens.md),
-                        itemBuilder: (context, index) => _UploadTile(
-                          upload: uploads[index],
-                        ),
+                        itemBuilder: (context, index) =>
+                            _UploadTile(upload: uploads[index]),
                       ),
               ),
             ],
@@ -260,10 +254,7 @@ class _UploadTile extends StatelessWidget {
               color: Theme.of(context).colorScheme.surfaceContainer,
               borderRadius: BorderRadius.circular(PRFRadiusTokens.sm),
             ),
-            child: const Icon(
-              Icons.audiotrack_outlined,
-              size: 18,
-            ),
+            child: const Icon(Icons.audiotrack_outlined, size: 18),
           ),
           const SizedBox(width: PRFSpacingTokens.md),
           Expanded(
@@ -272,21 +263,18 @@ class _UploadTile extends StatelessWidget {
               children: [
                 Text(
                   upload.name,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: PRFSpacingTokens.xs),
                 Text(
                   '${upload.model.collection} • ${dateFormat.format(upload.failedAt)} • retries ${upload.retryCount}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color:
-                        Theme.of(
-                          context,
-                        ).colorScheme.onSurface.withValues(
-                          alpha: PRFOpacities.prominent,
-                        ),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(
+                      alpha: PRFOpacities.prominent,
+                    ),
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),

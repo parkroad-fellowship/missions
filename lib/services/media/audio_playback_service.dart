@@ -18,7 +18,7 @@ class AudioPlaybackService {
     LoadMode mode = LoadMode.disk,
   }) async {
     await ensureInitialized();
-    return _soloud.loadUrl(url, mode: mode);
+    return await _soloud.loadUrl(url, mode: mode);
   }
 
   Future<AudioSource> loadFile(
@@ -26,7 +26,7 @@ class AudioPlaybackService {
     LoadMode mode = LoadMode.disk,
   }) async {
     await ensureInitialized();
-    return _soloud.loadFile(path, mode: mode);
+    return await _soloud.loadFile(path, mode: mode);
   }
 
   Future<SoundHandle> play(

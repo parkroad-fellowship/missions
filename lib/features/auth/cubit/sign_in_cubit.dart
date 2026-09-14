@@ -66,9 +66,7 @@ class SigninCubit extends Cubit<SignInState> {
     final fcmToken = await _firebaseMessagingService.retrieveFCMToken();
     if (fcmToken.isNotEmpty) {
       await _authService.updateProfile(
-        updateDTO: UserUpdateDTO(
-          fcmTokens: [fcmToken],
-        ),
+        updateDTO: UserUpdateDTO(fcmTokens: [fcmToken]),
       );
     }
   }

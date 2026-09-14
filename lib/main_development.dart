@@ -33,7 +33,7 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then(
-    (_) async => bootstrap(
+    (_) => bootstrap(
       () => MultiBlocProvider(
         providers: DIContainer.registerCubits(),
         child: const PRFSuperApp(),

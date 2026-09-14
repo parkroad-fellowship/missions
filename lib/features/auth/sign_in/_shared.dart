@@ -91,16 +91,9 @@ Widget buildWelcomeHeaders(ThemeData theme, AppLocalizations l10n) {
 Widget buildOrDivider(ThemeData theme, AppLocalizations l10n) {
   return Row(
     children: [
-      Expanded(
-        child: Divider(
-          color: theme.colorScheme.outline,
-          thickness: 1,
-        ),
-      ),
+      Expanded(child: Divider(color: theme.colorScheme.outline, thickness: 1)),
       Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: PRFSpacingTokens.lg,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: PRFSpacingTokens.lg),
         child: Text(
           l10n.orDivider,
           style: theme.textTheme.labelMedium?.copyWith(
@@ -109,12 +102,7 @@ Widget buildOrDivider(ThemeData theme, AppLocalizations l10n) {
           ),
         ),
       ),
-      Expanded(
-        child: Divider(
-          color: theme.colorScheme.outline,
-          thickness: 1,
-        ),
-      ),
+      Expanded(child: Divider(color: theme.colorScheme.outline, thickness: 1)),
     ],
   );
 }
@@ -131,9 +119,7 @@ Widget buildVersionPill(ThemeData theme, AppLocalizations l10n) {
         borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
       ),
       child: Text(
-        l10n.version(
-          AppVersionHelper.getAppVersion(),
-        ),
+        l10n.version(AppVersionHelper.getAppVersion()),
         style: theme.textTheme.labelSmall?.copyWith(
           color: theme.colorScheme.onSurfaceVariant,
         ),

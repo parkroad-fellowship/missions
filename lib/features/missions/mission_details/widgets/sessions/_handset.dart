@@ -114,9 +114,8 @@ class _SessionsViewHandsetState extends State<SessionsViewHandset>
                   >(
                     builder: (context, state) {
                       return state.maybeWhen(
-                        listLoading: (_) => const Center(
-                          child: PRFCircularProgressIndicator(),
-                        ),
+                        listLoading: (_) =>
+                            const Center(child: PRFCircularProgressIndicator()),
                         listLoaded: (sessions, _, _) {
                           if (sessions.isEmpty) {
                             return PRFEmptyView(
@@ -337,12 +336,8 @@ class TimelineSessionCard extends StatelessWidget {
                                     vertical: PRFSpacingTokens.xs,
                                   ),
                                   decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(
-                                          context,
-                                        ).colorScheme.primary.withValues(
-                                          alpha: 0.1,
-                                        ),
+                                    color: Theme.of(context).colorScheme.primary
+                                        .withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(
                                       PRFRadiusTokens.sm,
                                     ),
@@ -424,20 +419,14 @@ class TimelineSessionCard extends StatelessWidget {
                                 Icon(
                                   Icons.person_outline,
                                   size: 16,
-                                  color:
-                                      Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface.withValues(
-                                        alpha: 0.7,
-                                      ),
+                                  color: Theme.of(context).colorScheme.onSurface
+                                      .withValues(alpha: 0.7),
                                 ),
                                 const SizedBox(width: PRFSpacingTokens.xs),
                                 Text(
                                   '${l10n.facilitator}: ',
                                   style: Theme.of(context).textTheme.bodySmall
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                      ?.copyWith(fontWeight: FontWeight.w500),
                                 ),
                                 Expanded(
                                   child: Text(
@@ -458,20 +447,16 @@ class TimelineSessionCard extends StatelessWidget {
                                   Icon(
                                     Icons.mic_outlined,
                                     size: 16,
-                                    color:
-                                        Theme.of(
-                                          context,
-                                        ).colorScheme.onSurface.withValues(
-                                          alpha: 0.7,
-                                        ),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.7),
                                   ),
                                   const SizedBox(width: PRFSpacingTokens.xs),
                                   Text(
                                     '${l10n.speaker}: ',
                                     style: Theme.of(context).textTheme.bodySmall
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        ?.copyWith(fontWeight: FontWeight.w500),
                                   ),
                                   Expanded(
                                     child: Text(
@@ -492,20 +477,16 @@ class TimelineSessionCard extends StatelessWidget {
                                   Icon(
                                     Icons.group_outlined,
                                     size: 16,
-                                    color:
-                                        Theme.of(
-                                          context,
-                                        ).colorScheme.onSurface.withValues(
-                                          alpha: 0.7,
-                                        ),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.7),
                                   ),
                                   const SizedBox(width: PRFSpacingTokens.xs),
                                   Text(
                                     '${l10n.classGroup}: ',
                                     style: Theme.of(context).textTheme.bodySmall
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        ?.copyWith(fontWeight: FontWeight.w500),
                                   ),
                                   Expanded(
                                     child: Text(

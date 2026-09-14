@@ -31,10 +31,7 @@ class WrappedSlide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final reducedMotion = MediaQuery.disableAnimationsOf(context);
-    final content = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: children,
-    );
+    final content = Column(mainAxisSize: MainAxisSize.min, children: children);
 
     return ColoredBox(
       color: palette.base,
@@ -66,10 +63,7 @@ class WrappedSlide extends StatelessWidget {
             ),
           ),
           if (scrollable && !reducedMotion)
-            const Align(
-              alignment: Alignment(0, 0.94),
-              child: _ScrollCue(),
-            ),
+            const Align(alignment: Alignment(0, 0.94), child: _ScrollCue()),
         ],
       ),
     );
@@ -116,27 +110,9 @@ class _WrappedBackdrop extends StatelessWidget {
   final WrappedPalette palette;
 
   static const List<(Alignment, double, Offset, Offset, int)> _blobs = [
-    (
-      Alignment(-0.55, -0.75),
-      340.0,
-      Offset(26, -18),
-      Offset(-30, 24),
-      5500,
-    ),
-    (
-      Alignment(0.75, -0.3),
-      300.0,
-      Offset(-32, 22),
-      Offset(28, -20),
-      6500,
-    ),
-    (
-      Alignment(-0.15, 0.85),
-      380.0,
-      Offset(18, -26),
-      Offset(-22, 18),
-      7500,
-    ),
+    (Alignment(-0.55, -0.75), 340.0, Offset(26, -18), Offset(-30, 24), 5500),
+    (Alignment(0.75, -0.3), 300.0, Offset(-32, 22), Offset(28, -20), 6500),
+    (Alignment(-0.15, 0.85), 380.0, Offset(18, -26), Offset(-22, 18), 7500),
   ];
 
   @override
@@ -147,10 +123,7 @@ class _WrappedBackdrop extends StatelessWidget {
         children: [
           for (final (i, blob) in _blobs.indexed)
             Positioned.fill(
-              child: Align(
-                alignment: blob.$1,
-                child: _blobContainer(blob, i),
-              ),
+              child: Align(alignment: blob.$1, child: _blobContainer(blob, i)),
             ),
           const DecoratedBox(
             decoration: BoxDecoration(
@@ -822,10 +795,7 @@ class IntroWrappedPage extends StatelessWidget {
 }
 
 class MissionsWrappedPage extends StatelessWidget {
-  const MissionsWrappedPage({
-    required this.missionStats,
-    super.key,
-  });
+  const MissionsWrappedPage({required this.missionStats, super.key});
 
   final MissionStats missionStats;
 
@@ -910,10 +880,7 @@ class MissionsWrappedPage extends StatelessWidget {
 }
 
 class ImpactWrappedPage extends StatelessWidget {
-  const ImpactWrappedPage({
-    required this.impactStats,
-    super.key,
-  });
+  const ImpactWrappedPage({required this.impactStats, super.key});
 
   final ImpactStats impactStats;
 
@@ -996,10 +963,7 @@ class ImpactWrappedPage extends StatelessWidget {
 }
 
 class LearningWrappedPage extends StatelessWidget {
-  const LearningWrappedPage({
-    required this.learningStats,
-    super.key,
-  });
+  const LearningWrappedPage({required this.learningStats, super.key});
 
   final LearningStats learningStats;
 
@@ -1083,10 +1047,7 @@ class LearningWrappedPage extends StatelessWidget {
 }
 
 class PrayerWrappedPage extends StatelessWidget {
-  const PrayerWrappedPage({
-    required this.prayerStats,
-    super.key,
-  });
+  const PrayerWrappedPage({required this.prayerStats, super.key});
 
   final PrayerStats prayerStats;
 
@@ -1142,10 +1103,7 @@ class PrayerWrappedPage extends StatelessWidget {
 }
 
 class EventsWrappedPage extends StatelessWidget {
-  const EventsWrappedPage({
-    required this.eventStats,
-    super.key,
-  });
+  const EventsWrappedPage({required this.eventStats, super.key});
 
   final EventStats eventStats;
 
@@ -1392,10 +1350,7 @@ class _RecapCard extends StatelessWidget {
         engagement.missionStats.totalMissions.toString(),
         l10n.wrappedMissionsLabel,
       ),
-      (
-        engagement.impactStats.soulsTouched.toString(),
-        l10n.soulsTouched,
-      ),
+      (engagement.impactStats.soulsTouched.toString(), l10n.soulsTouched),
       (
         engagement.learningStats.coursesCompleted.toString(),
         l10n.wrappedCoursesLabel,
@@ -1496,9 +1451,7 @@ class _RecapCard extends StatelessWidget {
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
-              color: PRFColors.white.withValues(
-                alpha: PRFOpacities.prominent,
-              ),
+              color: PRFColors.white.withValues(alpha: PRFOpacities.prominent),
             ),
           ),
         ],

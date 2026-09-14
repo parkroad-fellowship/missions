@@ -85,10 +85,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
 
       context.read<MissionMediaResourceCubit>().loadMedia(
         missionUlid: missionUlid,
-        collections: [
-          PRFMediaModel.missionPhotos,
-          PRFMediaModel.missionVideos,
-        ],
+        collections: [PRFMediaModel.missionPhotos, PRFMediaModel.missionVideos],
       ),
     ]);
   }
@@ -196,9 +193,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                     if (mission == null &&
                         state is ResourceItemError<PRFMission>) {
                       return Center(
-                        child: PRFErrorView.fromMessage(
-                          message: state.message,
-                        ),
+                        child: PRFErrorView.fromMessage(message: state.message),
                       );
                     }
 
@@ -218,26 +213,16 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                           subscribers: SubscribersView(
                             missionUlid: missionUlid,
                           ),
-                          sessions: SessionsView(
-                            mission: mission,
-                          ),
+                          sessions: SessionsView(mission: mission),
                           initialIndex: _subTabIndexes[0]!,
                           onTabChanged: (index) =>
                               setState(() => _subTabIndexes[0] = index),
                         ),
                         FeedbackDataSection(
-                          debriefNotesTab: DebriefNotesView(
-                            mission: mission,
-                          ),
-                          soulsTab: SoulsView(
-                            mission: mission,
-                          ),
-                          questionsTab: MissionQuestionsView(
-                            mission: mission,
-                          ),
-                          galleryTab: GalleryView(
-                            mission: mission,
-                          ),
+                          debriefNotesTab: DebriefNotesView(mission: mission),
+                          soulsTab: SoulsView(mission: mission),
+                          questionsTab: MissionQuestionsView(mission: mission),
+                          galleryTab: GalleryView(mission: mission),
                           initialIndex: _subTabIndexes[1]!,
                           onTabChanged: (index) =>
                               setState(() => _subTabIndexes[1] = index),
@@ -348,10 +333,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
             context.read<MissionSubscriptionResourceCubit>().loadAll(
               filters: {'mission_ulid': missionUlid},
             );
-            PRFSnackbar.success(
-              context,
-              l10n.successfullySubscribed,
-            );
+            PRFSnackbar.success(context, l10n.successfullySubscribed);
           },
           error: (error) {
             Gaimon.error();
@@ -362,14 +344,10 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
       builder: (context, state) {
         return Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(
-              PRFRadiusTokens.md,
-            ),
+            borderRadius: BorderRadius.circular(PRFRadiusTokens.md),
             boxShadow: [
               BoxShadow(
-                color: theme.colorScheme.primary.withValues(
-                  alpha: 0.3,
-                ),
+                color: theme.colorScheme.primary.withValues(alpha: 0.3),
                 blurRadius: 12,
                 offset: const Offset(0, 4),
               ),
@@ -380,7 +358,7 @@ class _MissionsDetailsPageHandsetState extends State<MissionsDetailsPageHandset>
                 heroTag: 'subscribe',
                 backgroundColor: theme.colorScheme.primary,
                 foregroundColor: theme.colorScheme.onPrimary,
-                onPressed: () async => context.read<SubscribeCubit>().subscribe(
+                onPressed: () => context.read<SubscribeCubit>().subscribe(
                   missionUlid: missionUlid,
                 ),
                 label: Text(

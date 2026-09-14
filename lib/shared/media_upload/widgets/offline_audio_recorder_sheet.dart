@@ -58,21 +58,15 @@ class OfflineAudioRecorderSheet extends StatelessWidget {
 
           return Column(
             children: [
-              PendingUploadsWidget(
-                model: model,
-                modelUlid: modelUlid,
-              ),
+              PendingUploadsWidget(model: model, modelUlid: modelUlid),
               if (isUploading)
                 Container(
                   margin: const EdgeInsets.all(PRFSpacingTokens.lg),
                   padding: const EdgeInsets.all(PRFSpacingTokens.lg),
                   decoration: BoxDecoration(
-                    color:
-                        Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(
-                          alpha: PRFOpacities.subtle,
-                        ),
+                    color: Theme.of(context).colorScheme.primary.withValues(
+                      alpha: PRFOpacities.subtle,
+                    ),
                     borderRadius: BorderRadius.circular(PRFRadiusTokens.smd),
                   ),
                   child: Row(

@@ -76,10 +76,7 @@ class Failure implements Exception {
       );
     }
 
-    return Failure(
-      message: error.toString(),
-      stackTrace: stackTrace,
-    );
+    return Failure(message: error.toString(), stackTrace: stackTrace);
   }
 
   /// Create a Failure for no network connection.

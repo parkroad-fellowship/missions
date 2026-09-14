@@ -29,9 +29,7 @@ class EventResourceCubit extends ResourceCubit<PRFEvent> {
   };
 
   @override
-  Future<List<PRFEvent>> loadCachedList({
-    Map<String, dynamic>? filters,
-  }) {
+  Future<List<PRFEvent>> loadCachedList({Map<String, dynamic>? filters}) {
     return dbService.list();
   }
 }

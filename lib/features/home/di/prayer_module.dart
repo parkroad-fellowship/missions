@@ -27,9 +27,7 @@ class PrayerModule {
         ),
       ),
       BlocProvider<SavePrayerResponseCubit>(
-        create: (context) => SavePrayerResponseCubit(
-          hiveService: getIt(),
-        ),
+        create: (context) => SavePrayerResponseCubit(hiveService: getIt()),
       ),
       BlocProvider<UploadPrayerResponseCubit>(
         create: (context) => UploadPrayerResponseCubit(

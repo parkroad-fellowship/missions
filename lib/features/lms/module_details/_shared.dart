@@ -125,20 +125,12 @@ Widget buildModuleDetailsHeader(
           ),
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(
-              PRFSpacingTokens.md,
-            ),
+            padding: const EdgeInsets.all(PRFSpacingTokens.md),
             decoration: BoxDecoration(
-              color: theme.colorScheme.onPrimary.withValues(
-                alpha: 0.1,
-              ),
-              borderRadius: BorderRadius.circular(
-                PRFRadiusTokens.lg,
-              ),
+              color: theme.colorScheme.onPrimary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(PRFRadiusTokens.lg),
               border: Border.all(
-                color: theme.colorScheme.onPrimary.withValues(
-                  alpha: 0.15,
-                ),
+                color: theme.colorScheme.onPrimary.withValues(alpha: 0.15),
               ),
             ),
             child: Column(
@@ -159,14 +151,8 @@ Widget buildModuleDetailsHeader(
                   spacing: PRFSpacingTokens.xs,
                   runSpacing: PRFSpacingTokens.xs,
                   children: [
-                    LmsStatPill(
-                      label: l10n.total,
-                      value: lessonModules.length,
-                    ),
-                    LmsStatPill(
-                      label: l10n.completed,
-                      value: completedCount,
-                    ),
+                    LmsStatPill(label: l10n.total, value: lessonModules.length),
+                    LmsStatPill(label: l10n.completed, value: completedCount),
                   ],
                 ),
               ],

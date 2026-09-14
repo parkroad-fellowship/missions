@@ -20,10 +20,8 @@ import 'package:logger/logger.dart';
 /// Parent list state is never read or mutated by this cubit - list cubits
 /// and [ResourceCubit] subclasses remain the sole owners of list state.
 class SingleResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
-  SingleResourceCubit({
-    required this._service,
-    required this.dbService,
-  }) : super(const ResourceState.initial());
+  SingleResourceCubit({required this._service, required this.dbService})
+    : super(const ResourceState.initial());
 
   final BaseAPIService<TRemote> _service;
   final BaseHiveDbService<TRemote> dbService;
@@ -123,12 +121,7 @@ class SingleResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
         return cached;
       }
 
-      _emitIfOpen(
-        ResourceState.itemError(
-          message: e.message,
-          item: existing,
-        ),
-      );
+      _emitIfOpen(ResourceState.itemError(message: e.message, item: existing));
     } catch (e, s) {
       final cached = await loadCachedItem(id);
       if (cached != null) {
@@ -138,10 +131,7 @@ class SingleResourceCubit<TRemote> extends Cubit<ResourceState<TRemote>> {
 
       _logger.e('Error loading single resource', error: e, stackTrace: s);
       _emitIfOpen(
-        ResourceState.itemError(
-          message: e.toString(),
-          item: existing,
-        ),
+        ResourceState.itemError(message: e.toString(), item: existing),
       );
     }
 

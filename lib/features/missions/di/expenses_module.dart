@@ -39,9 +39,8 @@ class ExpensesModule {
         ),
       ),
       BlocProvider<DeleteReceiptCubit>(
-        create: (context) => DeleteReceiptCubit(
-          allocationEntryService: getIt(),
-        ),
+        create: (context) =>
+            DeleteReceiptCubit(allocationEntryService: getIt()),
       ),
       BlocProvider<RequisitionResourceCubit>(
         create: (context) => RequisitionResourceCubit(

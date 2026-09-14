@@ -37,16 +37,9 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
-    _waveAnimation =
-        Tween<double>(
-          begin: 0,
-          end: 1,
-        ).animate(
-          CurvedAnimation(
-            parent: _waveController,
-            curve: Curves.easeInOut,
-          ),
-        );
+    _waveAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _waveController, curve: Curves.easeInOut),
+    );
   }
 
   @override
@@ -106,20 +99,15 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: state.when(
-                  initial: () => const Center(
-                    child: PRFCircularProgressIndicator(),
-                  ),
+                  initial: () =>
+                      const Center(child: PRFCircularProgressIndicator()),
                   ready: () => _buildReadyState(context, l10n),
                   recording: (duration) =>
                       _buildRecordingState(context, l10n, duration),
                   paused: (duration) =>
                       _buildPausedState(context, l10n, duration),
-                  completed: (filePath, duration) => _buildCompletedState(
-                    context,
-                    l10n,
-                    filePath,
-                    duration,
-                  ),
+                  completed: (filePath, duration) =>
+                      _buildCompletedState(context, l10n, filePath, duration),
                   error: (message) => _buildErrorState(context, l10n, message),
                 ),
               ),
@@ -151,9 +139,9 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
         const SizedBox(height: PRFSpacingTokens.xl),
         Text(
           l10n.tapToStartRecording,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w600),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: PRFSpacingTokens.md),
@@ -397,9 +385,9 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
 
         Text(
           l10n.recordingCompleted,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w600),
           textAlign: TextAlign.center,
         ),
 
@@ -443,23 +431,17 @@ class _LiveRecordingWidgetState extends State<LiveRecordingWidget>
                   Icon(
                     Icons.schedule,
                     size: 16,
-                    color:
-                        Theme.of(
-                          context,
-                        ).colorScheme.onSurface.withValues(
-                          alpha: PRFOpacities.prominent,
-                        ),
+                    color: Theme.of(context).colorScheme.onSurface.withValues(
+                      alpha: PRFOpacities.prominent,
+                    ),
                   ),
                   const SizedBox(width: PRFSpacingTokens.xs),
                   Text(
                     'Duration: ${_formatDuration(duration)}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color:
-                          Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withValues(
-                            alpha: PRFOpacities.prominent,
-                          ),
+                      color: Theme.of(context).colorScheme.onSurface.withValues(
+                        alpha: PRFOpacities.prominent,
+                      ),
                     ),
                   ),
                 ],

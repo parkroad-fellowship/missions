@@ -19,9 +19,7 @@ class MemberEngagementResourceCubit
   late final HiveService _hiveService;
 
   /// Load member engagement for a given member and year.
-  Future<void> loadEngagement({
-    required int year,
-  }) async {
+  Future<void> loadEngagement({required int year}) async {
     final ulid = _hiveService.retrieveMember()?.ulid;
     if (ulid == null) {
       emit(const ResourceState.error(message: 'Member not found'));
@@ -30,10 +28,7 @@ class MemberEngagementResourceCubit
 
     emit(const ResourceState.listLoading());
     try {
-      final engagement = await _memberService.fetchMemberEngagement(
-        ulid,
-        year,
-      );
+      final engagement = await _memberService.fetchMemberEngagement(ulid, year);
       emit(ResourceState.listLoaded(items: [engagement]));
     } on Failure catch (e) {
       emit(ResourceState.error(message: e.message));
