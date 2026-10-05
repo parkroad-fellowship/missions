@@ -349,10 +349,10 @@ packages:
     dependency: "direct main"
     description:
       name: device_info_plus
-      sha256: "0891702f96b2e465fe567b7ec448380e6b1c14f60af552a8536d9f583b6b8442"
+      sha256: ade1c36f8355d6284c98e4a47992ea263887ed3d1acb281e37635dd45f04c4aa
       url: "https://pub.dev"
     source: hosted
-    version: "13.2.0"
+    version: "13.3.0"
   device_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -881,10 +881,10 @@ packages:
     dependency: "direct main"
     description:
       name: gaimon
-      sha256: cb70dfa678f4a0cdd6cf6ad0498d82c768fbcfe02eb61db6ea1230de82f6ac8b
+      sha256: e35559d3a00ae1cd71f62427919c245440fdf579711ebb70b7fb90612e7ff9b9
       url: "https://pub.dev"
     source: hosted
-    version: "1.5.0"
+    version: "1.5.1"
   get_it:
     dependency: "direct main"
     description:
@@ -961,18 +961,18 @@ packages:
     dependency: "direct main"
     description:
       name: hive_ce
-      sha256: "650b64282b7ea664ea58a08492d2b163ac6dc6d0ef552d0d77aac6678e1518e9"
+      sha256: "2b1bf607ddf852cad8deaf2331cac0e54289d3a3c64079463b26f196008909ce"
       url: "https://pub.dev"
     source: hosted
-    version: "2.20.0"
+    version: "2.20.1"
   hive_ce_flutter:
     dependency: "direct main"
     description:
       name: hive_ce_flutter
-      sha256: "2677e95a333ff15af43ccd06af7eb7abbf1a4f154ea071997f3de4346cae913a"
+      sha256: "231c5f025a44f4a555b4e7417d1468027cc32d9471b00543bd5bce72464a1009"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.4"
+    version: "2.4.0"
   hive_ce_generator:
     dependency: "direct dev"
     description:
@@ -1625,10 +1625,10 @@ packages:
     dependency: "direct main"
     description:
       name: posthog_flutter
-      sha256: "879d4f623a9d2c4ee9df99afd982e6e15d4abd2c41b25f28a298a434d7ce88fd"
+      sha256: "33ca423d81129b0d73001acd64ed91c255df37f685555b567dc3e25ea1cc038e"
       url: "https://pub.dev"
     source: hosted
-    version: "5.48.0"
+    version: "5.50.13"
   pretty_dio_logger:
     dependency: "direct main"
     description:
@@ -1761,10 +1761,10 @@ packages:
     dependency: "direct main"
     description:
       name: share_plus
-      sha256: "34f00f9becd2743c1fb05363d624f9f70d37f7ccdcdda47450bc0b8c9d327b8c"
+      sha256: db40767f130189d53f3ae8a6393c217ff4a492da1baff718a9873679c0c00224
       url: "https://pub.dev"
     source: hosted
-    version: "13.3.0"
+    version: "13.3.1"
   share_plus_platform_interface:
     dependency: transitive
     description:
